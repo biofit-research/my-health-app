@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" id="html-root">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,7 +13,20 @@
 <meta name="description" content="운동·식단·체중을 한 번에 관리하는 건강 앱">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#1a1a1a;background:#f5f5f3;min-height:100vh;padding-bottom:68px;}
+
+/* ── Theme CSS variables (overridden by JS) ── */
+:root{
+  --theme-main:#185FA5;
+  --theme-dark:#0C447C;
+  --theme-darker:#042C53;
+  --theme-light:#E6F1FB;
+  --theme-mid:#378ADD;
+  --theme-bg:#f5f5f3;      /* page background */
+  --theme-surface:#ece9e4; /* mcard / input surface */
+  --theme-hover:#e4e1db;   /* hover state */
+}
+
+body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#1a1a1a;background:var(--theme-bg);min-height:100vh;padding-bottom:68px;}
 
 /* ── Pages ── */
 .page{display:none;max-width:700px;margin:0 auto;padding:1.25rem 1rem 1rem;}
@@ -25,11 +38,11 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 /* ── Bottom nav ── */
 #bnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:0.5px solid rgba(0,0,0,.1);display:flex;height:60px;z-index:200;}
 .nbtn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:transparent;cursor:pointer;color:#bbb;font-size:10px;transition:color .15s;padding-bottom:2px;}
-.nbtn.active{color:#185FA5;}
+.nbtn.active{color:var(--theme-main);}
 .nbtn svg{width:22px;height:22px;}
 
 /* ── Inner tabs ── */
-.itabs{display:flex;gap:4px;margin-bottom:1.25rem;background:#e8e7e2;border-radius:10px;padding:4px;}
+.itabs{display:flex;gap:4px;margin-bottom:1.25rem;background:var(--theme-surface);border-radius:10px;padding:4px;}
 .itab{flex:1;padding:7px;font-size:13px;border:none;background:transparent;cursor:pointer;border-radius:7px;color:#888;}
 .itab.active{background:#fff;color:#1a1a1a;font-weight:500;border:0.5px solid rgba(0,0,0,.1);}
 
@@ -39,13 +52,13 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 
 /* ── Metric grid ── */
 .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.mcard{background:#f5f5f3;border-radius:10px;padding:14px 16px;}
-.mcard.blue{background:#E6F1FB;}.mcard.green{background:#EAF3DE;}.mcard.amber{background:#FAEEDA;}.mcard.red{background:#FCEBEB;}.mcard.purple{background:#EEEDFE;}
+.mcard{background:var(--theme-bg);border-radius:10px;padding:14px 16px;}
+.mcard.blue{background:var(--theme-light);}.mcard.green{background:#EAF3DE;}.mcard.amber{background:#FAEEDA;}.mcard.red{background:#FCEBEB;}.mcard.purple{background:#EEEDFE;}
 .mlabel{font-size:11px;color:#888;margin-bottom:5px;}
-.mcard.blue .mlabel{color:#0C447C;}.mcard.green .mlabel{color:#27500A;}.mcard.amber .mlabel{color:#633806;}.mcard.red .mlabel{color:#791F1F;}.mcard.purple .mlabel{color:#3C3489;}
+.mcard.blue .mlabel{color:var(--theme-dark);}.mcard.green .mlabel{color:#27500A;}.mcard.amber .mlabel{color:#633806;}.mcard.red .mlabel{color:#791F1F;}.mcard.purple .mlabel{color:#3C3489;}
 .mval{font-size:22px;font-weight:500;}
 .munit{font-size:12px;color:#aaa;margin-left:2px;}
-.mcard.blue .munit{color:#185FA5;}.mcard.green .munit{color:#3B6D11;}.mcard.amber .munit{color:#854F0B;}
+.mcard.blue .munit{color:var(--theme-main);}.mcard.green .munit{color:#3B6D11;}.mcard.amber .munit{color:#854F0B;}
 .msub{font-size:11px;color:#aaa;margin-top:3px;}
 
 /* ── Food diary ── */
@@ -58,18 +71,18 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 .add-row{display:flex;gap:8px;margin-top:10px;}
 .add-row select{flex:1;font-size:13px;padding:6px 8px;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;background:#fff;color:#1a1a1a;}
 .add-btn{padding:6px 14px;font-size:13px;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;background:transparent;cursor:pointer;white-space:nowrap;}
-.add-btn:hover{background:#f5f5f3;}
+.add-btn:hover{background:var(--theme-bg);}
 .cust-row{display:flex;align-items:center;gap:6px;margin-top:6px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,.06);}
-.cust-row input[type=text]{flex:1;font-size:13px;padding:5px 8px;border:0.5px solid rgba(0,0,0,.15);border-radius:7px;background:#f5f5f3;color:#1a1a1a;}
-.cust-row input[type=number]{width:72px;font-size:13px;padding:5px 6px;border:0.5px solid rgba(0,0,0,.15);border-radius:7px;background:#f5f5f3;text-align:center;color:#1a1a1a;}
-.total-strip{background:#f5f5f3;border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.cust-row input[type=text]{flex:1;font-size:13px;padding:5px 8px;border:0.5px solid rgba(0,0,0,.15);border-radius:7px;background:var(--theme-bg);color:#1a1a1a;}
+.cust-row input[type=number]{width:72px;font-size:13px;padding:5px 6px;border:0.5px solid rgba(0,0,0,.15);border-radius:7px;background:var(--theme-bg);text-align:center;color:#1a1a1a;}
+.total-strip{background:var(--theme-bg);border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .bar-bg{background:rgba(0,0,0,.1);border-radius:4px;height:7px;overflow:hidden;flex:1;margin:0 14px;}
 .bar-fill{height:7px;border-radius:4px;transition:width .3s;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
 .cal-dn{font-size:11px;color:#aaa;text-align:center;padding:4px 0;}
 .cal-cell{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:12px;}
-.cal-cell:hover{background:#f0ede8;}.cal-cell.today{background:#f0ede8;font-weight:500;}
-.cal-cell.selected{background:#185FA5!important;color:#fff;}.cal-cell.empty{cursor:default;}
+.cal-cell:hover{background:var(--theme-hover);}.cal-cell.today{background:var(--theme-hover);font-weight:500;}
+.cal-cell.selected{background:var(--theme-main)!important;color:#fff;}.cal-cell.empty{cursor:default;}
 .cdot{width:4px;height:4px;border-radius:50%;margin-top:2px;}
 .dl{background:#639922;}.dm{background:#BA7517;}.dh{background:#A32D2D;}
 .cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
@@ -86,25 +99,25 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 .srow:last-of-type{border-bottom:none;}
 .slbl{font-size:11px;font-weight:500;letter-spacing:.8px;color:#888;}
 .tpick{display:flex;align-items:center;gap:3px;}
-.tpick input{width:36px;text-align:center;padding:4px 2px;font-size:14px;border:0.5px solid rgba(0,0,0,.15);border-radius:6px;background:#f5f5f3;color:#1a1a1a;}
+.tpick input{width:36px;text-align:center;padding:4px 2px;font-size:14px;border:0.5px solid rgba(0,0,0,.15);border-radius:6px;background:var(--theme-bg);color:#1a1a1a;}
 .cpick{display:flex;align-items:center;gap:4px;}
-.cpick input{width:52px;text-align:center;padding:4px 6px;font-size:14px;border:0.5px solid rgba(0,0,0,.15);border-radius:6px;background:#f5f5f3;color:#1a1a1a;}
+.cpick input{width:52px;text-align:center;padding:4px 6px;font-size:14px;border:0.5px solid rgba(0,0,0,.15);border-radius:6px;background:var(--theme-bg);color:#1a1a1a;}
 .tu{font-size:11px;color:#aaa;}.tcol{font-weight:500;color:#aaa;padding:0 1px;}
 .west{font-size:11px;color:#aaa;text-align:center;margin-top:10px;}
-.wsbtn{width:100%;margin-top:14px;padding:11px;font-size:15px;font-weight:500;border:none;background:#185FA5;color:#fff;border-radius:8px;cursor:pointer;}
-.wsbtn:hover{background:#0C447C;}
+.wsbtn{width:100%;margin-top:14px;padding:11px;font-size:15px;font-weight:500;border:none;background:var(--theme-main);color:#fff;border-radius:8px;cursor:pointer;}
+.wsbtn:hover{background:var(--theme-dark);}
 .timer-card{text-align:center;padding:1.75rem 1.25rem;}
 .pbadge{display:inline-block;padding:5px 18px;border-radius:20px;font-size:11px;font-weight:500;letter-spacing:1.2px;margin-bottom:1.25rem;}
 .tbig{font-size:68px;font-weight:500;letter-spacing:4px;font-variant-numeric:tabular-nums;line-height:1;margin-bottom:.75rem;}
 .pmeta{font-size:13px;color:#888;margin-bottom:1.25rem;min-height:20px;}
-.pgbar{background:#f0ede8;border-radius:4px;height:6px;overflow:hidden;margin-bottom:.75rem;}
+.pgbar{background:var(--theme-hover);border-radius:4px;height:6px;overflow:hidden;margin-bottom:.75rem;}
 .pgfill{height:6px;border-radius:4px;transition:width .25s linear;}
 .woverall{font-size:11px;color:#aaa;margin-bottom:1.25rem;}
 .ctrlrow{display:flex;gap:10px;justify-content:center;}
 .cbtn{padding:10px 26px;font-size:14px;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;background:transparent;cursor:pointer;color:#1a1a1a;}
-.cbtn:hover{background:#f5f5f3;}
-.cbtn.pri{background:#185FA5;color:#fff;border-color:#185FA5;}
-.cbtn.pri:hover{background:#0C447C;}
+.cbtn:hover{background:var(--theme-bg);}
+.cbtn.pri{background:var(--theme-main);color:#fff;border-color:var(--theme-main);}
+.cbtn.pri:hover{background:var(--theme-dark);}
 .cbtn:disabled{opacity:.4;cursor:not-allowed;}
 
 /* ── Diagnosis ── */
@@ -113,12 +126,12 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 .diag-title{font-size:20px;font-weight:500;line-height:1.4;margin-bottom:8px;}
 .diag-desc{font-size:13px;color:#666;line-height:1.7;margin-bottom:20px;}
 .diag-items{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;text-align:left;}
-.diag-item{display:flex;align-items:center;gap:10px;padding:10px 16px;background:#f5f5f3;border-radius:8px;font-size:13px;}
+.diag-item{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--theme-bg);border-radius:8px;font-size:13px;}
 .q-step{font-size:11px;color:#999;letter-spacing:.06em;margin-bottom:6px;}
 .q-msg{font-size:17px;font-weight:500;color:#1a1a1a;line-height:1.6;white-space:pre-wrap;word-break:keep-all;margin-bottom:20px;}
-.opt-btn{display:block;width:100%;padding:13px 18px;font-size:14px;text-align:left;background:#f5f5f3;color:#1a1a1a;border:0.5px solid rgba(0,0,0,.1);border-radius:8px;cursor:pointer;line-height:1.4;transition:background .13s,color .13s;margin-bottom:8px;}
+.opt-btn{display:block;width:100%;padding:13px 18px;font-size:14px;text-align:left;background:var(--theme-bg);color:#1a1a1a;border:0.5px solid rgba(0,0,0,.1);border-radius:8px;cursor:pointer;line-height:1.4;transition:background .13s,color .13s;margin-bottom:8px;}
 .opt-btn:last-child{margin-bottom:0;}
-.opt-btn:hover{background:#185FA5;color:#fff;border-color:#185FA5;}
+.opt-btn:hover{background:var(--theme-main);color:#fff;border-color:var(--theme-main);}
 .result-label-sm{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
 .result-msg-lg{font-size:15px;font-weight:500;line-height:1.75;white-space:pre-wrap;word-break:keep-all;}
 .hist-toggle{font-size:12px;color:#999;cursor:pointer;background:none;border:none;padding:4px 0;display:flex;align-items:center;gap:4px;}
@@ -132,14 +145,14 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 .bmi-input-row{display:flex;align-items:center;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;overflow:hidden;background:#fff;}
 .bmi-input-row input{flex:1;padding:12px 16px;font-size:16px;border:none;outline:none;background:transparent;color:#1a1a1a;}
 .bmi-input-unit{padding:0 14px;font-size:14px;color:#999;}
-.bmi-preview-row{padding:12px 16px;background:#f5f5f3;border-radius:8px;display:flex;justify-content:space-between;align-items:center;margin-top:4px;}
+.bmi-preview-row{padding:12px 16px;background:var(--theme-bg);border-radius:8px;display:flex;justify-content:space-between;align-items:center;margin-top:4px;}
 .bmi-preview-lbl{font-size:13px;color:#666;}
 .bmi-preview-val{font-size:15px;font-weight:500;}
-.primary-btn{width:100%;padding:13px;font-size:15px;font-weight:500;background:#185FA5;color:#fff;border:none;border-radius:8px;cursor:pointer;margin-top:8px;}
-.primary-btn:hover{background:#0C447C;}
+.primary-btn{width:100%;padding:13px;font-size:15px;font-weight:500;background:var(--theme-main);color:#fff;border:none;border-radius:8px;cursor:pointer;margin-top:8px;}
+.primary-btn:hover{background:var(--theme-dark);}
 .primary-btn:disabled{background:#ccc;cursor:not-allowed;}
 .secondary-btn-outline{width:100%;padding:11px;font-size:14px;background:transparent;color:#555;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;cursor:pointer;margin-top:8px;}
-.secondary-btn-outline:hover{background:#f5f5f3;}
+.secondary-btn-outline:hover{background:var(--theme-bg);}
 .diag-fade{transition:opacity .22s ease,transform .22s ease;}
 .diag-entering{opacity:0;transform:translateY(8px);}
 
@@ -151,8 +164,8 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 .bmi-banner-right{text-align:right;}
 .bmi-badge-pill{display:inline-block;padding:4px 12px;border-radius:10px;font-size:12px;font-weight:500;margin-bottom:4px;}
 .bmi-banner-right .goal-txt{font-size:11px;color:#888;}
-.bmi-no-profile{background:#f5f5f3;border-radius:10px;padding:14px 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#888;cursor:pointer;border:0.5px solid transparent;transition:background .15s;}
-.bmi-no-profile:hover{background:#ece9e3;}
+.bmi-no-profile{background:var(--theme-bg);border-radius:10px;padding:14px 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#888;cursor:pointer;border:0.5px solid transparent;transition:background .15s;}
+.bmi-no-profile:hover{background:var(--theme-hover);}
 
 /* ── Toast ── */
 #toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(8px);background:#111;color:#fff;padding:9px 20px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;z-index:500;white-space:nowrap;}
@@ -160,9 +173,9 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 
 /* ── Gender select ── */
 .gender-row{display:flex;gap:10px;margin-bottom:16px;}
-.gender-btn{flex:1;padding:14px 10px;font-size:15px;border:0.5px solid rgba(0,0,0,.15);border-radius:10px;background:#f5f5f3;cursor:pointer;text-align:center;transition:background .13s,color .13s,border-color .13s;color:#1a1a1a;}
-.gender-btn.selected{background:#185FA5;color:#fff;border-color:#185FA5;}
-.gender-btn:hover:not(.selected){background:#e8e7e2;}
+.gender-btn{flex:1;padding:14px 10px;font-size:15px;border:0.5px solid rgba(0,0,0,.15);border-radius:10px;background:var(--theme-bg);cursor:pointer;text-align:center;transition:background .13s,color .13s,border-color .13s;color:#1a1a1a;}
+.gender-btn.selected{background:var(--theme-main);color:#fff;border-color:var(--theme-main);}
+.gender-btn:hover:not(.selected){background:var(--theme-surface);}
 
 /* ── Obesity level badges ── */
 .ob-badge{display:inline-block;font-size:11px;padding:2px 9px;border-radius:10px;font-weight:500;}
@@ -172,10 +185,10 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 
 /* ── Weight log ── */
 .wg-entry-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
-.wg-entry-row input{flex:1;padding:10px 14px;font-size:17px;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;background:#f5f5f3;color:#1a1a1a;text-align:center;}
-.wg-entry-row input:focus{outline:none;border-color:#185FA5;background:#fff;}
-.wg-record-btn{padding:10px 18px;font-size:14px;border:none;background:#185FA5;color:#fff;border-radius:8px;cursor:pointer;white-space:nowrap;font-weight:500;}
-.wg-record-btn:hover{background:#0C447C;}
+.wg-entry-row input{flex:1;padding:10px 14px;font-size:17px;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;background:var(--theme-bg);color:#1a1a1a;text-align:center;}
+.wg-entry-row input:focus{outline:none;border-color:var(--theme-main);background:#fff;}
+.wg-record-btn{padding:10px 18px;font-size:14px;border:none;background:var(--theme-main);color:#fff;border-radius:8px;cursor:pointer;white-space:nowrap;font-weight:500;}
+.wg-record-btn:hover{background:var(--theme-dark);}
 .wg-today-val{font-size:32px;font-weight:500;text-align:center;margin-bottom:2px;}
 .wg-today-sub{font-size:12px;color:#888;text-align:center;margin-bottom:10px;}
 .wg-diff-pos{color:#E24B4A;}.wg-diff-neg{color:#1D9E75;}.wg-diff-zero{color:#888;}
@@ -183,38 +196,53 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 .wg-hist-row:last-child{border-bottom:none;}
 .wg-tab-row{display:flex;gap:6px;margin-bottom:12px;}
 .wg-tab-btn{font-size:12px;padding:4px 12px;border:0.5px solid rgba(0,0,0,.12);border-radius:16px;background:transparent;cursor:pointer;color:#888;}
-.wg-tab-btn.active{background:#185FA5;color:#fff;border-color:#185FA5;}
+.wg-tab-btn.active{background:var(--theme-main);color:#fff;border-color:var(--theme-main);}
 
 /* ── Macro bars ── */
-.macro-strip{background:#f5f5f3;border-radius:10px;padding:10px 14px;margin-bottom:12px;}
+.macro-strip{background:var(--theme-bg);border-radius:10px;padding:10px 14px;margin-bottom:12px;}
 .macro-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
 .macro-row:last-child{margin-bottom:0;}
 .macro-lbl{font-size:11px;color:#888;width:34px;flex-shrink:0;}
 .macro-bar-bg{flex:1;background:rgba(0,0,0,.08);border-radius:3px;height:6px;overflow:hidden;}
 .macro-bar-fill{height:6px;border-radius:3px;transition:width .4s;}
 .macro-val{font-size:11px;color:#555;width:64px;text-align:right;flex-shrink:0;}
-.macro-c{background:#639922;}.macro-p{background:#185FA5;}.macro-f{background:#BA7517;}
+.macro-c{background:#639922;}.macro-p{background:var(--theme-main);}.macro-f{background:#BA7517;}
 .macro-sum{display:flex;gap:10px;font-size:11px;color:#888;margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,.07);flex-wrap:wrap;}
 .macro-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:3px;vertical-align:middle;}
 .macro-input-row{display:flex;gap:5px;margin-top:6px;}
-.macro-input-row input{flex:1;min-width:0;font-size:12px;padding:4px 6px;border:0.5px solid rgba(0,0,0,.15);border-radius:6px;background:#f5f5f3;color:#1a1a1a;text-align:center;}
+.macro-input-row input{flex:1;min-width:0;font-size:12px;padding:4px 6px;border:0.5px solid rgba(0,0,0,.15);border-radius:6px;background:var(--theme-bg);color:#1a1a1a;text-align:center;}
 
 /* ── Exercise type & intensity ── */
 .ex-type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
-.ex-type-btn{padding:8px 4px;font-size:11px;border:0.5px solid rgba(0,0,0,.12);border-radius:8px;background:#f5f5f3;cursor:pointer;text-align:center;color:#555;transition:background .12s,border-color .12s;}
-.ex-type-btn.sel{background:#185FA5;color:#fff;border-color:#185FA5;}
+.ex-type-btn{padding:8px 4px;font-size:11px;border:0.5px solid rgba(0,0,0,.12);border-radius:8px;background:var(--theme-bg);cursor:pointer;text-align:center;color:#555;transition:background .12s,border-color .12s;}
+.ex-type-btn.sel{background:var(--theme-main);color:#fff;border-color:var(--theme-main);}
 .ex-type-icon{font-size:18px;display:block;margin-bottom:2px;}
 .intensity-row{display:flex;gap:6px;margin-bottom:10px;}
-.int-btn{flex:1;padding:8px;font-size:12px;border:0.5px solid rgba(0,0,0,.12);border-radius:8px;background:#f5f5f3;cursor:pointer;text-align:center;color:#555;transition:background .12s;}
+.int-btn{flex:1;padding:8px;font-size:12px;border:0.5px solid rgba(0,0,0,.12);border-radius:8px;background:var(--theme-bg);cursor:pointer;text-align:center;color:#555;transition:background .12s;}
 .int-btn.sel-low{background:#EAF3DE;color:#27500A;border-color:#639922;}
 .int-btn.sel-mid{background:#FAEEDA;color:#633806;border-color:#BA7517;}
 .int-btn.sel-high{background:#FCEBEB;color:#791F1F;border-color:#A32D2D;}
 
-/* ── Heart-rate ── */
+/* ── Settings page ── */
+.setting-section{margin-bottom:20px;}
+.setting-section-title{font-size:11px;font-weight:500;color:#888;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;padding:0 2px;}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:#fff;border:0.5px solid rgba(0,0,0,.1);border-radius:10px;margin-bottom:6px;}
+.setting-row-label{font-size:14px;color:#1a1a1a;}
+.setting-row-sub{font-size:11px;color:#888;margin-top:2px;}
+.theme-swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px;}
+.theme-swatch{border:0.5px solid rgba(0,0,0,.12);border-radius:10px;padding:10px 6px;cursor:pointer;text-align:center;transition:border-color .13s,transform .1s;}
+.theme-swatch:active{transform:scale(.96);}
+.theme-swatch.active{border:2px solid #1a1a1a;}
+.swatch-circle{width:32px;height:32px;border-radius:50%;margin:0 auto 6px;}
+.swatch-name{font-size:11px;color:#555;}
+.lang-btns{display:flex;gap:8px;}
+.lang-btn{flex:1;padding:10px;font-size:14px;border:0.5px solid rgba(0,0,0,.12);border-radius:8px;background:var(--theme-bg);cursor:pointer;text-align:center;transition:background .12s;}
+.lang-btn.active{background:var(--theme-main);color:#fff;border-color:var(--theme-main);}
+.about-row{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fff;border:0.5px solid rgba(0,0,0,.1);border-radius:10px;margin-bottom:6px;font-size:13px;color:#555;}
 .hr-input-wrap{display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 0;}
-.hr-input-wrap input{width:90px;font-size:26px;font-weight:500;text-align:center;padding:8px;border:0.5px solid rgba(0,0,0,.15);border-radius:10px;background:#f5f5f3;color:#1a1a1a;}
+.hr-input-wrap input{width:90px;font-size:26px;font-weight:500;text-align:center;padding:8px;border:0.5px solid rgba(0,0,0,.15);border-radius:10px;background:var(--theme-bg);color:#1a1a1a;}
 .hr-zone{display:inline-block;font-size:11px;padding:2px 10px;border-radius:10px;font-weight:500;margin-top:4px;}
-.hr-z1{background:#E6F1FB;color:#0C447C;}.hr-z2{background:#EAF3DE;color:#27500A;}
+.hr-z1{background:var(--theme-light);color:var(--theme-dark);}.hr-z2{background:#EAF3DE;color:#27500A;}
 .hr-z3{background:#FAEEDA;color:#633806;}.hr-z4{background:#FCEBEB;color:#791F1F;}.hr-z5{background:#FCEBEB;color:#501313;}
 </style>
 </head>
@@ -257,7 +285,7 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
         </div>
         <div style="display:flex;gap:8px;">
           <span style="font-size:16px;flex-shrink:0;">④</span>
-          <span>상단 바그래프로 <b>오늘 목표 칼로리</b> 달성률을 확인하고, 탄·단·지·나트륨 막대로 영양균형을 확인하세요.</span>
+          <span>상단 바그래프로 <b>하루 목표 섭취 칼로리</b> 달성률을 확인하고, 탄·단·지·나트륨 막대로 영양균형을 확인하세요.</span>
         </div>
         <div style="display:flex;gap:8px;">
           <span style="font-size:16px;flex-shrink:0;">⑤</span>
@@ -284,7 +312,7 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
     </div>
     <div class="total-strip">
       <div>
-        <div style="font-size:12px;color:#888;margin-bottom:3px;">오늘 총 칼로리</div>
+        <div style="font-size:12px;color:#888;margin-bottom:3px;">오늘 총 섭취 칼로리</div>
         <div style="font-size:24px;font-weight:500;"><span id="f-total-kcal">0</span><span style="font-size:13px;color:#aaa;margin-left:3px;">kcal</span></div>
       </div>
       <div class="bar-bg"><div class="bar-fill" id="f-bar" style="width:0%"></div></div>
@@ -367,11 +395,13 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
           </div>
         </div>
         <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
-          <div style="padding:10px 12px;background:#fff;border-radius:8px;border-left:3px solid #185FA5;">
-            <div style="font-size:11px;color:#0C447C;font-weight:500;margin-bottom:4px;">📅 운동 설정 기준</div>
+          <div style="padding:10px 12px;background:#fff;border-radius:8px;border-left:3px solid var(--theme-main);">
+            <div style="font-size:11px;color:var(--theme-dark);font-weight:500;margin-bottom:4px;">📅 운동 설정 기준 (학회 권고안)</div>
             <div style="font-size:11px;color:#888;line-height:1.7;">
-              종목별 자동 설정값은 <b>주 5회 운동</b>을 기준으로 한 ACSM(미국 스포츠의학회) 권고안입니다.
-              체중 감량·심폐 향상·근력 강화 등 목적에 따라 운동 시간과 강도를 조절하세요.
+              종목별 자동 설정값은 <b>주 5회 운동</b>을 기준으로 한 ACSM 권고안입니다.<br>
+              체중 감량 목적 시 <b>주 225~420분(중강도) 또는 주 150분 이상(고강도)</b>이 권고되며,<br>
+              식이조절과 병행할 때 효과가 2~3배 높아집니다.
+              <span style="display:block;margin-top:4px;font-size:10px;color:#aaa;">출처: ACSM · WHO · 대한비만학회(KSSO) 2022</span>
             </div>
           </div>
           <div style="padding:10px 12px;background:#fff;border-radius:8px;border-left:3px solid #BA7517;">
@@ -457,9 +487,17 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
   <!-- BMI 프로필 배너 -->
   <div id="d-bmi-banner"></div>
 
+  <div class="card" id="d-weekly-exercise-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div class="card-title" style="margin-bottom:0;">이번 주 권장 운동량</div>
+      <span id="d-weekly-badge" style="font-size:11px;padding:2px 10px;border-radius:10px;font-weight:500;"></span>
+    </div>
+    <div id="d-weekly-content"></div>
+  </div>
+
   <div class="mgrid">
     <div class="mcard blue">
-      <div class="mlabel">오늘 섭취</div>
+      <div class="mlabel">오늘 섭취 칼로리</div>
       <div class="mval" id="d-intake">0<span class="munit">kcal</span></div>
       <div class="msub" id="d-intake-sub"></div>
     </div>
@@ -533,31 +571,113 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
   <div id="diag-content"></div>
 </div>
 
+<!-- ═══════════ SETTINGS PAGE ═══════════ -->
+<div id="pg-settings" class="page">
+  <div class="page-hd">
+    <h2 id="settings-title">설정</h2>
+  </div>
+
+  <div class="setting-section">
+    <div class="setting-section-title" id="s-lang-title">언어 / Language</div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-row-label" id="s-lang-label">언어 선택</div>
+        <div class="setting-row-sub" id="s-lang-sub">앱 표시 언어를 선택합니다</div>
+      </div>
+    </div>
+    <div class="lang-btns" style="padding:0 2px;">
+      <button class="lang-btn active" id="s-lang-ko" onclick="setLang('ko')">🇰🇷 한국어</button>
+      <button class="lang-btn" id="s-lang-en" onclick="setLang('en')">🇺🇸 English</button>
+    </div>
+  </div>
+
+  <div class="setting-section">
+    <div class="setting-section-title" id="s-theme-title">테마 색상</div>
+    <div class="theme-swatches">
+      <div class="theme-swatch active" id="sw-blue" onclick="setTheme('blue')">
+        <div class="swatch-circle" style="background:#185FA5;"></div>
+        <div class="swatch-name">블루</div>
+      </div>
+      <div class="theme-swatch" id="sw-emerald" onclick="setTheme('emerald')">
+        <div class="swatch-circle" style="background:#1D9E75;"></div>
+        <div class="swatch-name">에메랄드</div>
+      </div>
+      <div class="theme-swatch" id="sw-forest" onclick="setTheme('forest')">
+        <div class="swatch-circle" style="background:#ffffff;border:1px solid #ddd;"></div>
+        <div class="swatch-name">화이트</div>
+      </div>
+      <div class="theme-swatch" id="sw-purple" onclick="setTheme('purple')">
+        <div class="swatch-circle" style="background:#534AB7;"></div>
+        <div class="swatch-name">퍼플</div>
+      </div>
+      <div class="theme-swatch" id="sw-coral" onclick="setTheme('coral')">
+        <div class="swatch-circle" style="background:#993C1D;"></div>
+        <div class="swatch-name">코럴</div>
+      </div>
+      <div class="theme-swatch" id="sw-graphite" onclick="setTheme('graphite')">
+        <div class="swatch-circle" style="background:#444441;"></div>
+        <div class="swatch-name">그래파이트</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="setting-section">
+    <div class="setting-section-title" id="s-about-title">앱 정보</div>
+    <div class="about-row"><span style="font-size:18px;">⚖️</span><div><div style="font-size:13px;font-weight:500;" id="s-app-name">건강 관리 앱</div><div style="font-size:11px;color:#aaa;">v2.0 · KSSO 2022 기준</div></div></div>
+    <div class="about-row"><span style="font-size:18px;">📋</span><div style="font-size:12px;color:#888;" id="s-disclaimer">이 앱은 일반적인 건강 정보 제공 목적이며 의사의 진료를 대신하지 않습니다.</div></div>
+    <div class="about-row"><span style="font-size:18px;">🔗</span><div><div style="font-size:13px;">GitHub</div><div style="font-size:11px;color:#aaa;">biofit-research.github.io/my-health-app</div></div></div>
+  </div>
+
+  <div class="setting-section">
+    <div class="setting-section-title" id="s-data-title">데이터</div>
+    <div class="setting-row" style="cursor:pointer;" onclick="exportData()">
+      <div>
+        <div class="setting-row-label" id="s-export-label">데이터 내보내기</div>
+        <div class="setting-row-sub" id="s-export-sub">식사·운동·체중 기록을 JSON으로 저장</div>
+      </div>
+      <span style="color:#888;font-size:18px;">↓</span>
+    </div>
+    <div class="setting-row" style="cursor:pointer;" onclick="confirmClearData()">
+      <div>
+        <div class="setting-row-label" style="color:#A32D2D;" id="s-clear-label">모든 데이터 초기화</div>
+        <div class="setting-row-sub" id="s-clear-sub">식사·운동·체중·프로필 전체 삭제</div>
+      </div>
+      <span style="color:#A32D2D;font-size:18px;">⚠</span>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════ BOTTOM NAV ═══════════ -->
 <nav id="bnav">
   <button class="nbtn active" onclick="showPage('food')" id="nb-food">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
       <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>
     </svg>
-    <span>음식일기</span>
+    <span data-i18n="nav_food">음식일기</span>
   </button>
   <button class="nbtn" onclick="showPage('workout')" id="nb-workout">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
       <circle cx="12" cy="14" r="7"/><path d="M12 10v4l2.5 2.5"/><path d="M9.5 2.5h5"/><path d="M12 2.5v2"/>
     </svg>
-    <span>운동</span>
+    <span data-i18n="nav_workout">운동</span>
   </button>
   <button class="nbtn" onclick="showPage('dashboard')" id="nb-dashboard">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
     </svg>
-    <span>대시보드</span>
+    <span data-i18n="nav_dashboard">대시보드</span>
   </button>
   <button class="nbtn" onclick="showPage('diag')" id="nb-diag">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
     </svg>
-    <span>진단</span>
+    <span data-i18n="nav_diag">진단</span>
+  </button>
+  <button class="nbtn" onclick="showPage('settings')" id="nb-settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+    </svg>
+    <span data-i18n="nav_settings">설정</span>
   </button>
 </nav>
 
@@ -570,6 +690,239 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 ══════════════════════════════════════ */
 const TODAY = new Date();
 const BURN_RATE = 8;
+
+/* ── i18n ── */
+let LANG = localStorage.getItem('health_lang')||'ko';
+
+const I18N={
+  ko:{
+    nav_food:'음식일기', nav_workout:'운동', nav_dashboard:'대시보드', nav_diag:'진단',
+    pg_food:'음식 일기', pg_workout:'운동 타이머', pg_dashboard:'대시보드', pg_diag:'체중 관리 진단',
+    tab_diary:'오늘 식사', tab_calendar:'달력',
+    tab_timer:'타이머', tab_history:'기록',
+    meal_b:'아침', meal_l:'점심', meal_d:'저녁', meal_s:'간식',
+    today_btn:'오늘',
+    add_btn:'추가',
+    macro_carb:'탄수화물', macro_prot:'단백질', macro_fat:'지방', macro_na:'나트륨',
+    d_intake:'오늘 섭취 칼로리', d_workout_lbl:'운동 시간', d_burned:'소모 추정', d_net:'순 칼로리',
+    d_weekly_title:'이번 주 권장 운동량',
+    d_food_title:'오늘 식사', d_workout_title:'오늘 운동',
+    d_macro_title:'오늘 영양소',
+    d_chart_title:'7일 섭취 vs 운동',
+    wg_title:'체중 기록',
+    bmi_banner_lbl:'내 BMI',
+    prepare:'준비', work:'운동', rest:'휴식', cooldown:'쿨다운',
+    start_btn:'운동 시작', pause_btn:'일시정지', resume_btn:'계속하기', reset_btn:'처음으로',
+    intensity_low:'저강도', intensity_mid:'중강도', intensity_high:'고강도',
+    guide_btn_show:'📖 사용법 보기', guide_btn_hide:'📖 사용법 닫기',
+    diag_restart:'처음으로',
+    food_note:'* 칼로리·탄수화물·단백질·지방·나트륨은 평균 추정값입니다',
+    lang_next:'EN',
+    nav_settings:'설정',
+    pg_settings:'설정',
+    s_lang:'언어 / Language', s_lang_label:'언어 선택', s_lang_sub:'앱 표시 언어를 선택합니다',
+    s_theme:'테마 색상',
+    s_about:'앱 정보', s_app_name:'건강 관리 앱', s_disclaimer:'이 앱은 일반적인 건강 정보 제공 목적이며 의사의 진료를 대신하지 않습니다.',
+    s_data:'데이터', s_export:'데이터 내보내기', s_export_sub:'식사·운동·체중 기록을 JSON으로 저장',
+    s_clear:'모든 데이터 초기화', s_clear_sub:'식사·운동·체중·프로필 전체 삭제',
+    s_clear_confirm:'정말 모든 데이터를 삭제하시겠습니까?\n되돌릴 수 없습니다.',
+  },
+  en:{
+    nav_food:'Food', nav_workout:'Workout', nav_dashboard:'Dashboard', nav_diag:'Assess',
+    pg_food:'Food Diary', pg_workout:'Workout Timer', pg_dashboard:'Dashboard', pg_diag:'Weight Assessment',
+    tab_diary:"Today's Meals", tab_calendar:'Calendar',
+    tab_timer:'Timer', tab_history:'History',
+    meal_b:'Breakfast', meal_l:'Lunch', meal_d:'Dinner', meal_s:'Snack',
+    today_btn:'Today',
+    add_btn:'Add',
+    macro_carb:'Carbs', macro_prot:'Protein', macro_fat:'Fat', macro_na:'Sodium',
+    d_intake:'Today Intake', d_workout_lbl:'Workout Time', d_burned:'Est. Burned', d_net:'Net Calories',
+    d_weekly_title:'Weekly Exercise Goal',
+    d_food_title:"Today's Food", d_workout_title:"Today's Workout",
+    d_macro_title:"Today's Nutrients",
+    d_chart_title:'7-Day Intake vs Workout',
+    wg_title:'Weight Log',
+    bmi_banner_lbl:'My BMI',
+    prepare:'Prepare', work:'Work', rest:'Rest', cooldown:'Cool Down',
+    start_btn:'Start Workout', pause_btn:'Pause', resume_btn:'Resume', reset_btn:'Reset',
+    intensity_low:'Low', intensity_mid:'Moderate', intensity_high:'High',
+    guide_btn_show:'📖 How to use', guide_btn_hide:'📖 Close guide',
+    diag_restart:'Restart',
+    food_note:'* Calorie & nutrient values are estimates based on average data',
+    lang_next:'한',
+    nav_settings:'Settings',
+    pg_settings:'Settings',
+    s_lang:'Language', s_lang_label:'Select Language', s_lang_sub:'Choose app display language',
+    s_theme:'Theme Color',
+    s_about:'About', s_app_name:'Health Manager', s_disclaimer:'This app provides general health information and does not replace medical advice.',
+    s_data:'Data', s_export:'Export Data', s_export_sub:'Save food, workout & weight records as JSON',
+    s_clear:'Reset All Data', s_clear_sub:'Delete all food, workout, weight & profile data',
+    s_clear_confirm:'Are you sure you want to delete all data?\nThis cannot be undone.',
+  }
+};
+
+function t(key){return(I18N[LANG]||I18N.ko)[key]||key;}
+
+function applyLang(){
+  document.getElementById('html-root').lang=LANG==='ko'?'ko':'en';
+  document.title=LANG==='ko'?'건강 관리 앱':'Health Manager';
+  // nav labels
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    el.textContent=t(key);
+  });
+  // lang toggle label
+  const ll=document.getElementById('lang-label');
+  if(ll)ll.textContent=t('lang_next');
+  // page headings
+  const ph={food:'pg_food',workout:'pg_workout',dashboard:'pg_dashboard',diag:'pg_diag'};
+  Object.entries(ph).forEach(([id,key])=>{
+    const h=document.querySelector(`#pg-${id} .page-hd h2`);
+    if(h)h.textContent=t(key);
+  });
+  // tab buttons
+  const foodTabs=document.querySelectorAll('#pg-food .itab');
+  if(foodTabs[0])foodTabs[0].textContent=t('tab_diary');
+  if(foodTabs[1])foodTabs[1].textContent=t('tab_calendar');
+  const wTabs=document.querySelectorAll('#pg-workout .itab');
+  if(wTabs[0])wTabs[0].textContent=t('tab_timer');
+  if(wTabs[1])wTabs[1].textContent=t('tab_history');
+  // diag restart btn
+  const rb=document.getElementById('diag-restart-btn');
+  if(rb)rb.textContent=t('diag_restart');
+  // intensity buttons
+  const ib={low:'int-low',mid:'int-mid',high:'int-high'};
+  Object.entries(ib).forEach(([lv,id])=>{
+    const b=document.getElementById(id);
+    if(b){
+      const sub=b.querySelector('span');
+      const subText={
+        low:{ko:'대화 가능',en:'Can talk'},
+        mid:{ko:'약간 숨참',en:'Slightly breathless'},
+        high:{ko:'대화 불가',en:'Hard to talk'}
+      }[lv][LANG]||'';
+      b.innerHTML=`${LANG==='ko'?'🟢 저강도':'🟢 Low'} ${lv==='mid'?(LANG==='ko'?'🟡 중강도':'🟡 Moderate'):''} ${lv==='high'?(LANG==='ko'?'🔴 고강도':'🔴 High'):''}<br><span style="font-size:10px;color:inherit;opacity:.8;">${subText}</span>`;
+      // simpler label:
+      const icons={low:'🟢',mid:'🟡',high:'🔴'};
+      b.innerHTML=`${icons[lv]} ${t('intensity_'+lv)}<br><span style="font-size:10px;color:inherit;opacity:.8;">${subText}</span>`;
+    }
+  });
+  // dashboard card titles
+  const cardMap={
+    'd-weekly-exercise-card .card-title':t('d_weekly_title'),
+  };
+  Object.entries(cardMap).forEach(([sel,txt])=>{
+    const el=document.querySelector('#pg-dashboard '+sel);
+    if(el)el.textContent=txt;
+  });
+  // settings page labels
+  const sMap={
+    'settings-title':'pg_settings','s-lang-title':'s_lang',
+    's-lang-label':'s_lang_label','s-lang-sub':'s_lang_sub',
+    's-theme-title':'s_theme','s-about-title':'s_about',
+    's-app-name':'s_app_name','s-disclaimer':'s_disclaimer',
+    's-data-title':'s_data','s-export-label':'s_export',
+    's-export-sub':'s_export_sub','s-clear-label':'s_clear','s-clear-sub':'s_clear_sub'
+  };
+  Object.entries(sMap).forEach(([id,key])=>{const el=document.getElementById(id);if(el)el.textContent=t(key);});
+  // lang buttons active state
+  const lko=document.getElementById('s-lang-ko');
+  const len=document.getElementById('s-lang-en');
+  if(lko)lko.classList.toggle('active',LANG==='ko');
+  if(len)len.classList.toggle('active',LANG==='en');
+  fRenderDiary();
+  renderDashboard();
+  wRenderExTypeGrid();
+  wUpdateEst();
+}
+
+const THEMES={
+  blue:   {main:'#185FA5',dark:'#0C447C',darker:'#042C53',light:'#E6F1FB',mid:'#378ADD',
+           bg:'#f0f4f9',surface:'#e3ecf5',hover:'#d6e5f0'},
+  emerald:{main:'#1D9E75',dark:'#0F6E56',darker:'#085041',light:'#E1F5EE',mid:'#5DCAA5',
+           bg:'#f0f9f6',surface:'#dff2eb',hover:'#ceeae1'},
+  forest: {main:'#0F6E56',dark:'#085041',darker:'#04342C',light:'#E1F5EE',mid:'#1D9E75',
+           bg:'#ffffff',surface:'#f5f5f3',hover:'#ece9e4'},
+  purple: {main:'#534AB7',dark:'#3C3489',darker:'#26215C',light:'#EEEDFE',mid:'#7F77DD',
+           bg:'#f3f2fd',surface:'#e7e5fb',hover:'#dbd8f8'},
+  coral:  {main:'#993C1D',dark:'#712B13',darker:'#4A1B0C',light:'#FAECE7',mid:'#D85A30',
+           bg:'#faf3f0',surface:'#f5e5de',hover:'#eed8cf'},
+  graphite:{main:'#444441',dark:'#2C2C2A',darker:'#1a1a18',light:'#F1EFE8',mid:'#888780',
+            bg:'#f2f1ef',surface:'#e8e7e3',hover:'#dddbd6'},
+};
+let THEME=localStorage.getItem('health_theme')||'blue';
+
+function applyTheme(key){
+  const th=THEMES[key]||THEMES.blue;
+  const r=document.documentElement.style;
+  r.setProperty('--theme-main',th.main);
+  r.setProperty('--theme-dark',th.dark);
+  r.setProperty('--theme-darker',th.darker);
+  r.setProperty('--theme-light',th.light);
+  r.setProperty('--theme-mid',th.mid);
+  r.setProperty('--theme-bg',th.bg);
+  r.setProperty('--theme-surface',th.surface);
+  r.setProperty('--theme-hover',th.hover);
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.content=th.main;
+  document.querySelectorAll('.theme-swatch').forEach(el=>{
+    el.classList.toggle('active',el.id==='sw-'+key);
+  });
+}
+
+/* Live theme color helpers — always reflects current theme */
+function thM(){return getComputedStyle(document.documentElement).getPropertyValue('--theme-main').trim();}
+function thD(){return getComputedStyle(document.documentElement).getPropertyValue('--theme-dark').trim();}
+function thL(){return getComputedStyle(document.documentElement).getPropertyValue('--theme-light').trim();}
+function thBg(){return getComputedStyle(document.documentElement).getPropertyValue('--theme-bg').trim();}
+function thSurf(){return getComputedStyle(document.documentElement).getPropertyValue('--theme-surface').trim();}
+
+function setTheme(key){
+  THEME=key;
+  try{localStorage.setItem('health_theme',key);}catch(e){}
+  applyTheme(key);
+  // re-render dynamic content so JS-generated colors update
+  fRenderDiary();
+  renderDashboard();
+  showToast(LANG==='ko'?'테마가 변경되었습니다':'Theme updated');
+}
+
+function setLang(lang){
+  LANG=lang;
+  try{localStorage.setItem('health_lang',lang);}catch(e){}
+  // update lang buttons
+  document.getElementById('s-lang-ko').classList.toggle('active',lang==='ko');
+  document.getElementById('s-lang-en').classList.toggle('active',lang==='en');
+  applyLang();
+  showToast(lang==='en'?'Language: English':'언어: 한국어');
+}
+
+function exportData(){
+  const data={
+    profile:JSON.parse(localStorage.getItem('health_profile')||'null'),
+    food:JSON.parse(localStorage.getItem('diet_food')||'{}'),
+    workout:JSON.parse(localStorage.getItem('diet_workout')||'{}'),
+    weight:JSON.parse(localStorage.getItem('health_weight_log')||'{}'),
+    exportedAt:new Date().toISOString()
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`health-data-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  showToast(LANG==='ko'?'데이터 내보내기 완료':'Data exported');
+}
+
+function confirmClearData(){
+  if(confirm(t('s_clear_confirm'))){
+    ['health_profile','diet_food','diet_workout','health_weight_log','health_rec_plan'].forEach(k=>{
+      try{localStorage.removeItem(k);}catch(e){}
+    });
+    fData={};wHist={};wgLog={};
+    showToast(LANG==='ko'?'데이터가 초기화되었습니다':'Data cleared');
+    location.reload();
+  }
+}
 
 function dateKey(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function fmtDateKo(d){const dn=['일','월','화','수','목','금','토'];return`${d.getMonth()+1}월 ${d.getDate()}일 (${dn[d.getDay()]})`;}
@@ -602,7 +955,7 @@ function bmiToKcalGoal(bmi){
 
 function bmiLabel(val,gender){
   /* KSSO 2022 기준 6단계 분류 */
-  if(val<18.5)return{text:"저체중",   short:"저체중",   color:"#378ADD",bg:"#E6F1FB"};
+  if(val<18.5)return{text:"저체중",   short:"저체중",   color:"#378ADD",bg:thL()};
   if(val<23)  return{text:"정상",     short:"정상",     color:"#1D9E75",bg:"#EAF3DE"};
   if(val<25)  return{text:"과체중",   short:"과체중",   color:"#BA7517",bg:"#FAEEDA"};
   if(val<30)  return{text:"1단계 비만",short:"비만1",   color:"#E24B4A",bg:"#FCEBEB"};
@@ -676,6 +1029,8 @@ const FOODS=[
 ].sort((a,b)=>a.n.localeCompare(b.n,'ko'));
 
 const MEALS=["아침","점심","저녁","간식"];
+const MEAL_EN={"아침":"Breakfast","점심":"Lunch","저녁":"Dinner","간식":"Snack"};
+function mealLabel(m){return LANG==='en'?(MEAL_EN[m]||m):m;}
 let fData={},fCurrentDate=new Date(),fCalMonth=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);
 let fWeekChart=null;
 
@@ -749,7 +1104,7 @@ function fRenderDiary(){
     const pp=Math.min(100,mgoals.p>0?Math.round(macros.p/mgoals.p*100):0);
     const fp=Math.min(100,mgoals.f>0?Math.round(macros.f/mgoals.f*100):0);
     const sp=Math.min(100,mgoals.s>0?Math.round(macros.s/mgoals.s*100):0);
-    const saltColor=sp>=100?'#A32D2D':sp>=80?'#BA7517':'#185FA5';
+    const saltColor=sp>=100?'#A32D2D':sp>=80?'#BA7517':thM();
     ms.innerHTML=`
       <div class="macro-row"><span class="macro-lbl">탄수화물</span><div class="macro-bar-bg"><div class="macro-bar-fill macro-c" style="width:${cp}%"></div></div><span class="macro-val">${macros.c}g / ${mgoals.c}g</span></div>
       <div class="macro-row"><span class="macro-lbl">단백질</span><div class="macro-bar-bg"><div class="macro-bar-fill macro-p" style="width:${pp}%"></div></div><span class="macro-val">${macros.p}g / ${mgoals.p}g</span></div>
@@ -757,7 +1112,7 @@ function fRenderDiary(){
       <div class="macro-row"><span class="macro-lbl" style="color:${saltColor};">나트륨</span><div class="macro-bar-bg"><div class="macro-bar-fill" style="width:${sp}%;background:${saltColor};"></div></div><span class="macro-val" style="color:${saltColor};">${macros.s}mg / ${mgoals.s}mg</span></div>
       <div class="macro-sum">
         <span><span class="macro-dot" style="background:#639922;"></span>탄 ${macros.c}g</span>
-        <span><span class="macro-dot" style="background:#185FA5;"></span>단 ${macros.p}g</span>
+        <span><span class="macro-dot" style="background:${thM()};"></span>단 ${macros.p}g</span>
         <span><span class="macro-dot" style="background:#BA7517;"></span>지 ${macros.f}g</span>
         <span><span class="macro-dot" style="background:${saltColor};"></span>나트륨 ${macros.s}mg</span>
         <span style="margin-left:auto;color:#888;">= ${Math.round(macros.c*4+macros.p*4+macros.f*9)} kcal</span>
@@ -772,7 +1127,7 @@ function fRenderDiary(){
     const msod=items.reduce((a,e)=>a+fEntryInfo(e).s,0);
     const sid='sel-'+meal,nid='cn-'+meal,kid='ck-'+meal,cid='cc-'+meal,pid='cp-'+meal,fid='cf-'+meal,soid='cs-'+meal;
     const div=document.createElement('div');div.className='card';
-    div.innerHTML=`<div class="meal-hd"><span class="meal-title">${meal}</span>
+    div.innerHTML=`<div class="meal-hd"><span class="meal-title">${mealLabel(meal)}</span>
         <span class="meal-kcal">${mkcal} kcal <span style="font-size:11px;color:#888;margin-left:4px;">나트륨 ${msod}mg</span></span></div>
       <div>${items.map((e,pos)=>{const ei=fEntryInfo(e);
         return`<div class="fitem"><span>${ei.n}</span><span style="display:flex;align-items:center;gap:8px;">
@@ -785,7 +1140,7 @@ function fRenderDiary(){
       </div>
       <div class="macro-input-row" style="margin-top:4px;">
         <div><input id="${cid}" type="number" min="0" placeholder="탄"><label style="font-size:10px;color:#639922;text-align:center;display:block;margin-top:2px;">탄수g</label></div>
-        <div><input id="${pid}" type="number" min="0" placeholder="단"><label style="font-size:10px;color:#185FA5;text-align:center;display:block;margin-top:2px;">단백g</label></div>
+        <div><input id="${pid}" type="number" min="0" placeholder="단"><label style="font-size:10px;color:${thM()};text-align:center;display:block;margin-top:2px;">단백g</label></div>
         <div><input id="${fid}" type="number" min="0" placeholder="지"><label style="font-size:10px;color:#BA7517;text-align:center;display:block;margin-top:2px;">지방g</label></div>
         <div><input id="${soid}" type="number" min="0" placeholder="나"><label style="font-size:10px;color:#A32D2D;text-align:center;display:block;margin-top:2px;">나트mg</label></div>
         <button class="add-btn" onclick="addCustom('${meal}','${nid}','${kid}','${cid}','${pid}','${fid}','${soid}')" style="align-self:flex-start;">추가</button>
@@ -863,10 +1218,10 @@ function fCalNext(){fCalMonth.setMonth(fCalMonth.getMonth()+1);fRenderCalendar()
 /* ══════════════════════════════════════
    WORKOUT TIMER
 ══════════════════════════════════════ */
-const WC={prepare:'#185FA5',work:'#3B6D11',rest:'#854F0B',restCyc:'#534AB7',cooldown:'#085041'};
+const WC={get prepare(){return thM();},work:'#3B6D11',rest:'#854F0B',restCyc:'#534AB7',cooldown:'#085041'};
 const WLBL={prepare:'PREPARE',work:'WORK',rest:'REST',restCyc:'REST BETWEEN CYCLES',cooldown:'COOL DOWN'};
-const WBG={prepare:'#E6F1FB',work:'#EAF3DE',rest:'#FAEEDA',restCyc:'#EEEDFE',cooldown:'#E1F5EE'};
-const WTXT={prepare:'#0C447C',work:'#27500A',rest:'#633806',restCyc:'#3C3489',cooldown:'#085041'};
+const WBG={get prepare(){return thL();},work:'#EAF3DE',rest:'#FAEEDA',restCyc:'#EEEDFE',cooldown:'#E1F5EE'};
+const WTXT={get prepare(){return thD();},work:'#27500A',rest:'#633806',restCyc:'#3C3489',cooldown:'#085041'};
 
 /* MET 기반 운동 종목 (ACSM / Compendium of Physical Activities 기준) */
 const EXERCISE_TYPES=[
@@ -1188,7 +1543,7 @@ function wRenderHist(){
   if(wChart)wChart.destroy();
   wChart=new Chart(ctx,{type:'line',data:{labels,datasets:[
     {data:vals,label:'운동(분)',borderColor:'#3266ad',backgroundColor:'rgba(50,102,173,0.07)',borderWidth:2,tension:.35,fill:true,
-     pointBackgroundColor:vals.map(v=>v>=40?'#185FA5':v>=20?'#3B6D11':'#854F0B'),pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:5,yAxisID:'y'},
+     pointBackgroundColor:vals.map(v=>v>=40?thM():v>=20?'#3B6D11':'#854F0B'),pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:5,yAxisID:'y'},
     {data:calVals,label:'소모(kcal)',borderColor:'#E24B4A',backgroundColor:'transparent',borderWidth:1.5,tension:.35,
      pointRadius:3,pointBackgroundColor:'#E24B4A',borderDash:[3,3],yAxisID:'y1'}
   ]},
@@ -1213,10 +1568,10 @@ function wRenderHist(){
     const detailRows=recs.map((r,i)=>{
       const wm=Math.floor(r.workSec/60),ws=r.workSec%60;
       const intLbl=r.intensity?intensityLbl[r.intensity]:'';
-      const intBg=r.intensity?intensityBg[r.intensity]:'#f5f5f3';
+      const intBg=r.intensity?intensityBg[r.intensity]:thBg();
       const intFg=r.intensity?intensityFg[r.intensity]:'#888';
       const hrTxt=r.heartRate?`<span style="font-size:11px;color:#A32D2D;margin-left:4px;">❤️ ${r.heartRate}bpm</span>`:'';
-      return`<div style="font-size:12px;color:#666;padding:3px 0 3px 10px;border-left:2px solid #e8e7e2;margin:4px 0;">
+      return`<div style="font-size:12px;color:#666;padding:3px 0 3px 10px;border-left:2px solid ${thSurf()};margin:4px 0;">
         ${r.exIcon||'🏅'} ${r.exName||'운동'} · ${wm}분 ${ws}초 · MET ${r.met||'-'}
         ${intLbl?`<span style="font-size:10px;padding:1px 6px;border-radius:8px;background:${intBg};color:${intFg};margin-left:4px;">${intLbl}</span>`:''}
         · <span style="color:#E24B4A;">${r.metCal||Math.round(r.workSec/60*BURN_RATE)} kcal</span>${hrTxt}</div>`;
@@ -1225,7 +1580,7 @@ function wRenderHist(){
       <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
         <span>${label}</span>
         <span><span style="font-size:12px;color:#888;margin-right:6px;">${recs.length}회</span>
-          <span style="font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;background:#E6F1FB;color:#0C447C;">${totalMin}분</span>
+          <span style="font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;background:${thL()};color:${thD()};">${totalMin}분</span>
           <span style="font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;background:#FCEBEB;color:#791F1F;margin-left:4px;">${totalCal}kcal</span>
         </span>
       </div>
@@ -1353,8 +1708,8 @@ function renderWeightChart(){
   // Reference line: initial profile weight
   const p=loadProfile();
   const datasets=[
-    {data:vals,label:'체중',borderColor:'#185FA5',backgroundColor:'rgba(24,95,165,0.07)',borderWidth:2,
-     tension:.35,fill:true,pointBackgroundColor:'#185FA5',pointBorderColor:'#fff',pointBorderWidth:2,
+    {data:vals,label:'체중',borderColor:''+thM()+'',backgroundColor:'rgba(24,95,165,0.07)',borderWidth:2,
+     tension:.35,fill:true,pointBackgroundColor:thM(),pointBorderColor:'#fff',pointBorderWidth:2,
      pointRadius:vals.map(v=>v!==null?4:0),spanGaps:true}
   ];
   if(p&&p.weight){
@@ -1372,6 +1727,111 @@ function renderWeightChart(){
          ticks:{color:'#999',font:{size:10},callback:v=>v+'kg'},grid:{color:'rgba(0,0,0,0.04)'}}}}});
 }
 
+function getWeekDays(){
+  /* 이번 주 월~오늘 */
+  const days=[];
+  const now=new Date(TODAY);
+  const dow=now.getDay(); // 0=일
+  const mondayOffset=dow===0?-6:1-dow;
+  for(let i=0;i<=6;i++){
+    const d=new Date(TODAY);
+    d.setDate(TODAY.getDate()+mondayOffset+i);
+    if(d<=TODAY)days.push(d);
+  }
+  return days;
+}
+
+function renderWeeklyExerciseGoal(){
+  const el=document.getElementById('d-weekly-content');
+  const badge=document.getElementById('d-weekly-badge');
+  if(!el)return;
+
+  const p=loadProfile();
+  // 권장 운동량: 중강도 기준 150분(최소) / 250분(체중 감량 권고)
+  const goalMin=250; // ACSM 체중 감량 권고 주간 중강도 분
+  const minMin=150;  // WHO 건강 유지 최소
+
+  const weekDays=getWeekDays();
+  const weekMin=weekDays.reduce((s,d)=>{
+    return s+Math.round((wHist[dateKey(d)]||[]).reduce((a,r)=>a+r.workSec,0)/60);
+  },[]).length?weekDays.reduce((s,d)=>s+Math.round((wHist[dateKey(d)]||[]).reduce((a,r)=>a+r.workSec,0)/60),0):0;
+  const weekCal=weekDays.reduce((s,d)=>{
+    return s+(wHist[dateKey(d)]||[]).reduce((a,r)=>a+(r.metCal||Math.round(r.workSec/60*BURN_RATE)),0);
+  },0);
+
+  const remaining=Math.max(0,goalMin-weekMin);
+  const minRemaining=Math.max(0,minMin-weekMin);
+  const pct=Math.min(100,Math.round(weekMin/goalMin*100));
+  const pctMin=Math.min(100,Math.round(weekMin/minMin*100));
+  const daysLeft=7-weekDays.length; // 이번 주 남은 일수
+  const perDay=daysLeft>0?Math.ceil(remaining/daysLeft):0;
+
+  // 상태 색상
+  let barColor,statusText,badgeBg,badgeCol;
+  if(weekMin>=goalMin){
+    barColor='#3B6D11';statusText='목표 달성 🎉';badgeBg='#EAF3DE';badgeCol='#27500A';
+  } else if(weekMin>=minMin){
+    barColor=thM();statusText='최소 권고 달성';badgeBg=thL();badgeCol=thD();
+  } else if(weekMin>0){
+    barColor='#BA7517';statusText='진행 중';badgeBg='#FAEEDA';badgeCol='#633806';
+  } else {
+    barColor='#aaa';statusText='이번 주 운동 없음';badgeBg=thBg();badgeCol='#888';
+  }
+
+  if(badge){badge.textContent=statusText;badge.style.background=badgeBg;badge.style.color=badgeCol;}
+
+  // 요일별 막대 미니 차트
+  const dayNames=['월','화','수','목','금','토','일'];
+  const maxDayMin=Math.max(60,...weekDays.map(d=>Math.round((wHist[dateKey(d)]||[]).reduce((s,r)=>s+r.workSec,0)/60)));
+  const dayBars=weekDays.map((d,i)=>{
+    const m=Math.round((wHist[dateKey(d)]||[]).reduce((s,r)=>s+r.workSec,0)/60);
+    const h=maxDayMin>0?Math.max(4,Math.round(m/maxDayMin*48)):4;
+    const isToday=dateKey(d)===dateKey(TODAY);
+    const c=m===0?'#e8e7e2':m>=50?'#3B6D11':m>=30?thM():'#BA7517';
+    return`<div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;">
+      <div style="font-size:10px;color:#888;min-height:16px;display:flex;align-items:flex-end;">${m>0?m+'분':''}</div>
+      <div style="width:100%;max-width:28px;height:48px;display:flex;align-items:flex-end;">
+        <div style="width:100%;height:${h}px;background:${c};border-radius:3px 3px 0 0;"></div>
+      </div>
+      <div style="font-size:10px;color:${isToday?'${thM()}':'#888'};font-weight:${isToday?'500':'400'};">${dayNames[i]}</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML=`
+    <div style="display:flex;gap:16px;margin-bottom:12px;">
+      <div style="flex:1;background:${thBg()};border-radius:10px;padding:10px 12px;text-align:center;">
+        <div style="font-size:10px;color:#888;margin-bottom:2px;">이번 주 운동</div>
+        <div style="font-size:22px;font-weight:500;color:${barColor};">${weekMin}<span style="font-size:12px;color:#aaa;margin-left:2px;">분</span></div>
+        <div style="font-size:10px;color:#aaa;">소모 ${weekCal} kcal</div>
+      </div>
+      <div style="flex:1;background:${thBg()};border-radius:10px;padding:10px 12px;text-align:center;">
+        <div style="font-size:10px;color:#888;margin-bottom:2px;">감량 목표까지</div>
+        <div style="font-size:22px;font-weight:500;color:${remaining===0?'#3B6D11':'${thM()}'};">${remaining===0?'완료':''+remaining}<span style="font-size:12px;color:#aaa;margin-left:2px;">${remaining===0?'✓':'분 남음'}</span></div>
+        <div style="font-size:10px;color:#aaa;">${daysLeft>0&&remaining>0?`남은 ${daysLeft}일간 하루 ${perDay}분`:remaining>0?'이번 주 마지막':'권고 250분 달성'}</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:6px;">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:4px;">
+        <span>감량 권고 (주 250분)</span><span style="color:${barColor};font-weight:500;">${pct}%</span>
+      </div>
+      <div style="background:rgba(0,0,0,.08);border-radius:4px;height:8px;overflow:hidden;">
+        <div style="height:8px;border-radius:4px;background:${barColor};width:${pct}%;transition:width .4s;"></div>
+      </div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:4px;">
+        <span>최소 권고 (주 150분)</span><span style="color:${pctMin>=100?'#3B6D11':'#888'};font-weight:500;">${pctMin}%</span>
+      </div>
+      <div style="background:rgba(0,0,0,.08);border-radius:4px;height:5px;overflow:hidden;">
+        <div style="height:5px;border-radius:4px;background:${pctMin>=100?'#3B6D11':'#aaa'};width:${pctMin}%;transition:width .4s;"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:4px;padding:8px 0;border-top:0.5px solid rgba(0,0,0,.06);">${dayBars}</div>
+    <div style="font-size:10px;color:#bbb;margin-top:6px;">* ACSM·WHO·대한비만학회 권고 기준 · 중강도 환산 기준 · 이번 주 월요일부터 오늘까지</div>`;
+}
+
 /* ══════════════════════════════════════
    DASHBOARD
 ══════════════════════════════════════ */
@@ -1383,13 +1843,13 @@ function renderBmiBanner(){
   if(!p||!p.bmi){
     el.innerHTML=`<div class="bmi-no-profile" onclick="showPage('diag')">
       <span>⚖️ &nbsp;아직 체중 진단을 하지 않으셨어요</span>
-      <span style="font-size:12px;color:#185FA5;">진단 시작 →</span>
+      <span style="font-size:12px;color:${thM()};">진단 시작 →</span>
     </div>`;
     return;
   }
   const info=bmiLabel(parseFloat(p.bmi),p.gender);
   const abd=p.waist&&p.gender?abdominalObesityLabel(p.waist,p.gender):null;
-  const genderTxt=p.gender?`<span style="font-size:11px;background:#f0ede8;padding:1px 7px;border-radius:8px;color:#666;">${p.gender}성</span>`:'';
+  const genderTxt=p.gender?`<span style="font-size:11px;background:${thSurf()};padding:1px 7px;border-radius:8px;color:#666;">${p.gender}성</span>`:'';
   const abdHtml=abd?`<span class="abd-badge ${abd.badgeClass}">허리 ${p.waist}cm · ${abd.text}</span>`:'';
   const intBgMap={low:'#EAF3DE',mid:'#FAEEDA',high:'#FCEBEB'};
   const intColMap={low:'#27500A',mid:'#633806',high:'#791F1F'};
@@ -1403,9 +1863,9 @@ function renderBmiBanner(){
     </div>
     <div class="bmi-banner-right">
       <div><span class="bmi-badge-pill" style="background:${info.bg};color:${info.color};">${info.text}</span>${abdHtml}</div>
-      <div class="goal-txt" style="margin-top:4px;">목표 칼로리 ${p.kcalGoal} kcal/일</div>
+      <div class="goal-txt" style="margin-top:4px;">하루 목표 섭취 칼로리 ${p.kcalGoal} kcal</div>
       ${exHtml}
-      <div style="margin-top:6px;"><button onclick="showPage('diag')" style="font-size:11px;color:#185FA5;background:none;border:none;cursor:pointer;padding:0;">재진단 →</button></div>
+      <div style="margin-top:6px;"><button onclick="showPage('diag')" style="font-size:11px;color:${thM()};background:none;border:none;cursor:pointer;padding:0;">재진단 →</button></div>
     </div>
   </div>`;
 }
@@ -1417,6 +1877,7 @@ function renderDashboard(){
 
   renderBmiBanner();
   renderWeightCard();
+  renderWeeklyExerciseGoal();
 
   const intake=fTotalKcal(todayKey);
   const macros=fTotalMacros(todayKey);
@@ -1425,7 +1886,7 @@ function renderDashboard(){
   const net=intake-burned;
 
   document.getElementById('d-intake').innerHTML=`${intake}<span class="munit">kcal</span>`;
-  document.getElementById('d-intake-sub').textContent=`목표 ${KCAL_GOAL} kcal의 ${Math.round(intake/KCAL_GOAL*100)}%`;
+  document.getElementById('d-intake-sub').textContent=`하루 목표 섭취 ${KCAL_GOAL} kcal의 ${Math.round(intake/KCAL_GOAL*100)}%`;
   document.getElementById('d-workout').innerHTML=`${workMin}<span class="munit">분</span>`;
   const wrecs=(wHist[todayKey]||[]);
   const wrecTypes=[...new Set(wrecs.map(r=>r.exIcon||'🏅'))].join('');
@@ -1447,7 +1908,7 @@ function renderDashboard(){
     const pp=Math.min(100,mgoals.p>0?Math.round(macros.p/mgoals.p*100):0);
     const fp=Math.min(100,mgoals.f>0?Math.round(macros.f/mgoals.f*100):0);
     const sp=Math.min(100,mgoals.s>0?Math.round(macros.s/mgoals.s*100):0);
-    const sc=sp>=100?'#A32D2D':sp>=80?'#BA7517':'#185FA5';
+    const sc=sp>=100?'#A32D2D':sp>=80?'#BA7517':thM();
     dMacroEl.innerHTML=`
       <div class="macro-row"><span class="macro-lbl">탄수화물</span><div class="macro-bar-bg"><div class="macro-bar-fill macro-c" style="width:${cp}%"></div></div><span class="macro-val">${macros.c}g / ${mgoals.c}g</span></div>
       <div class="macro-row"><span class="macro-lbl">단백질</span><div class="macro-bar-bg"><div class="macro-bar-fill macro-p" style="width:${pp}%"></div></div><span class="macro-val">${macros.p}g / ${mgoals.p}g</span></div>
@@ -1564,10 +2025,10 @@ const TREE={
   end_stop_binge:{msg:"네 좋아요! 😊\n식이조절은 스스로 하실 수 있으니,\n더 효과적인 체중감량을 위해 운동을 함께 고려해 주세요.",options:[{label:"운동 계획 세우기",next:"exercise_freq_q"},{label:"괜찮아요, 식이조절만 할게요",next:"diet_style_q"}]},
   end_no_cause_binge:{msg:"네 좋아요.\n금연, 금주, 규칙적인 운동 같은 건강한 생활습관 유지하세요.",terminal:true},
   end_binge_clinic:{msg:"폭음이나 폭식의 원인을 스스로 점검하는 것이 중요합니다.\n혼자서 찾기 어렵다면 비만클리닉 방문을 권합니다 🏥\n\n건강과 더 효과적인 체중감량을 위해서 운동해볼까요?",options:[{label:"예, 운동하겠어요",next:"exercise_freq_q"},{label:"아니요",next:"end_no_cause_binge"}]},
-  end_high_intensity:{msg:"운동 종류와 상관없이 주 5회 고강도 운동(숨이 차서 대화 못할 정도) 15분을 시작하세요.\n\n예를 들어 특별한 운동이 아닌 '빨리 걷기'만 해도 고강도 운동을 할 수 있습니다.\n\n1달 후 체중 변화가 없으면 식사 감량을 고민해보세요.",options:[{label:"1달 후 체중 확인하기",next:"check_1month_exercise"}]},
-  end_moderate_intensity:{msg:"운동 종류와 상관없이 주 5회 중등도 운동(대화는 가능하지만 노래 부르기 힘든 정도) 30분을 시작하세요.\n\n예를 들어 특별한 운동이 아닌 '걷기'만 해도 중등도 운동을 할 수 있습니다.\n\n1달 후 체중 변화가 없으면 식사 감량을 고민해보세요.",options:[{label:"1달 후 체중 확인하기",next:"check_1month_exercise"}]},
-  end_low_high:{msg:"매주 2회 40분 고강도 운동을 시작하세요.\n꾸준히 하다 보면 체력이 향상되어 더 많은 운동도 가능해질 거예요 💪",terminal:true},
-  end_low_moderate:{msg:"체중 감소가 안 되더라도 건강을 위해서 할 수 있는 강도로 운동하세요.\n매주 2회 3달 이상 꾸준히 운동하면 체력이 향상되어 체중 감소 가능한 강도의 운동도 가능합니다.",terminal:true},
+  end_high_intensity:{msg:"주 5회 고강도 운동을 목표로 시작하세요.",exerciseGuide:'high5',options:[{label:"1달 후 체중 확인하기",next:"check_1month_exercise"}]},
+  end_moderate_intensity:{msg:"주 5회 중강도 운동을 목표로 시작하세요.",exerciseGuide:'mid5',options:[{label:"1달 후 체중 확인하기",next:"check_1month_exercise"}]},
+  end_low_high:{msg:"주 2회 고강도 운동을 시작하세요.",exerciseGuide:'high2',terminal:true},
+  end_low_moderate:{msg:"주 2회 중강도 운동을 시작하세요.",exerciseGuide:'mid2',terminal:true},
   end_diet_calorie:{msg:"총칼로리 감소 식이",terminal:true,mealPlan:`
 <div style="margin-top:14px;">
   <div style="font-size:12px;font-weight:500;color:#888;margin-bottom:10px;">📌 핵심 원칙</div>
@@ -1577,19 +2038,19 @@ const TREE={
   </div>
   <div style="font-size:12px;font-weight:500;color:#888;margin-bottom:8px;">🍽 하루 식단 예시 (약 1,500 kcal)</div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
-      <div style="font-size:11px;font-weight:500;color:#185FA5;margin-bottom:4px;">🌅 아침 · 약 350 kcal</div>
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
+      <div style="font-size:11px;font-weight:500;color:${thM()};margin-bottom:4px;">🌅 아침 · 약 350 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">잡곡밥 ½공기 · 된장국 · 계란찜 · 나물 2가지</div>
     </div>
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:500;color:#3B6D11;margin-bottom:4px;">☀ 점심 · 약 500 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">잡곡밥 ½공기 · 닭가슴살구이 100 g · 채소샐러드 · 미역국</div>
     </div>
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:500;color:#534AB7;margin-bottom:4px;">🌙 저녁 · 약 400 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">잡곡밥 ⅓공기 · 두부조림 · 시금치나물 · 콩나물국</div>
     </div>
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:500;color:#854F0B;margin-bottom:4px;">🍎 간식 · 약 150 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">사과 1개 또는 저지방 요거트 1개 · 아메리카노(무가당)</div>
     </div>
@@ -1605,19 +2066,19 @@ const TREE={
   </div>
   <div style="font-size:12px;font-weight:500;color:#888;margin-bottom:8px;">🍽 하루 식단 예시 (약 1,600 kcal)</div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
-      <div style="font-size:11px;font-weight:500;color:#185FA5;margin-bottom:4px;">🌅 아침 · 약 380 kcal</div>
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
+      <div style="font-size:11px;font-weight:500;color:${thM()};margin-bottom:4px;">🌅 아침 · 약 380 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">계란 3개(스크램블 또는 삶은 것) · 아보카도 ½개 · 방울토마토 · 아메리카노</div>
     </div>
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:500;color:#3B6D11;margin-bottom:4px;">☀ 점심 · 약 500 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">닭가슴살 200 g · 브로콜리·양상추·오이 샐러드 · 올리브오일 드레싱 · 현미밥 ⅓공기</div>
     </div>
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:500;color:#534AB7;margin-bottom:4px;">🌙 저녁 · 약 500 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">연어구이 150 g · 두부 100 g · 시금치·파프리카 볶음(들기름) · 현미밥 ⅓공기</div>
     </div>
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:500;color:#854F0B;margin-bottom:4px;">🥜 간식 · 약 200 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">아몬드·호두 한 줌(30 g) · 삶은 달걀 1개</div>
     </div>
@@ -1637,15 +2098,15 @@ const TREE={
       <div style="font-size:11px;font-weight:500;color:#3C3489;margin-bottom:4px;">🚫 공복 구간 · 오후 8시 ~ 다음날 정오 (16시간)</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">허용: 물 · 블랙커피(무가당) · 녹차·허브차 · 전해질 음료(무칼로리)<br>금지: 음식·칼로리 음료·우유·주스·단백질쉐이크</div>
     </div>
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:500;color:#3B6D11;margin-bottom:4px;">🍽 첫 끼 · 정오 12시 · 약 600 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">잡곡밥 1공기 · 닭가슴살구이 · 두부조림 · 채소나물 · 된장국</div>
     </div>
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:500;color:#854F0B;margin-bottom:4px;">🍎 간식 · 오후 3~4시 · 약 200 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">과일 1개 · 견과류 한 줌 또는 저지방 요거트</div>
     </div>
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:500;color:#534AB7;margin-bottom:4px;">🌙 저녁 · 오후 7시 (오후 8시 이전) · 약 500 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">현미밥 ½공기 · 생선구이 또는 두부요리 · 채소볶음 · 국</div>
     </div>
@@ -1661,26 +2122,26 @@ const TREE={
   </div>
   <div style="font-size:12px;font-weight:500;color:#888;margin-bottom:8px;">🍽 하루 식단 예시 (약 1,800 kcal)</div>
   <div style="display:flex;flex-direction:column;gap:8px;">
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
-      <div style="font-size:11px;font-weight:500;color:#185FA5;margin-bottom:4px;">🌅 아침 · 약 400 kcal</div>
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
+      <div style="font-size:11px;font-weight:500;color:${thM()};margin-bottom:4px;">🌅 아침 · 약 400 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">통밀빵 1~2장 · 올리브오일 드리즐 · 토마토·오이 슬라이스 · 계란 1개(반숙) · 과일(오렌지 또는 사과)</div>
     </div>
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:500;color:#3B6D11;margin-bottom:4px;">☀ 점심 · 약 600 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">현미밥 또는 통곡물빵 · 렌틸콩·토마토 수프 · 그린샐러드(올리브오일+레몬 드레싱) · 페타치즈 조금</div>
     </div>
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:500;color:#534AB7;margin-bottom:4px;">🌙 저녁 · 약 600 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">연어·고등어·참치 구이 200 g · 구운 채소(파프리카·호박·가지) · 올리브오일 소테 · 통밀빵 1장</div>
     </div>
-    <div style="background:#f5f5f3;border-radius:8px;padding:10px 12px;">
+    <div style="background:${thBg()};border-radius:8px;padding:10px 12px;">
       <div style="font-size:11px;font-weight:500;color:#854F0B;margin-bottom:4px;">🥜 간식 · 약 200 kcal</div>
       <div style="font-size:12px;color:#555;line-height:1.7;">견과류 한 줌(아몬드·호두·피스타치오) · 과일 · 그릭요거트</div>
     </div>
   </div>
   <div style="margin-top:10px;display:flex;flex-direction:column;gap:4px;">
     <div style="font-size:11px;color:#3B6D11;">✅ 매일: 올리브유·채소·과일·통곡물·견과류</div>
-    <div style="font-size:11px;color:#185FA5;">✅ 주 2회 이상: 생선·해산물·닭고기</div>
+    <div style="font-size:11px;color:${thM()};">✅ 주 2회 이상: 생선·해산물·닭고기</div>
     <div style="font-size:11px;color:#A32D2D;">❌ 최소화: 붉은 고기 · 가공식품 · 정제설탕 · 버터</div>
   </div>
 </div>`},
@@ -1716,14 +2177,14 @@ function renderDiag(){
 
 function renderDiagIntro(){
   const p=loadProfile();
-  const profileNote=p?`<div style="background:#EAF3DE;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#27500A;">✅ 저장된 프로필: BMI ${p.bmi} · ${p.bmiLabel}${p.gender?' · '+p.gender+'성':''}${p.waist?' · 허리 '+p.waist+'cm':''} · 목표 ${p.kcalGoal} kcal/일</div>`:'';
+  const profileNote=p?`<div style="background:#EAF3DE;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#27500A;">✅ 저장된 프로필: BMI ${p.bmi} · ${p.bmiLabel}${p.gender?' · '+p.gender+'성':''}${p.waist?' · 허리 '+p.waist+'cm':''} · 하루 목표 섭취 ${p.kcalGoal} kcal/일</div>`:'';
   diagContent().innerHTML=`
     <div class="card">
       <div class="diag-intro-wrap">
         <div class="diag-icon">⚖️</div>
         <div class="diag-title">나를 위한 맞춤형<br>체중 관리 알고리즘</div>
         <div class="diag-desc">대한비만학회(KSSO) 진료지침을 참고하여,<br>몇 가지 질문만으로 <b>나에게 맞는 운동·식단 방법</b>을 제안합니다.</div>
-        <div style="margin-bottom:16px;padding:10px 14px;background:#f5f5f3;border-radius:8px;font-size:12px;color:#666;line-height:1.8;border-left:3px solid #bbb;">
+        <div style="margin-bottom:16px;padding:10px 14px;background:${thBg()};border-radius:8px;font-size:12px;color:#666;line-height:1.8;border-left:3px solid #bbb;">
           ℹ 이 알고리즘은 <b>일반 원칙에 근거한 간단한 안내 도구</b>입니다.<br>
           실제 적용은 개인의 건강 상태·체질·생활환경에 따라 <b>결과가 다를 수 있으며</b>,<br>
           정확한 진단과 치료는 반드시 <b>전문 의료진과 상담</b>하시기 바랍니다.
@@ -1733,9 +2194,9 @@ function renderDiagIntro(){
           ${[['🍺','폭음·폭식 습관 확인'],['🏃','신체활동 수준 평가'],['💪','맞춤 운동 계획'],['🥗','나에게 맞는 식이요법 찾기']]
             .map(([e,l])=>`<div class="diag-item"><span>${e}</span><span>${l}</span></div>`).join('')}
         </div>
-        <div style="margin-bottom:10px;padding:10px 14px;background:#E6F1FB;border-radius:8px;font-size:12px;color:#0C447C;line-height:1.7;">
+        <div style="margin-bottom:10px;padding:10px 14px;background:${thL()};border-radius:8px;font-size:12px;color:${thD()};line-height:1.7;">
           🎯 <b>개인 칼로리 목표 자동 설정</b> — 전체 진단에서만 제공<br>
-          <span style="font-size:11px;color:#3266ad;">성별·키·몸무게(BMI)를 입력하면 하루 목표 kcal가 자동 계산되어<br>
+          <span style="font-size:11px;color:#3266ad;">성별·키·몸무게(BMI)를 입력하면 하루 목표 섭취 칼로리가 자동 계산되어<br>
           음식일기·대시보드에 바로 반영됩니다.</span>
         </div>
         <button class="primary-btn" onclick="diagGoToGender()">전체 진단 시작하기</button>
@@ -1762,7 +2223,7 @@ function renderDiagIntro(){
           <div style="font-size:11px;color:#854F0B;margin-top:3px;">식단 방법 선택 및 예시</div>
         </button>
       </div>
-      <div style="margin-top:10px;font-size:11px;color:#bbb;text-align:center;">* 바로 선택 시 BMI 기반 칼로리 목표는 설정되지 않습니다</div>
+      <div style="margin-top:10px;font-size:11px;color:#bbb;text-align:center;">* 바로 선택 시 BMI 기반 하루 목표 섭취 칼로리는 설정되지 않습니다</div>
     </div>
 
     <div style="font-size:11px;color:#aaa;text-align:center;padding:4px 0 8px;">일반적인 조언이며, 의사의 진료를 대신하지 않습니다.</div>`;
@@ -1950,12 +2411,12 @@ function renderDiagIntensityPicker(){
 
   const freqBadge=diagFreq==='low'
     ?`<span style="font-size:11px;padding:2px 9px;border-radius:8px;background:#EEEDFE;color:#3C3489;font-weight:500;margin-left:6px;">주 2회 기준</span>`
-    :`<span style="font-size:11px;padding:2px 9px;border-radius:8px;background:#E6F1FB;color:#0C447C;font-weight:500;margin-left:6px;">주 3~5회 기준</span>`;
+    :`<span style="font-size:11px;padding:2px 9px;border-radius:8px;background:${thL()};color:${thD()};font-weight:500;margin-left:6px;">주 3~5회 기준</span>`;
 
   const cards=levels.map(lv=>{
     const isSel=diagPickedIntensity===lv.id;
     const info=_planInfo(ex,lv.id,diagFreq);
-    const cardBg=isSel?lv.bg:'#f5f5f3';
+    const cardBg=isSel?lv.bg:thBg();
     const cardBorder=isSel?`1.5px solid ${lv.border}`:'0.5px solid rgba(0,0,0,.1)';
     const txtCol=isSel?lv.col:'#1a1a1a';
     return`<button onclick="diagSelectIntensity('${lv.id}')"
@@ -2043,7 +2504,7 @@ function buildDiagExPlanHtml(){
   const intBg={low:'#EAF3DE',mid:'#FAEEDA',high:'#FCEBEB'}[diagPickedIntensity];
   const intCol={low:'#27500A',mid:'#633806',high:'#791F1F'}[diagPickedIntensity];
   const intLbl={low:'저강도',mid:'중강도',high:'고강도'}[diagPickedIntensity];
-  return`<div style="background:#f5f5f3;border-radius:10px;padding:12px 14px;border-left:3px solid ${intCol};">
+  return`<div style="background:${thBg()};border-radius:10px;padding:12px 14px;border-left:3px solid ${intCol};">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
       <span style="font-size:22px;">${ex.icon}</span>
       <div>
@@ -2093,6 +2554,89 @@ function diagChoose(i){
   });
 }
 
+/* ── 학회 운동 가이드라인 카드 ── */
+const EX_GUIDES={
+  high5:{
+    freq:'주 5회', intensity:'고강도', duration:'1회 15~30분',
+    weeklyMin:'75~150분', color:'#791F1F', bg:'#FCEBEB', border:'#A32D2D',
+    hrZone:'최대심박수의 70~85%', hrExample:'30세 기준 134~162 bpm',
+    desc:'고강도 운동은 대화가 어려울 정도로 숨이 차는 수준입니다. 빠른 달리기·줄넘기·HIIT가 대표적이며, 빠른 걷기만으로도 가능합니다.',
+    guideline:'ACSM·WHO 고강도 기준: 주 75분 이상 (체중 감량은 주 150분 이상 권고)',
+    expect:'식이조절 병행 시 월 0.5~1 kg 감량 기대',
+    tip:'처음에는 15분부터 시작해 매주 5~10%씩 늘려가세요.'
+  },
+  mid5:{
+    freq:'주 5회', intensity:'중강도', duration:'1회 30~60분',
+    weeklyMin:'150~300분', color:'#633806', bg:'#FAEEDA', border:'#BA7517',
+    hrZone:'최대심박수의 60~70%', hrExample:'30세 기준 114~133 bpm',
+    desc:'중강도 운동은 대화는 가능하지만 노래 부르기 힘든 수준입니다. 빠른 걷기·자전거·수영이 대표적입니다.',
+    guideline:'ACSM·대한비만학회: 체중 감량 목적 시 주 225~420분 권고',
+    expect:'식이조절 병행 시 월 0.5~1 kg 감량 기대',
+    tip:'30분이 힘들면 10분씩 3회로 나눠도 동일한 효과가 있습니다.'
+  },
+  high2:{
+    freq:'주 2회', intensity:'고강도', duration:'1회 40분 이상',
+    weeklyMin:'80분 이상', color:'#791F1F', bg:'#FCEBEB', border:'#A32D2D',
+    hrZone:'최대심박수의 70~85%', hrExample:'30세 기준 134~162 bpm',
+    desc:'주 2회는 건강 유지에 도움이 되지만 체중 감량을 위한 최소 권고량(주 150분)에는 미치지 못합니다.',
+    guideline:'WHO 최소 권고: 주 75분 고강도 · 체중 감량 효과는 주 150분 이상부터',
+    expect:'체력 향상 후 운동 빈도를 점차 늘리면 감량 효과 커짐',
+    tip:'꾸준히 3개월 이상 유지하면 체력이 향상되어 주 3~5회로 늘릴 수 있습니다.'
+  },
+  mid2:{
+    freq:'주 2회', intensity:'중강도', duration:'1회 45~60분',
+    weeklyMin:'90~120분', color:'#633806', bg:'#FAEEDA', border:'#BA7517',
+    hrZone:'최대심박수의 60~70%', hrExample:'30세 기준 114~133 bpm',
+    desc:'주 2회 중강도 운동은 건강 유지에 도움이 되나 체중 감량을 위한 권고량보다 적습니다.',
+    guideline:'WHO 최소 권고: 주 150분 중강도 · 체중 감량 목적 시 주 225분 이상',
+    expect:'식이조절 병행 필수. 운동 빈도를 서서히 늘리는 것을 목표로 하세요.',
+    tip:'처음 3개월은 꾸준함이 목표입니다. 횟수보다 습관을 먼저 만드세요.'
+  }
+};
+
+function buildExGuideCard(guideKey){
+  const g=EX_GUIDES[guideKey];
+  if(!g)return'';
+  return`<div style="margin-top:14px;padding:14px;background:${g.bg};border-radius:10px;border-left:3px solid ${g.border};">
+    <div style="font-size:12px;font-weight:500;color:${g.color};margin-bottom:10px;">📋 학회 권장 운동 가이드라인</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+      <div style="background:rgba(255,255,255,.8);border-radius:8px;padding:8px;text-align:center;">
+        <div style="font-size:9px;color:#aaa;margin-bottom:2px;">빈도</div>
+        <div style="font-size:14px;font-weight:500;color:${g.color};">${g.freq}</div>
+      </div>
+      <div style="background:rgba(255,255,255,.8);border-radius:8px;padding:8px;text-align:center;">
+        <div style="font-size:9px;color:#aaa;margin-bottom:2px;">강도</div>
+        <div style="font-size:14px;font-weight:500;color:${g.color};">${g.intensity}</div>
+      </div>
+      <div style="background:rgba(255,255,255,.8);border-radius:8px;padding:8px;text-align:center;">
+        <div style="font-size:9px;color:#aaa;margin-bottom:2px;">1회 시간</div>
+        <div style="font-size:14px;font-weight:500;color:${g.color};">${g.duration}</div>
+      </div>
+    </div>
+
+    <div style="font-size:12px;color:#555;line-height:1.7;margin-bottom:8px;">${g.desc}</div>
+
+    <div style="font-size:11px;padding:6px 10px;background:rgba(255,255,255,.7);border-radius:6px;margin-bottom:6px;">
+      ❤️ 목표 심박수: <b>${g.hrZone}</b><br>
+      <span style="color:#888;">${g.hrExample}</span>
+    </div>
+
+    <div style="font-size:11px;padding:6px 10px;background:rgba(255,255,255,.7);border-radius:6px;margin-bottom:6px;">
+      📚 <b>근거:</b> ${g.guideline}
+      <span style="font-size:10px;color:#888;display:block;margin-top:2px;">(ACSM · WHO · 대한비만학회 KSSO)</span>
+    </div>
+
+    <div style="font-size:11px;padding:6px 10px;background:rgba(255,255,255,.7);border-radius:6px;margin-bottom:6px;">
+      📈 <b>기대 효과:</b> ${g.expect}
+    </div>
+
+    <div style="font-size:11px;padding:6px 10px;background:rgba(255,255,255,.9);border-radius:6px;border-left:2px solid ${g.border};">
+      💡 ${g.tip}
+    </div>
+  </div>`;
+}
+
 function renderDiagDone(){
   const node=TREE[diagNodeId];
 
@@ -2120,13 +2664,13 @@ function renderDiagDone(){
     </div>`).join('');
 
   const p=loadProfile();
-  const kcalNote=p?`<div style="margin-top:14px;padding:12px 14px;background:#E6F1FB;border-radius:8px;font-size:13px;color:#0C447C;">🎯 <b>칼로리 목표 업데이트됨:</b> 하루 <b>${p.kcalGoal} kcal</b><br><span style="font-size:11px;color:#3266ad;">음식일기와 대시보드에 자동 반영되었습니다.</span></div>`:'';
+  const kcalNote=p?`<div style="margin-top:14px;padding:12px 14px;background:${thL()};border-radius:8px;font-size:13px;color:${thD()};">🎯 <b>하루 목표 섭취 칼로리 업데이트됨:</b> 하루 <b>${p.kcalGoal} kcal</b><br><span style="font-size:11px;color:#3266ad;">음식일기와 대시보드에 자동 반영되었습니다.</span></div>`:'';
 
   const intLblMap={low:'저강도',mid:'중강도',high:'고강도'};
   const intBgMap={low:'#EAF3DE',mid:'#FAEEDA',high:'#FCEBEB'};
   const intColMap={low:'#27500A',mid:'#633806',high:'#791F1F'};
   const exNote=(p&&p.recExType)?`
-    <div style="margin-top:10px;padding:12px 14px;background:#f5f5f3;border-radius:8px;font-size:13px;color:#1a1a1a;">
+    <div style="margin-top:10px;padding:12px 14px;background:${thBg()};border-radius:8px;font-size:13px;color:#1a1a1a;">
       💪 <b>선택한 운동 플랜</b><br>
       <div style="margin-top:8px;display:flex;align-items:center;gap:10px;">
         <span style="font-size:28px;">${p.recExIcon}</span>
@@ -2138,11 +2682,13 @@ function renderDiagDone(){
       </div>
     </div>`:'';
 
+  const exGuideHtml=node.exerciseGuide?buildExGuideCard(node.exerciseGuide):'';
+
   diagContent().innerHTML=`
     <div class="card">
       <div class="result-label-sm">최종 권고</div>
       <div class="result-msg-lg">${node.msg.replace(/\n/g,'<br>')}</div>
-      ${kcalNote}${exNote}
+      ${kcalNote}${exNote}${exGuideHtml}
     </div>
     ${node.mealPlan?`
     <div class="card">
@@ -2270,7 +2816,7 @@ function diagRestart(){
    NAVIGATION
 ══════════════════════════════════════ */
 function showPage(p){
-  ['food','workout','dashboard','diag'].forEach(id=>{
+  ['food','workout','dashboard','diag','settings'].forEach(id=>{
     document.getElementById('pg-'+id).classList.toggle('active',id===p);
     const nb=document.getElementById('nb-'+id);
     if(nb)nb.classList.toggle('active',id===p);
@@ -2303,6 +2849,8 @@ fUpdateDateDisp();
 fRenderDiary();
 wUpdateEst();
 wRenderExTypeGrid();
+applyTheme(THEME);
+applyLang();
 
 // PWA Service Worker 등록
 if('serviceWorker' in navigator){
