@@ -1421,30 +1421,48 @@ function wStartTimer(){
   document.getElementById('w-settings').style.display='none';
   document.getElementById('w-timerpanel').style.display='';
   document.getElementById('w-pbtn').disabled=false;
-  document.getElementById('w-pbtn').textContent='일시정지';
+  document.getElementById('w-pbtn').textContent=LANG==='en'?'Pause':'일시정지';
   wTmr=setInterval(wTick,80);wUpdateDisplay();
+  wAcquireWakeLock();
+  wPlayPhaseSound(wPhases[0].type);
 }
 function wTick(){
-  if(!wRunning)return;const now=Date.now();wTimeLeft-=(now-wLastTick)/1000;wLastTick=now;
-  if(wTimeLeft<=0)wNextPhase();else wUpdateDisplay();
+  if(!wRunning)return;
+  const now=Date.now();wTimeLeft-=(now-wLastTick)/1000;wLastTick=now;
+  if(wTimeLeft<=0)wNextPhase();
+  else{wUpdateDisplay();wCountdownBeep();}
 }
 function wNextPhase(){
   if(wPhases[wPi].type==='work')wWorkDone+=wCurS.work;
   wPi++;if(wPi>=wPhases.length){wFinishSession();return;}
-  wBeep(wPhases[wPi].type==='work'?880:440);wTimeLeft=wPhases[wPi].t;wUpdateDisplay();
+  const ph=wPhases[wPi];
+  wPlayPhaseSound(ph.type);
+  const notifMap={
+    work:{t:'🏃 운동 시작!',b:`Round ${ph.r||''} / ${wCurS.rounds} · Cycle ${ph.cy||''} / ${wCurS.cycles}`},
+    rest:{t:'💤 휴식',b:`${wCurS.rest}초 휴식`},
+    restCyc:{t:'☕ 세트 간 휴식',b:`${wCurS.cycles}세트 중 ${ph.cy}세트 완료`},
+    cooldown:{t:'🧘 쿨다운',b:'거의 다 왔어요! 마무리하세요'},
+  };
+  const n=notifMap[ph.type];
+  if(n)wSendNotif(n.t,n.b);
+  wTimeLeft=ph.t;wUpdateDisplay();
 }
 function wFinishSession(){
-  clearInterval(wTmr);wRunning=false;wBeep(1320,.5);setTimeout(()=>wBeep(1320,.3),300);
-  const today=dateKey(new Date());if(!wHist[today])wHist[today]=[];
-  const metCal=wCalcMetCalories(wWorkDone);
+  clearInterval(wTmr);wRunning=false;
+  wPlayDoneSound();
+  wReleaseWakeLock();
   const ex=EXERCISE_TYPES.find(e=>e.id===wSelectedExType)||EXERCISE_TYPES[0];
+  const m=Math.floor(wWorkDone/60),s=wWorkDone%60;
+  const metCal=wCalcMetCalories(wWorkDone);
+  // 브라우저 알림
+  wSendNotif('🎉 운동 완료!',`${ex.name} ${m}분 ${s}초 · ${metCal} kcal 소모`,'🎉');
+  const today=dateKey(new Date());if(!wHist[today])wHist[today]=[];
   const rec={workSec:wWorkDone,rounds:wCurS.rounds,cycles:wCurS.cycles,ts:Date.now(),
     exType:wSelectedExType,exName:ex.name,exIcon:ex.icon,
     intensity:wSelectedIntensity,met:wGetMET(),metCal};
   wHist[today].push(rec);
   wSaveHist();
 
-  const m=Math.floor(wWorkDone/60),s=wWorkDone%60;
   document.getElementById('w-pbadge').textContent='완료!';
   document.getElementById('w-pbadge').style.cssText='background:#EAF3DE;color:#27500A;';
   document.getElementById('w-tbig').textContent='완료';document.getElementById('w-tbig').style.color='#3B6D11';
@@ -1508,10 +1526,183 @@ function wTogglePause(){
 }
 function wResetTimer(){
   clearInterval(wTmr);wRunning=false;wTmr=null;
+  wReleaseWakeLock();
   document.getElementById('w-timerpanel').style.display='none';
   document.getElementById('w-settings').style.display='';
 }
-function wBeep(freq=880,dur=.15){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=freq;g.gain.setValueAtTime(.25,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+dur);o.start();o.stop(a.currentTime+dur);}catch(e){}}
+/* ══════════════════════════════════════
+   WORKOUT SOUND SYSTEM
+══════════════════════════════════════ */
+let wWakeLock=null;
+let wNotifPref={vibrate:false,wakelock:true};
+let _wAudioCtx=null;
+
+function wAudioCtx(){
+  if(!_wAudioCtx)_wAudioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  if(_wAudioCtx.state==='suspended')_wAudioCtx.resume();
+  return _wAudioCtx;
+}
+
+/* ── Tick (시계 초침 — 높은 음) ── */
+function wTickSound(){
+  try{
+    const ctx=wAudioCtx();
+    const t=ctx.currentTime;
+    // 금속성 높은 클릭 — 짧은 임펄스 + 고역 필터
+    const buf=ctx.createBuffer(1,ctx.sampleRate*0.03,ctx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++){
+      d[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.002));
+    }
+    const src=ctx.createBufferSource();
+    src.buffer=buf;
+    // 높은 밴드패스로 선명한 틱
+    const bpf=ctx.createBiquadFilter();
+    bpf.type='bandpass';
+    bpf.frequency.value=6000;  // 기존 3500 → 6000Hz (더 높고 선명)
+    bpf.Q.value=2.0;
+    // 두 번째 고역 필터 레이어 (배음 강조)
+    const hpf=ctx.createBiquadFilter();
+    hpf.type='highshelf';
+    hpf.frequency.value=5000;
+    hpf.gain.value=8;
+    const gain=ctx.createGain();
+    gain.gain.setValueAtTime(0.9,t);
+    src.connect(bpf);bpf.connect(hpf);hpf.connect(gain);gain.connect(ctx.destination);
+    src.start(t);
+  }catch(e){}
+}
+
+/* ── Boxing Gong (권투경기 징) ── */
+function wGongSound(){
+  try{
+    const ctx=wAudioCtx();
+    const t=ctx.currentTime;
+
+    // 권투 징의 핵심: 강한 어택 + 길고 풍부한 울림
+    // 기본 울림 주파수 (실제 징은 300~500Hz 대역)
+    const layers=[
+      {f:320, amp:0.55, decay:3.2, detune: 0},
+      {f:640, amp:0.30, decay:2.5, detune: 3},
+      {f:960, amp:0.18, decay:1.8, detune:-3},
+      {f:1280,amp:0.10, decay:1.2, detune: 2},
+      {f:480, amp:0.25, decay:2.8, detune:-2},  // 중간 배음
+      {f:160, amp:0.35, decay:3.5, detune: 1},  // 저음 울림 (두께감)
+    ];
+    layers.forEach(({f,amp,decay,detune})=>{
+      const o=ctx.createOscillator();
+      const g=ctx.createGain();
+      o.type='sine';
+      o.frequency.value=f;
+      o.detune.value=detune;
+      // 빠른 어택 후 긴 감쇠 — 징 특성
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(amp,t+0.005); // 5ms 어택
+      g.gain.exponentialRampToValueAtTime(0.001,t+decay);
+      o.connect(g);g.connect(ctx.destination);
+      o.start(t);o.stop(t+decay+0.1);
+    });
+
+    // 금속 타격음 (어택 충격 — 권투 징 특유의 '쾅')
+    const impBuf=ctx.createBuffer(1,ctx.sampleRate*0.08,ctx.sampleRate);
+    const impD=impBuf.getChannelData(0);
+    for(let i=0;i<impD.length;i++){
+      impD[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.012));
+    }
+    const impSrc=ctx.createBufferSource();
+    impSrc.buffer=impBuf;
+    // 밴드패스로 금속성 강조
+    const bpf=ctx.createBiquadFilter();
+    bpf.type='bandpass';
+    bpf.frequency.value=2500;
+    bpf.Q.value=0.8;
+    const impG=ctx.createGain();
+    impG.gain.setValueAtTime(0.8,t);
+    impG.gain.exponentialRampToValueAtTime(0.001,t+0.15);
+    impSrc.connect(bpf);bpf.connect(impG);impG.connect(ctx.destination);
+    impSrc.start(t);
+
+    // 저음 충격 (묵직한 타격감)
+    const subO=ctx.createOscillator();
+    const subG=ctx.createGain();
+    subO.type='sine';
+    subO.frequency.value=80;
+    subG.gain.setValueAtTime(0.4,t);
+    subG.gain.exponentialRampToValueAtTime(0.001,t+0.2);
+    subO.connect(subG);subG.connect(ctx.destination);
+    subO.start(t);subO.stop(t+0.25);
+  }catch(e){}
+}
+
+/* ── Rest end chime (휴식 종료 예고) ── */
+function wChimeSound(){
+  try{
+    const ctx=wAudioCtx();const t=ctx.currentTime;
+    [523,659,784].forEach((f,i)=>{
+      const o=ctx.createOscillator();const g=ctx.createGain();
+      o.type='sine';o.frequency.value=f;
+      g.gain.setValueAtTime(0,t+i*0.18);
+      g.gain.linearRampToValueAtTime(0.25,t+i*0.18+0.05);
+      g.gain.exponentialRampToValueAtTime(0.001,t+i*0.18+0.5);
+      o.connect(g);g.connect(ctx.destination);
+      o.start(t+i*0.18);o.stop(t+i*0.18+0.6);
+    });
+  }catch(e){}
+}
+
+/* ── Done fanfare ── */
+function wPlayDoneSound(){
+  try{
+    const ctx=wAudioCtx();const t=ctx.currentTime;
+    [[523,0],[659,0.2],[784,0.4],[1047,0.65]].forEach(([f,delay])=>{
+      const o=ctx.createOscillator();const g=ctx.createGain();
+      o.type='sine';o.frequency.value=f;
+      g.gain.setValueAtTime(0.3,t+delay);
+      g.gain.exponentialRampToValueAtTime(0.001,t+delay+0.5);
+      o.connect(g);g.connect(ctx.destination);
+      o.start(t+delay);o.stop(t+delay+0.6);
+    });
+  }catch(e){}
+}
+
+/* ── Phase start dispatch ── */
+function wPlayPhaseSound(type){
+  if(type==='work'||type==='prepare')wGongSound();
+  else if(type==='rest'||type==='restCyc')wChimeSound();
+  else if(type==='cooldown')wChimeSound();
+}
+
+/* ── Countdown tick (3-2-1초 전) ── */
+let _lastCountSec=-1;
+function wCountdownBeep(){
+  const t=Math.ceil(wTimeLeft);
+  if(t<=3&&t>=1&&t!==_lastCountSec){
+    _lastCountSec=t;
+    wTickSound();
+  }
+  if(t>3)_lastCountSec=-1;
+}
+
+/* ── Legacy alias (used in wStartTimer WakeLock) ── */
+function wLoadNotifPref(){
+  try{const r=localStorage.getItem('w_notif_pref');if(r){const p=JSON.parse(r);wNotifPref.wakelock=p.wakelock!==undefined?p.wakelock:true;}}catch(e){}
+}
+function wSaveNotifPref(){}
+function wUpdateToggleUI(){}
+function wUpdateNotifStatus(){}
+function wRequestNotif(){}
+function wVibrate(){}
+function wSendNotif(){}
+function wBeep(){}  // no-op — replaced by specific sounds
+
+/* ── WakeLock ── */
+async function wAcquireWakeLock(){
+  try{if('wakeLock' in navigator){wWakeLock=await navigator.wakeLock.request('screen');}}catch(e){}
+}
+function wReleaseWakeLock(){
+  if(wWakeLock){try{wWakeLock.release();}catch(e){}wWakeLock=null;}
+}
+
 function wSaveHist(){try{localStorage.setItem('diet_workout',JSON.stringify(wHist));}catch(e){}}
 function wLoadHist(){try{const r=localStorage.getItem('diet_workout');if(r)wHist=JSON.parse(r);}catch(e){}}
 function wToggleGuide(){
@@ -2845,6 +3036,7 @@ function showPage(p){
 fLoad();
 wLoadHist();
 wgLoad();
+wLoadNotifPref();
 fUpdateDateDisp();
 fRenderDiary();
 wUpdateEst();
