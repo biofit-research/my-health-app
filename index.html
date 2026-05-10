@@ -250,6 +250,95 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 </head>
 <body>
 
+<!-- ═══════════ NEW COLUMN BANNER ═══════════ -->
+<div id="col-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:8888;
+  background:var(--theme-dark);color:#fff;padding:12px 16px;
+  box-shadow:0 2px 12px rgba(0,0,0,.2);animation:slideDown .4s ease;">
+  <div style="display:flex;align-items:center;gap:10px;max-width:480px;margin:0 auto;">
+    <span style="font-size:20px;flex-shrink:0;">📰</span>
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:11px;color:rgba(255,255,255,.7);margin-bottom:1px;">새 건강 컬럼</div>
+      <div id="col-banner-title" style="font-size:13px;font-weight:500;white-space:nowrap;
+           overflow:hidden;text-overflow:ellipsis;"></div>
+    </div>
+    <button onclick="colOpenFromBanner()"
+      style="flex-shrink:0;padding:5px 12px;background:rgba(255,255,255,.2);border:none;
+             border-radius:6px;color:#fff;font-size:12px;cursor:pointer;">읽기</button>
+    <button onclick="colDismissBanner()"
+      style="flex-shrink:0;width:28px;height:28px;background:none;border:none;
+             color:rgba(255,255,255,.7);font-size:18px;cursor:pointer;line-height:1;">×</button>
+  </div>
+</div>
+
+<!-- ═══════════ COLUMN MODAL ═══════════ -->
+<div id="col-modal" style="display:none;position:fixed;inset:0;z-index:8000;
+  background:rgba(0,0,0,.5);overflow-y:auto;">
+  <div style="min-height:100%;display:flex;align-items:flex-start;justify-content:center;padding:20px 0 80px;">
+    <div style="width:100%;max-width:480px;background:#fff;border-radius:16px;overflow:hidden;">
+      <!-- 모달 헤더 -->
+      <div style="background:var(--theme-main);padding:16px 20px;display:flex;
+                  align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:11px;color:rgba(255,255,255,.75);margin-bottom:2px;" id="col-modal-cat"></div>
+          <div style="font-size:16px;font-weight:600;color:#fff;" id="col-modal-title"></div>
+          <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:4px;" id="col-modal-meta"></div>
+        </div>
+        <button onclick="colCloseModal()"
+          style="width:32px;height:32px;background:rgba(255,255,255,.2);border:none;
+                 border-radius:50%;color:#fff;font-size:20px;cursor:pointer;
+                 display:flex;align-items:center;justify-content:center;flex-shrink:0;">×</button>
+      </div>
+      <!-- 모달 본문 -->
+      <div id="col-modal-body" style="padding:20px;font-size:14px;color:#333;
+           line-height:1.9;white-space:pre-line;"></div>
+      <!-- 목록으로 -->
+      <div style="padding:0 20px 20px;">
+        <button onclick="colShowList()"
+          style="width:100%;padding:12px;background:var(--theme-bg);border:0.5px solid rgba(0,0,0,.1);
+                 border-radius:8px;font-size:14px;cursor:pointer;color:#555;">
+          ← 전체 목록 보기
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ COLUMN LIST MODAL ═══════════ -->
+<div id="col-list-modal" style="display:none;position:fixed;inset:0;z-index:8000;
+  background:rgba(0,0,0,.5);overflow-y:auto;">
+  <div style="min-height:100%;display:flex;align-items:flex-start;justify-content:center;padding:20px 0 80px;">
+    <div style="width:100%;max-width:480px;background:#fff;border-radius:16px;overflow:hidden;">
+      <div style="background:var(--theme-main);padding:16px 20px;display:flex;
+                  align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:16px;font-weight:600;color:#fff;">📰 건강 컬럼</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:2px;">다보스병원 심장내과</div>
+        </div>
+        <button onclick="colCloseAll()"
+          style="width:32px;height:32px;background:rgba(255,255,255,.2);border:none;
+                 border-radius:50%;color:#fff;font-size:20px;cursor:pointer;
+                 display:flex;align-items:center;justify-content:center;">×</button>
+      </div>
+      <!-- 카테고리 필터 -->
+      <div style="display:flex;gap:6px;padding:12px 16px;overflow-x:auto;border-bottom:0.5px solid rgba(0,0,0,.07);">
+        <button onclick="colFilter('전체')" class="col-filter-btn col-filter-active">전체</button>
+        <button onclick="colFilter('고혈압')" class="col-filter-btn">고혈압</button>
+        <button onclick="colFilter('고지혈증')" class="col-filter-btn">고지혈증</button>
+        <button onclick="colFilter('운동')" class="col-filter-btn">운동</button>
+        <button onclick="colFilter('식단')" class="col-filter-btn">식단</button>
+      </div>
+      <div id="col-list-body" style="padding:12px 16px;"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes slideDown{from{transform:translateY(-100%);}to{transform:translateY(0);}}
+.col-filter-btn{padding:5px 12px;border:0.5px solid rgba(0,0,0,.15);border-radius:16px;
+  background:#fff;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.col-filter-active{background:var(--theme-main)!important;color:#fff!important;border-color:var(--theme-main)!important;}
+</style>
+
 <!-- ═══════════ SPLASH SCREEN ═══════════ -->
 <div id="splash-screen" style="
   position:fixed;inset:0;z-index:9999;
@@ -523,9 +612,170 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
     <span class="sub" id="d-date"></span>
   </div>
 
-  <!-- BMI 프로필 배너 -->
+
+    <!-- BMI 프로필 배너 -->
   <div id="d-bmi-banner"></div>
 
+  <!-- ═══ 혈압 섹션 ═══ -->
+  <!-- 혈압 요약 카드 -->
+  <div class="card" style="margin-top:0;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div>
+        <div class="card-title" style="margin-bottom:0;">❤️ 혈압 기록</div>
+        <div style="font-size:11px;color:#aaa;margin-top:2px;">최근 측정값</div>
+      </div>
+      <button onclick="showPage('bp')"
+        style="font-size:12px;padding:5px 12px;border:0.5px solid rgba(0,0,0,.12);
+               border-radius:8px;background:var(--theme-bg);cursor:pointer;color:#555;">
+        기록하기 →
+      </button>
+    </div>
+    <div id="d-bp-summary"></div>
+  </div>
+
+  <!-- 혈압 기록 섹션 -->
+  <div class="card" style="margin-top:0;">
+    <div class="card-title">❤️ 혈압 기록</div>
+
+    <!-- OCR 버튼 -->
+    <button onclick="bpOpenOCR()"
+      style="width:100%;padding:12px;border:1.5px dashed var(--theme-main);border-radius:10px;
+             background:var(--theme-light);color:var(--theme-dark);font-size:14px;
+             font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;
+             gap:8px;margin-bottom:8px;">
+      <span style="font-size:20px;">📷</span> 혈압계 사진으로 자동 입력
+    </button>
+    <div style="padding:10px 12px;background:var(--theme-bg);border-radius:8px;margin-bottom:12px;font-size:11px;color:#666;line-height:1.8;">
+      <div style="font-weight:500;color:var(--theme-dark);margin-bottom:4px;">📋 촬영 방법</div>
+      <div>① 혈압계 화면이 사진의 <b>70% 이상</b> 차지하도록 가까이</div>
+      <div>② 정면·수평으로 맞추고 빛 반사 없는 환경에서 촬영</div>
+      <div>③ 인식된 숫자를 <b>반드시 확인</b> 후 기록하기 버튼 누름</div>
+      <div style="margin-top:6px;padding:5px 10px;background:rgba(163,45,45,.07);border-radius:6px;color:#993C1D;font-size:10px;">
+        ⚠ 인식 오류가 있을 수 있으니 숫자를 꼭 눈으로 확인하세요.
+      </div>
+    </div>
+    <input type="file" id="bp-ocr-input" accept="image/*" capture="environment"
+      style="display:none;" onchange="bpRunOCR(this)">
+
+    <!-- OCR 처리 영역 -->
+    <div id="bp-ocr-area" style="display:none;margin-bottom:12px;">
+      <img id="bp-ocr-preview" style="width:100%;max-height:200px;object-fit:contain;
+           border-radius:8px;border:0.5px solid rgba(0,0,0,.1);background:var(--theme-bg);">
+      <div id="bp-ocr-status" style="font-size:12px;color:var(--theme-main);
+           text-align:center;padding:10px;margin-top:6px;background:var(--theme-light);border-radius:8px;">
+        ⏳ 인식 중...
+      </div>
+    </div>
+
+    <div style="text-align:center;font-size:11px;color:#bbb;margin-bottom:10px;">── 또는 직접 입력 ──</div>
+
+    <!-- 수치 입력 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+      <div>
+        <div style="font-size:11px;color:#888;margin-bottom:4px;">수축기 (SBP)</div>
+        <input id="bp-sys" type="number" min="60" max="250" placeholder="120"
+          style="width:100%;padding:10px 8px;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;
+                 font-size:18px;font-weight:500;text-align:center;">
+        <div style="font-size:10px;color:#aaa;text-align:center;margin-top:2px;">mmHg</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:#888;margin-bottom:4px;">이완기 (DBP)</div>
+        <input id="bp-dia" type="number" min="40" max="150" placeholder="80"
+          style="width:100%;padding:10px 8px;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;
+                 font-size:18px;font-weight:500;text-align:center;">
+        <div style="font-size:10px;color:#aaa;text-align:center;margin-top:2px;">mmHg</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:#888;margin-bottom:4px;">맥박 (선택)</div>
+        <input id="bp-pulse" type="number" min="30" max="220" placeholder="72"
+          style="width:100%;padding:10px 8px;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;
+                 font-size:18px;font-weight:500;text-align:center;">
+        <div style="font-size:10px;color:#aaa;text-align:center;margin-top:2px;">bpm</div>
+      </div>
+    </div>
+
+    <!-- 자동 시각 -->
+    <div style="display:flex;align-items:center;justify-content:space-between;
+                padding:10px 14px;background:var(--theme-bg);border-radius:8px;margin-bottom:10px;">
+      <div>
+        <div style="font-size:13px;font-weight:500;" id="bp-time-label">⏰ 측정 시각</div>
+        <div style="font-size:11px;color:#888;margin-top:2px;" id="bp-time-sub">자동 감지</div>
+      </div>
+      <div style="font-size:18px;font-weight:600;color:var(--theme-main);" id="bp-time-value">--:--</div>
+    </div>
+
+    <div id="bp-error-box" style="display:none;margin-bottom:10px;padding:10px 14px;
+         background:#FCEBEB;border-left:3px solid #A32D2D;border-radius:8px;
+         font-size:12px;color:#A32D2D;line-height:1.7;"></div>
+
+    <button onclick="bpRecord()" class="primary-btn" style="margin-top:0;">기록하기</button>
+    <div id="bp-status-bar" style="display:none;margin-top:10px;padding:10px 14px;
+         border-radius:8px;font-size:13px;font-weight:500;"></div>
+  </div>
+
+  <!-- 혈압 분류 기준 (접기/펼치기) -->
+  <div class="card" style="margin-top:0;">
+    <button onclick="bpToggleGrade()"
+      style="width:100%;text-align:left;background:none;border:none;cursor:pointer;
+             display:flex;justify-content:space-between;align-items:center;padding:0;">
+      <div class="card-title" style="margin-bottom:0;">혈압 분류 기준</div>
+      <span id="bp-grade-arrow" style="color:#aaa;font-size:13px;">▾ 보기</span>
+    </button>
+    <div id="bp-grade-wrap" style="display:none;margin-top:12px;">
+      <div id="bp-grade-table"></div>
+    </div>
+  </div>
+
+  <!-- 최근 기록 -->
+  <div class="card" style="margin-top:0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div class="card-title" style="margin-bottom:0;" id="bp-history-title">혈압 추이</div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="bpShowChart('7')" id="bp-c7"
+          style="font-size:11px;padding:3px 10px;border:0.5px solid rgba(0,0,0,.12);
+                 border-radius:6px;background:var(--theme-main);color:#fff;cursor:pointer;">7일</button>
+        <button onclick="bpShowChart('30')" id="bp-c30"
+          style="font-size:11px;padding:3px 10px;border:0.5px solid rgba(0,0,0,.12);
+                 border-radius:6px;background:var(--theme-bg);cursor:pointer;">30일</button>
+      </div>
+    </div>
+    <div style="position:relative;height:180px;width:100%;margin-bottom:12px;">
+      <canvas id="bp-chart"></canvas>
+    </div>
+    <div id="bp-list"></div>
+  </div>
+
+  <!-- 고혈압 생활습관 (접기/펼치기) -->
+  <div class="card" style="margin-top:0;">
+    <button onclick="bpToggleTips()"
+      style="width:100%;text-align:left;background:none;border:none;cursor:pointer;
+             display:flex;justify-content:space-between;align-items:center;padding:0;">
+      <div class="card-title" style="margin-bottom:0;">💊 고혈압 생활습관 관리</div>
+      <span id="bp-tips-arrow" style="color:#aaa;font-size:13px;">▾ 보기</span>
+    </button>
+    <div id="bp-tips-wrap" style="display:none;margin-top:12px;">
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="padding:10px 12px;background:var(--theme-bg);border-radius:8px;border-left:3px solid #A32D2D;">
+          <div style="font-size:12px;font-weight:500;color:#A32D2D;margin-bottom:4px;">🧂 나트륨 제한</div>
+          <div style="font-size:12px;color:#555;line-height:1.7;">하루 <b>1,500mg 이하</b> 권고 (대한고혈압학회)<br>일반 성인 기준(2,000mg)보다 엄격합니다.</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--theme-bg);border-radius:8px;border-left:3px solid var(--theme-main);">
+          <div style="font-size:12px;font-weight:500;color:var(--theme-dark);margin-bottom:4px;">🏃 운동 권고</div>
+          <div style="font-size:12px;color:#555;line-height:1.7;">유산소 운동 주 5회 · 30분 이상 · <b>중강도</b><br>고강도 운동은 혈압 급상승 위험 — 주의 필요</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--theme-bg);border-radius:8px;border-left:3px solid #3B6D11;">
+          <div style="font-size:12px;font-weight:500;color:#3B6D11;margin-bottom:4px;">🥗 DASH 식이</div>
+          <div style="font-size:12px;color:#555;line-height:1.7;">채소·과일·저지방 유제품 위주<br>수축기 8~14mmHg 감소 효과</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--theme-bg);border-radius:8px;border-left:3px solid #854F0B;">
+          <div style="font-size:12px;font-weight:500;color:#854F0B;margin-bottom:4px;">🚭 금연·절주</div>
+          <div style="font-size:12px;color:#555;line-height:1.7;">흡연은 혈압 상승과 심혈관 위험 증가<br>음주는 하루 1~2잔 이하로 제한</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:#aaa;">* 대한고혈압학회 2022 기준 · 반드시 담당 의사와 상담하세요.</div>
+    </div>
+  </div>
+  <!-- ═══ 운동 섹션 ═══ -->
   <div class="card" id="d-weekly-exercise-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
       <div class="card-title" style="margin-bottom:0;">이번 주 권장 운동량</div>
@@ -584,6 +834,7 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
     </div>
   </div>
 
+  <!-- ═══ 체중 섹션 ═══ -->
   <!-- Weight Log Card -->
   <div class="card" style="margin-top:0;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -599,8 +850,8 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
       <canvas id="d-wg-chart"></canvas>
     </div>
   </div>
-</div>
 
+</div>
 <!-- ═══════════ DIAGNOSIS PAGE ═══════════ -->
 <div id="pg-diag" class="page">
   <div class="page-hd">
@@ -613,106 +864,28 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
   <div id="diag-content"></div>
 </div>
 
-<!-- ═══════════ BLOOD PRESSURE PAGE ═══════════ -->
-<div id="pg-bp" class="page">
+<!-- ═══════════ COLUMN PAGE ═══════════ -->
+<div id="pg-col" class="page">
   <div class="page-hd">
-    <h2 id="bp-title">혈압 기록</h2><span style="font-size:10px;color:#aaa;font-weight:400;letter-spacing:0;">건강 관리 앱 v1.1 · 2026.5.3</span>
+    <h2>📰 건강 컬럼</h2>
+    <span style="font-size:10px;color:#aaa;">건강 관리 앱 v1.1 · 2026.5.3</span>
   </div>
 
-  <!-- 오류 표시 박스 -->
-  <div id="bp-error-box" style="display:none;margin-bottom:10px;padding:10px 14px;
-    background:#FCEBEB;border-left:3px solid #A32D2D;border-radius:8px;
-    font-size:12px;color:#A32D2D;line-height:1.7;"></div>
-
-  <!-- 오늘 입력 카드 -->
-  <div class="card">
-    <div class="card-title" id="bp-input-title">오늘 혈압 입력</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
-      <div>
-        <div style="font-size:11px;color:#888;margin-bottom:4px;">수축기 (SBP)</div>
-        <div style="display:flex;align-items:center;gap:4px;">
-          <input id="bp-sys" type="number" min="60" max="250" placeholder="120"
-            style="width:100%;padding:10px 8px;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;
-                   font-size:18px;font-weight:500;text-align:center;">
-        </div>
-        <div style="font-size:10px;color:#aaa;text-align:center;margin-top:2px;">mmHg</div>
-      </div>
-      <div>
-        <div style="font-size:11px;color:#888;margin-bottom:4px;">이완기 (DBP)</div>
-        <div style="display:flex;align-items:center;gap:4px;">
-          <input id="bp-dia" type="number" min="40" max="150" placeholder="80"
-            style="width:100%;padding:10px 8px;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;
-                   font-size:18px;font-weight:500;text-align:center;">
-        </div>
-        <div style="font-size:10px;color:#aaa;text-align:center;margin-top:2px;">mmHg</div>
-      </div>
-      <div>
-        <div style="font-size:11px;color:#888;margin-bottom:4px;">맥박 (선택)</div>
-        <input id="bp-pulse" type="number" min="30" max="220" placeholder="72"
-          style="width:100%;padding:10px 8px;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;
-                 font-size:18px;font-weight:500;text-align:center;">
-        <div style="font-size:10px;color:#aaa;text-align:center;margin-top:2px;">bpm</div>
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;margin-bottom:10px;">
-      <select id="bp-time" style="flex:1;padding:9px 10px;border:0.5px solid rgba(0,0,0,.12);border-radius:8px;font-size:13px;background:#fff;">
-        <option value="morning">🌅 기상 후 (아침)</option>
-        <option value="evening">🌙 취침 전 (저녁)</option>
-        <option value="etc">📋 기타</option>
-      </select>
-      <button onclick="bpRecord()" class="primary-btn"
-        style="width:auto;padding:9px 20px;margin-top:0;font-size:14px;">기록</button>
-    </div>
-    <div id="bp-status-bar" style="display:none;padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;text-align:center;"></div>
+  <!-- 카테고리 필터 -->
+  <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;">
+    <button onclick="colPageFilter('전체')" id="cpf-전체" class="col-filter-btn col-filter-active">전체</button>
+    <button onclick="colPageFilter('고혈압')" id="cpf-고혈압" class="col-filter-btn">고혈압</button>
+    <button onclick="colPageFilter('고지혈증')" id="cpf-고지혈증" class="col-filter-btn">고지혈증</button>
+    <button onclick="colPageFilter('운동')" id="cpf-운동" class="col-filter-btn">운동</button>
+    <button onclick="colPageFilter('식단')" id="cpf-식단" class="col-filter-btn">식단</button>
   </div>
 
-  <!-- 분류 기준 카드 -->
-  <div class="card">
-    <div class="card-title">혈압 분류 기준 <span style="font-size:10px;color:#aaa;font-weight:400;">(대한고혈압학회 2022)</span></div>
-    <div id="bp-grade-table"></div>
-  </div>
+  <!-- 컬럼 목록 -->
+  <div id="col-page-list"></div>
 
-  <!-- 최근 기록 -->
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <div class="card-title" style="margin-bottom:0;" id="bp-history-title">최근 기록</div>
-      <div style="display:flex;gap:6px;">
-        <button onclick="bpShowChart('7')" id="bp-c7"
-          style="font-size:11px;padding:3px 10px;border:0.5px solid rgba(0,0,0,.12);border-radius:6px;background:var(--theme-main);color:#fff;cursor:pointer;">7일</button>
-        <button onclick="bpShowChart('30')" id="bp-c30"
-          style="font-size:11px;padding:3px 10px;border:0.5px solid rgba(0,0,0,.12);border-radius:6px;background:var(--theme-bg);cursor:pointer;">30일</button>
-      </div>
-    </div>
-    <div style="position:relative;height:180px;width:100%;margin-bottom:12px;">
-      <canvas id="bp-chart"></canvas>
-    </div>
-    <div id="bp-list"></div>
-  </div>
-
-  <!-- 고혈압 관리 안내 -->
-  <div class="card">
-    <div class="card-title">💊 고혈압 생활습관 관리</div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="padding:10px 12px;background:var(--theme-bg);border-radius:8px;border-left:3px solid #A32D2D;">
-        <div style="font-size:12px;font-weight:500;color:#A32D2D;margin-bottom:4px;">🧂 나트륨 제한</div>
-        <div style="font-size:12px;color:#555;line-height:1.7;">하루 <b>1,500mg 이하</b> 권고 (대한고혈압학회)<br>일반 성인 기준(2,000mg)보다 엄격합니다.</div>
-      </div>
-      <div style="padding:10px 12px;background:var(--theme-bg);border-radius:8px;border-left:3px solid #185FA5;">
-        <div style="font-size:12px;font-weight:500;color:#185FA5;margin-bottom:4px;">🏃 운동 권고</div>
-        <div style="font-size:12px;color:#555;line-height:1.7;">유산소 운동 주 5회 · 30분 이상 · <b>중강도</b><br>고강도 운동은 혈압 급상승 위험 — 주의 필요</div>
-      </div>
-      <div style="padding:10px 12px;background:var(--theme-bg);border-radius:8px;border-left:3px solid #3B6D11;">
-        <div style="font-size:12px;font-weight:500;color:#3B6D11;margin-bottom:4px;">🥗 DASH 식이</div>
-        <div style="font-size:12px;color:#555;line-height:1.7;">채소·과일·저지방 유제품 위주<br>포화지방·붉은 고기·당류 제한 — 수축기 8~14mmHg 감소 효과</div>
-      </div>
-      <div style="padding:10px 12px;background:var(--theme-bg);border-radius:8px;border-left:3px solid #854F0B;">
-        <div style="font-size:12px;font-weight:500;color:#854F0B;margin-bottom:4px;">🚭 금연·절주</div>
-        <div style="font-size:12px;color:#555;line-height:1.7;">흡연은 혈압 상승과 심혈관 위험 증가<br>음주는 하루 1~2잔 이하로 제한</div>
-      </div>
-    </div>
-    <div style="margin-top:10px;font-size:11px;color:#aaa;">
-      * 대한고혈압학회 2022 진료지침 기준 · 본 정보는 참고용이며 반드시 담당 의사와 상담하세요.
-    </div>
+  <!-- 다보스병원 -->
+  <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:#aaa;">
+    🏥 다보스병원 심장내과 건강 컬럼
   </div>
 </div>
 
@@ -845,12 +1018,15 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
     </svg>
     <span data-i18n="nav_diag">진단</span>
   </button>
-  <button class="nbtn" onclick="showPage('bp')" id="nb-bp">
+  <button class="nbtn" onclick="showPage('col')" id="nb-col">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-      <path d="M3 12h4l3-6 4 12 3-6h4" stroke-width="1.4"/>
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/>
+      <line x1="16" y1="17" x2="8" y2="17"/>
+      <polyline points="10 9 9 9 8 9"/>
     </svg>
-    <span data-i18n="nav_bp">혈압</span>
+    <span data-i18n="nav_col">컬럼</span>
   </button>
   <button class="nbtn" onclick="showPage('settings')" id="nb-settings">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -863,8 +1039,264 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 <div id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
-/* ── 전역 오류 캐처 ── */
+function renderDashboardBP(){
+  const el=document.getElementById('d-bp-summary');
+  if(!el)return;
+
+  // 오늘 + 최근 7일 기록 수집
+  const allRecs=[];
+  Object.keys(bpData).forEach(function(k){
+    (bpData[k]||[]).forEach(function(r){allRecs.push(Object.assign({},r,{dk:k}));});
+  });
+  allRecs.sort(function(a,b){return b.ts-a.ts;});
+
+  if(!allRecs.length){
+    el.innerHTML='<div style="text-align:center;padding:16px 0;">'
+      +'<div style="font-size:13px;color:#aaa;margin-bottom:8px;">기록된 혈압이 없습니다</div>'
+      +'<button onclick="showPage(\'bp\')" style="font-size:12px;padding:6px 16px;'
+      +'background:var(--theme-main);color:#fff;border:none;border-radius:8px;cursor:pointer;">'
+      +'첫 번째 혈압 기록하기</button></div>';
+    return;
+  }
+
+  // 최근 측정값
+  const latest=allRecs[0];
+  const grade=bpClassify(latest.sys,latest.dia);
+  const latestD=new Date(latest.ts);
+  const latestDate=(latestD.getMonth()+1)+'/'+(latestD.getDate())
+    +(latest.timeStr?' '+latest.timeStr:'');
+
+  // 오늘 기록 (아침/저녁)
+  const now=new Date();
+  const todayKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+  const todayRecs=bpData[todayKey]||[];
+  const morning=todayRecs.find(function(r){return r.time==='morning';});
+  const evening=todayRecs.find(function(r){return r.time==='evening';});
+
+  // 최근 7일 평균 수축기
+  const sevenDays=allRecs.filter(function(r){
+    return Date.now()-r.ts<=7*24*60*60*1000;
+  });
+  const avg7sys=sevenDays.length?Math.round(sevenDays.reduce(function(s,r){return s+r.sys;},0)/sevenDays.length):null;
+  const avg7dia=sevenDays.length?Math.round(sevenDays.reduce(function(s,r){return s+r.dia;},0)/sevenDays.length):null;
+  const avgGrade=avg7sys?bpClassify(avg7sys,avg7dia):null;
+
+  // 오늘 기록 행 만들기
+  function bpRow(label,rec){
+    if(!rec)return '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:0.5px solid rgba(0,0,0,.05);">'
+      +'<span style="font-size:12px;color:#aaa;">'+label+'</span>'
+      +'<span style="font-size:12px;color:#ccc;">미측정</span></div>';
+    const g=bpClassify(rec.sys,rec.dia);
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid rgba(0,0,0,.05);">'
+      +'<span style="font-size:12px;color:#555;">'+label+(rec.timeStr?' <span style="color:#bbb;font-size:10px;">'+rec.timeStr+'</span>':'')+'</span>'
+      +'<div style="display:flex;align-items:center;gap:8px;">'
+      +'<span style="font-size:14px;font-weight:500;color:'+g.color+';">'+rec.sys+'/'+rec.dia+'</span>'
+      +'<span style="font-size:10px;padding:1px 7px;border-radius:6px;background:'+g.bg+';color:'+g.color+';">'+g.label+'</span>'
+      +'</div></div>';
+  }
+
+  el.innerHTML=
+    // 최근 측정값 큰 표시
+    '<div style="display:flex;align-items:center;justify-content:space-between;'
+    +'padding:10px 14px;background:'+grade.bg+';border-radius:10px;margin-bottom:12px;">'
+    +'<div>'
+    +'<div style="font-size:11px;color:'+grade.color+';margin-bottom:2px;">최근 측정 · '+latestDate+'</div>'
+    +'<div style="font-size:26px;font-weight:600;color:'+grade.color+';">'
+    +latest.sys+'<span style="font-size:14px;font-weight:400;color:'+grade.color+';opacity:.7;">/'
+    +latest.dia+'</span> <span style="font-size:11px;font-weight:400;color:'+grade.color+';opacity:.7;">mmHg</span>'
+    +(latest.pulse?'<span style="font-size:13px;font-weight:400;color:#888;margin-left:8px;">♥ '+latest.pulse+'</span>':'')
+    +'</div></div>'
+    +'<div style="text-align:center;padding:6px 14px;background:rgba(255,255,255,.7);border-radius:8px;">'
+    +'<div style="font-size:13px;font-weight:600;color:'+grade.color+';">'+grade.label+'</div>'
+    +'</div></div>'
+
+    // 오늘 아침/저녁
+    +'<div style="margin-bottom:12px;">'
+    +'<div style="font-size:11px;font-weight:500;color:#888;margin-bottom:4px;">오늘</div>'
+    +bpRow('🌅 아침',morning)
+    +bpRow('🌙 저녁',evening)
+    +'</div>'
+
+    // 7일 평균
+    +(avg7sys?
+      '<div style="display:flex;align-items:center;justify-content:space-between;'
+      +'padding:8px 12px;background:var(--theme-bg);border-radius:8px;">'
+      +'<div style="font-size:12px;color:#555;">7일 평균</div>'
+      +'<div style="display:flex;align-items:center;gap:8px;">'
+      +'<span style="font-size:14px;font-weight:500;color:'+avgGrade.color+';">'+avg7sys+'/'+avg7dia+'</span>'
+      +'<span style="font-size:10px;padding:1px 7px;border-radius:6px;background:'+avgGrade.bg+';color:'+avgGrade.color+';">'+avgGrade.label+'</span>'
+      +'<span style="font-size:10px;color:#aaa;">'+sevenDays.length+'회 기준</span>'
+      +'</div></div>'
+    :'');
+}
+
+/* ══════════════════════════════════════
+   HEALTH COLUMN MODULE
+══════════════════════════════════════ */
+let colData=[];
+let colFilterCurrent='전체';
+let colBannerItem=null;
+const COL_URL='https://biofit-research.github.io/my-health-app/columns.json';
+const COL_SEEN_KEY='health_col_last_seen';
+const CAT_COLORS={
+  '고혈압':'#A32D2D','고지혈증':'#534AB7','운동':'#3B6D11','식단':'#854F0B','기타':'#888'
+};
+const CAT_BGNEW={'고혈압':'#FCEBEB','고지혈증':'#EEEDFE','운동':'#EAF3DE','식단':'#FAEEDA','기타':'#f5f5f3'};
+
+async function colFetch(){
+  try{
+    const res=await fetch(COL_URL+'?t='+Date.now());
+    if(res.status===404){
+      // 파일 아직 없음 — 조용히 처리
+      colRenderDashboard();
+      return;
+    }
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const text=await res.text();
+    if(!text.trim()){colRenderDashboard();return;}
+    colData=JSON.parse(text);
+    colData.sort(function(a,b){return b.id-a.id;});
+    colRenderDashboard();
+    colCheckNewBanner();
+  }catch(e){
+    // 네트워크 오류 또는 파일 미업로드 — 조용히 처리
+    colRenderDashboard();
+  }
+}
+
+function colCheckNewBanner(){
+  if(!colData.length)return;
+  const lastSeen=parseInt(localStorage.getItem(COL_SEEN_KEY)||'0');
+  const newest=colData[0];
+  const newestTs=new Date(newest.date).getTime();
+  if(newestTs>lastSeen){
+    colBannerItem=newest;
+    const el=document.getElementById('col-banner');
+    const title=document.getElementById('col-banner-title');
+    if(el&&title){
+      title.textContent=newest.title;
+      el.style.display='block';
+      document.body.style.paddingTop='52px';
+    }
+  }
+}
+
+function colDismissBanner(){
+  if(colBannerItem){
+    localStorage.setItem(COL_SEEN_KEY,new Date(colBannerItem.date).getTime().toString());
+  }
+  const el=document.getElementById('col-banner');
+  if(el)el.style.display='none';
+  document.body.style.paddingTop='';
+}
+
+function colOpenFromBanner(){
+  colDismissBanner();
+  if(colBannerItem)colOpenItem(colBannerItem);
+}
+
+function colRenderDashboard(){
+  const el=document.getElementById('col-dashboard-list');
+  if(!el)return;
+  if(!colData.length){
+    el.innerHTML='<div style="text-align:center;color:#aaa;font-size:12px;padding:14px 0;line-height:1.8;">'
+      +'📰 준비 중입니다<br>'
+      +'<span style="font-size:11px;">columns.json을 GitHub에 업로드하면 자동으로 표시됩니다.</span>'
+      +'</div>';
+    return;
+  }
+  const items=colData.slice(0,3);
+  el.innerHTML=items.map(function(c){
+    const catColor=CAT_COLORS[c.category]||'#888';
+    const catBg=CAT_BGNEW[c.category]||'#f5f5f3';
+    return '<div onclick="colOpenItem(colData.find(function(x){return x.id==='+c.id+'}))" '
+      +'style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;'
+      +'border-bottom:0.5px solid rgba(0,0,0,.06);cursor:pointer;">'
+      +'<div style="flex-shrink:0;margin-top:2px;">'
+      +'<span style="font-size:10px;padding:2px 8px;border-radius:8px;font-weight:500;'
+      +'background:'+catBg+';color:'+catColor+';">'+c.category+'</span></div>'
+      +'<div style="flex:1;min-width:0;">'
+      +'<div style="font-size:13px;font-weight:500;color:#1a1a1a;line-height:1.4;'
+      +'overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+c.title+'</div>'
+      +'<div style="font-size:11px;color:#aaa;margin-top:2px;">'+c.date+' · '+c.author+'</div>'
+      +'</div>'
+      +'<span style="color:#ccc;font-size:16px;flex-shrink:0;">›</span>'
+      +'</div>';
+  }).join('');
+}
+
+function colShowList(){
+  colRenderList();
+  document.getElementById('col-list-modal').style.display='block';
+  document.body.style.overflow='hidden';
+}
+
+function colCloseAll(){
+  document.getElementById('col-list-modal').style.display='none';
+  document.getElementById('col-modal').style.display='none';
+  document.body.style.overflow='';
+}
+
+function colCloseModal(){
+  document.getElementById('col-modal').style.display='none';
+  document.getElementById('col-list-modal').style.display='block';
+}
+
+function colFilter(cat){
+  colFilterCurrent=cat;
+  document.querySelectorAll('.col-filter-btn').forEach(function(b){
+    b.classList.toggle('col-filter-active',b.textContent===cat);
+  });
+  colRenderList();
+}
+
+function colRenderList(){
+  const el=document.getElementById('col-list-body');
+  if(!el)return;
+  const filtered=colFilterCurrent==='전체'
+    ?colData
+    :colData.filter(function(c){return c.category===colFilterCurrent;});
+  if(!filtered.length){
+    el.innerHTML='<div style="text-align:center;color:#aaa;padding:30px 0;font-size:13px;">해당 카테고리 컬럼이 없습니다.</div>';
+    return;
+  }
+  el.innerHTML=filtered.map(function(c){
+    const catColor=CAT_COLORS[c.category]||'#888';
+    const catBg=CAT_BGNEW[c.category]||'#f5f5f3';
+    return '<div onclick="colOpenItem(colData.find(function(x){return x.id==='+c.id+'}))"'
+      +' style="padding:14px 0;border-bottom:0.5px solid rgba(0,0,0,.06);cursor:pointer;">'
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">'
+      +'<span style="font-size:11px;padding:2px 9px;border-radius:10px;font-weight:500;'
+      +'background:'+catBg+';color:'+catColor+';">'+c.category+'</span>'
+      +'<span style="font-size:11px;color:#aaa;">'+c.date+'</span>'
+      +'</div>'
+      +'<div style="font-size:14px;font-weight:500;color:#1a1a1a;line-height:1.4;margin-bottom:4px;">'+c.title+'</div>'
+      +'<div style="font-size:12px;color:#888;line-height:1.6;">'+c.summary+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function colOpenItem(item){
+  if(!item)return;
+  // 읽음 처리
+  const ts=new Date(item.date).getTime();
+  const lastSeen=parseInt(localStorage.getItem(COL_SEEN_KEY)||'0');
+  if(ts>lastSeen)localStorage.setItem(COL_SEEN_KEY,ts.toString());
+
+  const catColor=CAT_COLORS[item.category]||'#888';
+  document.getElementById('col-modal-cat').textContent=item.category;
+  document.getElementById('col-modal-cat').style.color='rgba(255,255,255,.8)';
+  document.getElementById('col-modal-title').textContent=item.title;
+  document.getElementById('col-modal-meta').textContent=item.date+' · '+item.author;
+  document.getElementById('col-modal-body').textContent=item.content;
+
+  document.getElementById('col-list-modal').style.display='none';
+  document.getElementById('col-modal').style.display='block';
+  document.body.style.overflow='hidden';
+  document.getElementById('col-modal').scrollTop=0;
+}
 window.onerror=function(msg,src,line,col,err){
   const activePage=document.querySelector('.page.active');
   if(activePage&&activePage.id==='pg-bp'){
@@ -908,7 +1340,163 @@ function bpSave(){
   try{localStorage.setItem('health_bp',JSON.stringify(bpData));}catch(e){}
 }
 
-/* ── BP 오류 표시 ── */
+/* ── 시각 자동 감지 ── */
+function bpGetTimeInfo(){
+  const now=new Date();
+  const h=now.getHours();
+  const m=now.getMinutes();
+  const hh=String(h).padStart(2,'0');
+  const mm=String(m).padStart(2,'0');
+  const timeStr=hh+':'+mm;
+  var period,icon;
+  if(h>=5&&h<11){period='morning';icon='🌅 아침';}
+  else if(h>=20||h<2){period='evening';icon='🌙 저녁';}
+  else{period='etc';icon='📋 기타';}
+  return{period:period,icon:icon,timeStr:timeStr,ts:now.getTime()};
+}
+
+function bpUpdateTimeDisplay(){
+  const info=bpGetTimeInfo();
+  const lbl=document.getElementById('bp-time-label');
+  const sub=document.getElementById('bp-time-sub');
+  const val=document.getElementById('bp-time-value');
+  if(lbl)lbl.textContent=info.icon;
+  if(sub)sub.textContent='자동 감지';
+  if(val)val.textContent=info.timeStr;
+}
+
+/* ── OCR ── */
+function bpOpenOCR(){
+  document.getElementById('bp-ocr-input').click();
+}
+
+function bpRunOCR(input){
+  if(!input.files||!input.files[0])return;
+  const file=input.files[0];
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const area=document.getElementById('bp-ocr-area');
+    const preview=document.getElementById('bp-ocr-preview');
+    const status=document.getElementById('bp-ocr-status');
+    area.style.display='block';
+    preview.src=e.target.result;
+    status.textContent='⏳ 혈압계 숫자 인식 중...';
+    status.style.color='var(--theme-main)';
+
+    // Tesseract OCR 실행
+    if(typeof Tesseract==='undefined'){
+      status.textContent='❌ OCR 라이브러리 로딩 중... 잠시 후 다시 시도하세요.';
+      status.style.color='#A32D2D';
+      return;
+    }
+    Tesseract.recognize(e.target.result,'eng',{
+      logger:function(m){
+        if(m.status==='recognizing text'){
+          status.textContent='⏳ 인식 중... '+Math.round(m.progress*100)+'%';
+        }
+      }
+    }).then(function(result){
+      bpParseOCR(result.data.text,status);
+    }).catch(function(err){
+      status.textContent='❌ 인식 실패: '+err.message;
+      status.style.color='#A32D2D';
+    });
+  };
+  reader.readAsDataURL(file);
+  input.value=''; // 같은 파일 재선택 허용
+}
+
+function bpParseOCR(text,statusEl){
+  // 혈압계 숫자 추출: 3자리/2자리 숫자 패턴
+  var nums=text.match(/\d{2,3}/g)||[];
+  nums=nums.map(function(n){return parseInt(n);})
+           .filter(function(n){return n>=40&&n<=250;});
+
+  if(nums.length<2){
+    statusEl.textContent='⚠ 숫자를 인식하지 못했습니다. 직접 입력해 주세요.';
+    statusEl.style.color='#BA7517';
+    return;
+  }
+
+  // 혈압계 특성: 큰 수=수축기, 작은 수=이완기, 맥박(40-120)
+  nums.sort(function(a,b){return b-a;});
+  var sys=0,dia=0,pulse=0;
+
+  // 가장 큰 값=수축기(60-250), 두번째=이완기(40-150), 세번째=맥박(40-120)
+  for(var i=0;i<nums.length;i++){
+    if(!sys&&nums[i]>=60&&nums[i]<=250){sys=nums[i];}
+    else if(!dia&&nums[i]>=40&&nums[i]<=150&&nums[i]<sys){dia=nums[i];}
+    else if(!pulse&&nums[i]>=40&&nums[i]<=120&&nums[i]<dia){pulse=nums[i];}
+  }
+
+  if(sys&&dia){
+    document.getElementById('bp-sys').value=sys;
+    document.getElementById('bp-dia').value=dia;
+    if(pulse)document.getElementById('bp-pulse').value=pulse;
+    statusEl.style.color='#3B6D11';
+    statusEl.textContent='✅ 인식 완료 — '+sys+'/'+dia+' mmHg'+(pulse?' · 맥박 '+pulse:'')
+      +'\n수치를 확인하고 기록하기를 눌러주세요.';
+    statusEl.style.whiteSpace='pre-line';
+  }else{
+    statusEl.textContent='⚠ 혈압 수치를 명확히 인식하지 못했습니다. 직접 확인 후 수정하세요.';
+    statusEl.style.color='#BA7517';
+    if(sys)document.getElementById('bp-sys').value=sys;
+    if(dia)document.getElementById('bp-dia').value=dia;
+  }
+}
+/* ── 컬럼 페이지 (탭 전용) ── */
+let colPageFilterCurrent='전체';
+
+function colPageFilter(cat){
+  colPageFilterCurrent=cat;
+  document.querySelectorAll('[id^="cpf-"]').forEach(function(b){
+    b.classList.toggle('col-filter-active',b.id==='cpf-'+cat);
+  });
+  const el=document.getElementById('col-page-list');
+  if(!el)return;
+  const filtered=cat==='전체'?colData:colData.filter(function(c){return c.category===cat;});
+  if(!filtered.length){
+    el.innerHTML='<div style="text-align:center;color:#aaa;padding:30px 0;font-size:13px;">해당 카테고리 컬럼이 없습니다.</div>';
+    return;
+  }
+  el.innerHTML=filtered.map(function(c){
+    const cc=CAT_COLORS[c.category]||'#888';
+    const cb=CAT_BGNEW[c.category]||'#f5f5f3';
+    return '<div class="card" style="cursor:pointer;" onclick="colPageOpen('+c.id+')">'
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">'
+      +'<span style="font-size:11px;padding:2px 9px;border-radius:10px;font-weight:500;background:'+cb+';color:'+cc+';">'+c.category+'</span>'
+      +'<span style="font-size:11px;color:#aaa;">'+c.date+'</span>'
+      +'</div>'
+      +'<div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:6px;line-height:1.4;">'+c.title+'</div>'
+      +'<div style="font-size:12px;color:#888;line-height:1.6;">'+c.summary+'</div>'
+      +'<div style="font-size:11px;color:#aaa;margin-top:8px;">'+c.author+' ›</div>'
+      +'</div>';
+  }).join('');
+}
+function colPageOpen(id){
+  const item=colData.find(function(c){return c.id===id;});
+  if(item)colOpenItem(item);
+}
+
+/* ── BP 접기/펼치기 ── */
+function bpToggleGrade(){
+  const wrap=document.getElementById('bp-grade-wrap');
+  const arrow=document.getElementById('bp-grade-arrow');
+  if(!wrap)return;
+  const open=wrap.style.display==='none';
+  wrap.style.display=open?'block':'none';
+  if(arrow)arrow.textContent=open?'▴ 닫기':'▾ 보기';
+  if(open)bpRenderGradeTable();
+}
+function bpToggleTips(){
+  const wrap=document.getElementById('bp-tips-wrap');
+  const arrow=document.getElementById('bp-tips-arrow');
+  if(!wrap)return;
+  const open=wrap.style.display==='none';
+  wrap.style.display=open?'block':'none';
+  if(arrow)arrow.textContent=open?'▴ 닫기':'▾ 보기';
+}
+
 function bpShowError(msg,detail){
   const el=document.getElementById('bp-error-box');
   if(!el)return;
@@ -927,23 +1515,24 @@ function bpRecord(){
     const sysEl=document.getElementById('bp-sys');
     const diaEl=document.getElementById('bp-dia');
     const pulseEl=document.getElementById('bp-pulse');
-    const timeEl=document.getElementById('bp-time');
     if(!sysEl||!diaEl){bpShowError('입력 필드를 찾을 수 없습니다.');return;}
 
     const sys=parseInt(sysEl.value);
     const dia=parseInt(diaEl.value);
     const pulse=parseInt(pulseEl.value)||null;
-    const time=timeEl?timeEl.value:'etc';
 
     if(isNaN(sys)||isNaN(dia)){bpShowError('숫자를 입력해 주세요.');return;}
     if(sys<60||sys>250){bpShowError('수축기 혈압은 60~250 사이로 입력하세요.','입력값: '+sys);return;}
     if(dia<40||dia>150){bpShowError('이완기 혈압은 40~150 사이로 입력하세요.','입력값: '+dia);return;}
     if(pulse&&(pulse<30||pulse>220)){bpShowError('맥박은 30~220 사이로 입력하세요.','입력값: '+pulse);return;}
 
-    const d=new Date();
-    const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const timeInfo=bpGetTimeInfo();
+    const d2=new Date();
+    const key=d2.getFullYear()+'-'+String(d2.getMonth()+1).padStart(2,'0')+'-'+String(d2.getDate()).padStart(2,'0');
     if(!bpData[key])bpData[key]=[];
-    bpData[key].push({sys:sys,dia:dia,pulse:pulse,time:time,ts:Date.now()});
+    bpData[key].push({sys:sys,dia:dia,pulse:pulse,
+      time:timeInfo.period,timeStr:timeInfo.timeStr,
+      ts:Date.now()});
     bpSave();
 
     const grade=bpClassify(sys,dia);
@@ -1015,7 +1604,10 @@ function bpRenderList(){
   recent.forEach(function(r){
     const grade=bpClassify(r.sys,r.dia);
     const d=new Date(r.ts);
-    const ds=(d.getMonth()+1)+'/'+(d.getDate())+' '+(tl[r.time]||'');
+    const dateStr=(d.getMonth()+1)+'/'+(d.getDate());
+    const periodLabel=tl[r.time]||'📋';
+    const actualTime=r.timeStr?r.timeStr:'';
+    const ds=dateStr+' '+periodLabel+(actualTime?' '+actualTime:'');
     const pulseHtml=r.pulse?'<span style="font-size:11px;color:#888;margin-left:6px;">♥ '+r.pulse+'</span>':'';
     html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:'+grade.bg+';border-radius:8px;margin-bottom:6px;">';
     html+='<div>';
@@ -1129,8 +1721,8 @@ const I18N={
     food_note:'* 칼로리·탄수화물·단백질·지방·나트륨은 평균 추정값입니다',
     lang_next:'EN',
     nav_settings:'설정',
-    nav_bp:'혈압',
-    pg_bp:'혈압 기록',
+    nav_col:'컬럼',
+    pg_col:'건강 컬럼',
     pg_settings:'설정',
     s_lang:'언어 / Language', s_lang_label:'언어 선택', s_lang_sub:'앱 표시 언어를 선택합니다',
     s_theme:'테마 색상',
@@ -1163,8 +1755,8 @@ const I18N={
     food_note:'* Calorie & nutrient values are estimates based on average data',
     lang_next:'한',
     nav_settings:'Settings',
-    nav_bp:'BP',
-    pg_bp:'Blood Pressure',
+    nav_col:'Column',
+    pg_col:'Health Column',
     pg_settings:'Settings',
     s_lang:'Language', s_lang_label:'Select Language', s_lang_sub:'Choose app display language',
     s_theme:'Theme Color',
@@ -2483,6 +3075,7 @@ function renderDashboard(){
   renderBmiBanner();
   renderWeightCard();
   renderWeeklyExerciseGoal();
+  renderDashboardBP();
 
   const intake=fTotalKcal(todayKey);
   const macros=fTotalMacros(todayKey);
@@ -3430,7 +4023,7 @@ function diagRestart(){
    NAVIGATION
 ══════════════════════════════════════ */
 function showPage(p){
-  ['food','workout','dashboard','diag','bp','settings'].forEach(id=>{
+  ['food','workout','dashboard','diag','col','settings'].forEach(function(id){
     document.getElementById('pg-'+id).classList.toggle('active',id===p);
     const nb=document.getElementById('nb-'+id);
     if(nb)nb.classList.toggle('active',id===p);
@@ -3442,14 +4035,14 @@ function showPage(p){
     if(!applied&&prof&&prof.recExType&&wSelectedExType==='run'){wSelectedExType=prof.recExType;}
     if(!applied&&prof&&prof.recIntensity){wSelectedIntensity=prof.recIntensity;}
     wUpdateEst();wRenderExTypeGrid();
-    ['low','mid','high'].forEach(l=>{
+    ['low','mid','high'].forEach(function(l){
       const b=document.getElementById('int-'+l);
       if(b){b.className='int-btn';if(l===wSelectedIntensity)b.classList.add('sel-'+l);}
     });
   }
-  if(p==='dashboard')renderDashboard();
+  if(p==='dashboard'){renderDashboard();bpUpdateTimeDisplay();bpRenderGradeTable();bpRenderList();bpShowChart('7');}
   if(p==='diag')renderDiag();
-  if(p==='bp'){bpRenderGradeTable();bpRenderList();bpShowChart('7');}
+  if(p==='col'){colPageFilter(colPageFilterCurrent||'전체');}
 }
 
 /* ══════════════════════════════════════
@@ -3466,6 +4059,7 @@ wUpdateEst();
 wRenderExTypeGrid();
 applyTheme(THEME);
 applyLang();
+colFetch();
 
 // 스플래시 2.2초 후 페이드아웃
 setTimeout(()=>{
