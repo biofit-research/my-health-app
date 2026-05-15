@@ -257,6 +257,24 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 .rt-totalsbar .col{text-align:center;}
 .rt-totalsbar .lab{font-size:10px;color:#888;letter-spacing:.04em;margin-bottom:2px;}
 .rt-totalsbar .v{font-size:14px;font-weight:500;font-variant-numeric:tabular-nums;}
+
+/* ── 변경 내역 카드 (대시보드 하단) ── */
+.cl-card{margin-top:14px;background:#fff;border:0.5px solid rgba(0,0,0,.08);border-radius:10px;overflow:hidden;}
+.cl-head{display:flex;align-items:center;gap:8px;padding:11px 14px;cursor:pointer;font-size:12px;color:#888;background:#fff;border:none;width:100%;text-align:left;}
+.cl-head:hover{background:#fafafa;}
+.cl-head .lead{font-weight:500;color:#1a1a1a;}
+.cl-head .ver{font-size:11px;color:#aaa;font-variant-numeric:tabular-nums;margin-left:auto;}
+.cl-head .arr{color:#aaa;font-size:10px;transition:transform .15s;}
+.cl-head.on .arr{transform:rotate(180deg);}
+.cl-body{display:none;padding:4px 14px 14px;border-top:0.5px solid rgba(0,0,0,.06);}
+.cl-body.on{display:block;}
+.cl-ver-row{margin:11px 0 4px;display:flex;align-items:baseline;gap:8px;}
+.cl-ver-row .v{font-size:12.5px;font-weight:600;color:#1a1a1a;}
+.cl-ver-row .d{font-size:11px;color:#aaa;font-variant-numeric:tabular-nums;}
+.cl-ver-row .tag{font-size:9.5px;padding:1.5px 7px;border-radius:8px;background:#E6F1FB;color:#0C447C;letter-spacing:.04em;font-weight:500;}
+.cl-ver-row .tag.fix{background:#FAEEDA;color:#854F0B;}
+.cl-item{font-size:12px;color:#666;padding:3px 0 3px 12px;position:relative;line-height:1.55;}
+.cl-item::before{content:"·";position:absolute;left:4px;color:#aaa;}
 .intensity-row{display:flex;gap:6px;margin-bottom:10px;}
 .int-btn{flex:1;padding:8px;font-size:12px;border:0.5px solid rgba(0,0,0,.12);border-radius:8px;background:var(--theme-bg);cursor:pointer;text-align:center;color:#555;transition:background .12s;}
 .int-btn.sel-low{background:#EAF3DE;color:#27500A;border-color:#639922;}
@@ -350,7 +368,7 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
     <h2>음식 일기</h2>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;">
       <span class="sub" id="f-date-hd"></span>
-      <span style="font-size:10px;color:#aaa;">건강 관리 앱 v1.1 · 2026.5.3</span>
+      <span style="font-size:10px;color:#aaa;">건강 관리 앱 v1.2.1 · 2026.5.15</span>
     </div>
   </div>
   <div class="itabs">
@@ -453,7 +471,7 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 
 <!-- ═══════════ WORKOUT PAGE ═══════════ -->
 <div id="pg-workout" class="page">
-  <div class="page-hd"><h2>운동 타이머</h2><span style="font-size:10px;color:#aaa;font-weight:400;letter-spacing:0;">건강 관리 앱 v1.1 · 2026.5.3</span></div>
+  <div class="page-hd"><h2>운동 타이머</h2><span style="font-size:10px;color:#aaa;font-weight:400;letter-spacing:0;">건강 관리 앱 v1.2.1 · 2026.5.15</span></div>
   <div class="itabs">
     <button class="itab active" onclick="wShowTab('timer')">타이머</button>
     <button class="itab" onclick="wShowTab('routine')">루틴</button>
@@ -643,7 +661,7 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 <!-- ═══════════ DASHBOARD PAGE ═══════════ -->
 <div id="pg-dashboard" class="page active">
   <div class="page-hd">
-    <h2>대시보드</h2><span style="font-size:10px;color:#aaa;font-weight:400;letter-spacing:0;">건강 관리 앱 v1.1 · 2026.5.3</span>
+    <h2>대시보드</h2><span style="font-size:10px;color:#aaa;font-weight:400;letter-spacing:0;">건강 관리 앱 v1.2.1 · 2026.5.15</span>
     <span class="sub" id="d-date"></span>
   </div>
 
@@ -887,13 +905,57 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
     </div>
   </div>
 
+  <!-- ═══ 변경 내역 (대시보드 하단) ═══ -->
+  <div class="cl-card">
+    <button class="cl-head" id="cl-toggle" onclick="clToggle()" type="button" aria-expanded="false">
+      <span class="lead">최근 업데이트</span>
+      <span class="ver">v1.2.1 · 2026.5.15</span>
+      <span class="arr">▾</span>
+    </button>
+    <div class="cl-body" id="cl-body">
+      <div class="cl-ver-row">
+        <span class="v">v1.2.1</span>
+        <span class="d">2026.5.15</span>
+        <span class="tag">개선</span>
+      </div>
+      <div class="cl-item">진단 → 운동 연결 — 진단 결과 화면에서 단일 타이머 또는 자동 진행 루틴으로 한 번에 이동, 종목·강도·시간 자동 적용</div>
+      <div class="cl-item">연령 보정 강화 — 60세 이상 휴식 +30초, 워밍업/마무리 5분, Zone 2 심박 목표 55~65% (ACSM·ESC 심혈관 재활 가이드라인)</div>
+      <div class="cl-item">운동 표기 통일 — "회 × 세트" 순서로 변경</div>
+
+      <div class="cl-ver-row">
+        <span class="v">v1.2.0</span>
+        <span class="d">2026.5.15</span>
+        <span class="tag">신규</span>
+      </div>
+      <div class="cl-item">자동 진행 루틴 빌더 — Zone 2 / 전신 저항성 / 혼합 3가지 유형, 워밍업부터 마무리까지 자동 연결</div>
+      <div class="cl-item">운동별 ▶ 영상 (YouTube 검색) 링크 인라인 표시</div>
+      <div class="cl-item">실시간 칼로리 누적 — 단계별 MET 기반 자동 계산</div>
+      <div class="cl-item">시니어 안심 모드 — 60세 이상 자동 감지 + 안내 배지</div>
+
+      <div class="cl-ver-row">
+        <span class="v">v1.1.2</span>
+        <span class="d">2026.5.15</span>
+        <span class="tag">개선</span>
+      </div>
+      <div class="cl-item">운동 종목 그리드 16개 → 메인 8개 + "더 보기" 8개로 정리</div>
+      <div class="cl-item">고강도 종목(줄넘기·버피·테니스·축구)에 ⚠ 의사 상담 권장 표시</div>
+
+      <div class="cl-ver-row">
+        <span class="v">v1.1.1</span>
+        <span class="d">2026.5.15</span>
+        <span class="tag fix">수정</span>
+      </div>
+      <div class="cl-item">진단 페이지 닫는 태그 누락 수정 — 다른 페이지에서 하단 네비게이션 정상 표시</div>
+    </div>
+  </div>
+
 </div>
 <!-- ═══════════ DIAGNOSIS PAGE ═══════════ -->
 <div id="pg-diag" class="page">
   <div class="page-hd">
     <h2>체중 관리 진단</h2>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;">
-      <span style="font-size:10px;color:#aaa;font-weight:400;">건강 관리 앱 v1.1 · 2026.5.3</span>
+      <span style="font-size:10px;color:#aaa;font-weight:400;">건강 관리 앱 v1.2.1 · 2026.5.15</span>
       <button id="diag-restart-btn" style="display:none;font-size:12px;color:#888;background:none;border:0.5px solid #ddd;border-radius:20px;padding:4px 12px;cursor:pointer;" onclick="diagRestart()">처음으로</button>
     </div>
   </div>
@@ -1017,7 +1079,7 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
   <div id="col-list-view">
     <div class="page-hd">
       <h2>📰 건강 컬럼</h2>
-      <span style="font-size:10px;color:#aaa;">건강 관리 앱 v1.1 · 2026.5.3</span>
+      <span style="font-size:10px;color:#aaa;">건강 관리 앱 v1.2.1 · 2026.5.15</span>
     </div>
     <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;">
       <button onclick="colPageFilter('전체')" id="cpf-전체" class="col-filter-btn col-filter-active">전체</button>
@@ -1065,7 +1127,7 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 <!-- ═══════════ SETTINGS PAGE ═══════════ -->
 <div id="pg-settings" class="page">
   <div class="page-hd">
-    <h2 id="settings-title">설정</h2><span style="font-size:10px;color:#aaa;font-weight:400;letter-spacing:0;">건강 관리 앱 v1.1 · 2026.5.3</span>
+    <h2 id="settings-title">설정</h2><span style="font-size:10px;color:#aaa;font-weight:400;letter-spacing:0;">건강 관리 앱 v1.2.1 · 2026.5.15</span>
   </div>
 
   <div class="setting-section">
@@ -1129,7 +1191,7 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
     </div>
 
     <div class="about-row"><span style="font-size:18px;">🏥</span><div><div style="font-size:13px;font-weight:500;">다보스병원 심장내과</div></div></div>
-    <div class="about-row"><span style="font-size:18px;">⚖️</span><div><div style="font-size:13px;font-weight:500;" id="s-app-name">건강 관리 앱</div><div style="font-size:11px;color:#aaa;">운동·식단으로 내 몸 바꾸기 v1.1 · 2026.5.3</div></div></div>
+    <div class="about-row"><span style="font-size:18px;">⚖️</span><div><div style="font-size:13px;font-weight:500;" id="s-app-name">건강 관리 앱</div><div style="font-size:11px;color:#aaa;">운동·식단으로 내 몸 바꾸기 v1.2.1 · 2026.5.15</div></div></div>
     <div class="about-row"><span style="font-size:18px;">📋</span><div style="font-size:12px;color:#888;" id="s-disclaimer">이 앱은 일반적인 건강 정보 제공 목적이며 의사의 진료를 대신하지 않습니다.</div></div>
     <div class="about-row"><span style="font-size:18px;">🔗</span><div><div style="font-size:13px;">GitHub</div><div style="font-size:11px;color:#aaa;">biofit-research.github.io/my-health-app</div></div></div>
   </div>
@@ -1161,7 +1223,7 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
   margin-top:8px;
 ">
   <div style="font-size:12px;font-weight:600;color:#888;margin-bottom:2px;">🏥 다보스병원 심장내과</div>
-  <div style="font-size:11px;color:#aaa;">건강 관리 앱 &nbsp;v1.1 · 2026.5.3</div>
+  <div style="font-size:11px;color:#aaa;">건강 관리 앱 &nbsp;v1.2.1 · 2026.5.15</div>
   <div style="margin-top:3px;font-size:10px;color:#ccc;">© 2024–2026. All Rights Reserved.</div>
 </div>
 
@@ -2971,16 +3033,27 @@ function _rtSets(i){return {low:2,mid:3,high:3}[i];}
 function _rtSetRest(i){return {low:45,mid:30,high:20}[i];}
 function _rtWorkSec(i){return {low:25,mid:35,high:40}[i];}
 
-/* 연령대별 안전 보정
-   - 60세+: 반복 ×0.8, 휴식 +15초, 워밍업/마무리 +60초씩, "🛡 시니어 안심 모드" 배지
-   - 50–59: 반복 ×0.9, 휴식 +10초, 워밍업/마무리 +30초씩 (배지 없음, 노트만)
-   - ~49:  보정 없음 */
+/* 연령대별 안전 보정 — ACSM/ESC 심혈관 재활 가이드라인 기반
+   - 60세+: 반복 ×0.8, 세트 휴식 +30s (→60s/중강도), 종목 휴식 +60s (→105–120s),
+            워밍업·마무리 +120s 각 (→5분/5분), Zone 2 목표 심박 55–65% HRmax
+   - 50–59: 반복 ×0.9, 세트 휴식 +15s, 종목 휴식 +30s,
+            워밍업·마무리 +60s 각, 심박 목표 60–70% (기본 유지)
+   - ~49: 기본
+   ※ 짧은 운동(<25분)에서는 워밍업/마무리 확장이 자동으로 줄어 본운동 시간을 보장 */
 function rtAgeAdj(age){
-  if(age >= 60) return {rep:0.8, restPlus:15, warmCoolPlus:60, mode:'senior',
-                        note:'시니어 안심 모드 — 반복 ↓ · 휴식 ↑ · 워밍업/마무리 확장 (KSSO 권고 기반)'};
-  if(age >= 50) return {rep:0.9, restPlus:10, warmCoolPlus:30, mode:'mid',
-                        note:'50대 보정 적용 — 반복 약간 ↓ · 휴식 약간 ↑'};
-  return {rep:1.0, restPlus:0, warmCoolPlus:0, mode:'std', note:null};
+  if(age >= 60) return {rep:0.8, restPlus:30, exRestPlus:60, warmCoolPlus:120,
+                        hrPctLo:0.55, hrPctHi:0.65, mode:'senior',
+                        cite:'ACSM·ESC 심혈관 재활 가이드라인'};
+  if(age >= 50) return {rep:0.9, restPlus:15, exRestPlus:30, warmCoolPlus:60,
+                        hrPctLo:0.60, hrPctHi:0.70, mode:'mid', cite:null};
+  return {rep:1.0, restPlus:0, exRestPlus:0, warmCoolPlus:0,
+          hrPctLo:0.60, hrPctHi:0.70, mode:'std', cite:null};
+}
+
+/* 워밍업/마무리 확장량 — 총 시간의 20% 안에 들도록 캡 */
+function _rtWarmCoolExt(adj, base, totalSec){
+  const cap = totalSec * 0.2;
+  return Math.max(0, Math.min(adj.warmCoolPlus, cap - base));
 }
 
 /* 연령 보정 적용된 반복 수 (최저값 보장: 회=5, 초=15) */
@@ -3015,27 +3088,27 @@ function rtBuild(spec){
   const phases = [];
   const exList = [];
   const maxHR = 220 - age;
-  const hrLo = Math.round(maxHR * 0.6);
-  const hrHi = Math.round(maxHR * 0.7);
   const adj = rtAgeAdj(age);
+  const hrLo = Math.round(maxHR * adj.hrPctLo);
+  const hrHi = Math.round(maxHR * adj.hrPctHi);
   const add = (p) => phases.push(p);
 
   if(type === 'zone2'){
-    const warm = 180 + adj.warmCoolPlus;
-    const cool = 120 + adj.warmCoolPlus;
+    const warm = 180 + _rtWarmCoolExt(adj, 180, totalSecTarget);
+    const cool = 120 + _rtWarmCoolExt(adj, 120, totalSecTarget);
     const main = totalSecTarget - warm - cool;
     add({type:'warm', t:warm, label:'워밍업', cue:'가볍게 걷기 + 동적 스트레칭', met:3});
     add({type:'z2',   t:main, label:'Zone 2 유산소', cue:'빠른 걷기 · 가벼운 조깅 · 사이클 중 택1', hr:[hrLo,hrHi], met:5.5});
     add({type:'cool', t:cool, label:'마무리', cue:'정적 스트레칭', met:2.5});
   } else if(type === 'resist'){
-    const warm = 180 + adj.warmCoolPlus;
-    const cool = 120 + adj.warmCoolPlus;
+    const warm = 180 + _rtWarmCoolExt(adj, 180, totalSecTarget);
+    const cool = 120 + _rtWarmCoolExt(adj, 120, totalSecTarget);
     const mainBudget = totalSecTarget - warm - cool;
     const exCount = mainBudget >= 1200 ? 5 : (mainBudget >= 720 ? 4 : 3);
     const list = rtPickFullBody(dur + intensity.length, exCount);
     const sets = _rtSets(intensity);
     const setRest = _rtSetRest(intensity) + adj.restPlus;
-    const exRest = 60;
+    const exRest = 60 + adj.exRestPlus;
     add({type:'warm', t:warm, label:'워밍업', cue:'가볍게 걷기 + 동적 스트레칭', met:3});
     list.forEach((ex, i) => {
       add({type:'cue', t:3, label:'다음 운동', exName:ex.name});
@@ -3051,12 +3124,12 @@ function rtBuild(spec){
     });
     add({type:'cool', t:cool, label:'마무리', cue:'정적 스트레칭', met:2.5});
   } else { // mix
-    const warm = 180 + adj.warmCoolPlus;
-    const cool = 180 + adj.warmCoolPlus;
+    const warm = 180 + _rtWarmCoolExt(adj, 180, totalSecTarget);
+    const cool = 180 + _rtWarmCoolExt(adj, 180, totalSecTarget);
     const mainBudget = totalSecTarget - warm - cool;
     const sets = Math.max(2, _rtSets(intensity) - 1);
     const setRest = _rtSetRest(intensity) + adj.restPlus;
-    const exRest = 45;
+    const exRest = 45 + adj.exRestPlus;
     let exCount = 4;
     let list = rtPickFullBody(dur, exCount);
     const estResFor = (lst) => {
@@ -3072,8 +3145,15 @@ function rtBuild(spec){
     };
     let estResTime = estResFor(list);
     let z2Share = mainBudget - estResTime;
+    // 시니어 모드 + 짧은 시간일 때 종목 수가 안 맞으면 줄임
     if(z2Share < 180){
       exCount = 3;
+      list = rtPickFullBody(dur, exCount);
+      estResTime = estResFor(list);
+      z2Share = mainBudget - estResTime;
+    }
+    if(z2Share < 180){
+      exCount = 2;
       list = rtPickFullBody(dur, exCount);
       estResTime = estResFor(list);
       z2Share = Math.max(180, mainBudget - estResTime);
@@ -3098,7 +3178,7 @@ function rtBuild(spec){
   let totalT = 0, totalKcal = 0;
   phases.forEach(p => { totalT += p.t; if(p.met) totalKcal += p.met * rtWeightKg * (p.t/3600); });
   return {phases, exList, totalSec:totalT, kcalEst:Math.round(totalKcal), hr:[hrLo,hrHi], type, intensity,
-          ageMode:adj.mode, ageNote:adj.note, age};
+          ageMode:adj.mode, ageCite:adj.cite, age};
 }
 
 function rtSyncProfile(){
@@ -3179,7 +3259,8 @@ function rtRenderPreview(){
   if(r.ageMode === 'senior'){
     html += '<div style="background:#FFF8E0;padding:8px 11px;border-radius:8px;border-left:3px solid #F4B731;font-size:11px;color:#7A5C00;margin-bottom:10px;line-height:1.55;">'
           + '<div style="font-weight:600;letter-spacing:.02em;margin-bottom:1px;">시니어 안심 모드</div>'
-          + r.age + '세 기준 자동 조정 — 반복 ↓ · 휴식 ↑ · 워밍업/마무리 확장 <span style="color:#A88B33;">(KSSO 권고)</span>'
+          + r.age + '세 기준 자동 조정 — 반복 ↓ · 휴식 ↑ · 워밍업/마무리 확장 · Zone 2 심박 목표 보수적'
+          + (r.ageCite ? ' <span style="color:#A88B33;">(' + r.ageCite + ')</span>' : '')
           + '</div>';
   } else if(r.ageMode === 'mid'){
     html += '<div style="font-size:11px;color:#888;margin-bottom:10px;font-style:italic;">' + r.age + '세 기준 보정 — 반복 약간 ↓ · 휴식 약간 ↑</div>';
@@ -3215,7 +3296,7 @@ function rtRenderPreview(){
         const ytURL = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.ytQ);
         html += '<div class="rt-erow"><span class="num">' + (n+1) + '.</span>'
               + '<span>' + ex.name + ' <span class="sub">(' + ex.grp + ')</span></span>'
-              + '<span class="spec">' + ex.sets + '세트 × ' + ex.spec + '</span>'
+              + '<span class="spec">' + ex.spec + ' × ' + ex.sets + '세트</span>'
               + '<a class="rt-yt" href="' + ytURL + '" target="_blank" rel="noopener">▶ 영상</a></div>';
       });
       html += '</div>';
@@ -3431,6 +3512,107 @@ function rtFinishRoutine(){
 function rtInit(){
   rtBindControls();
   rtSyncProfile();
+}
+
+/* ══════════════════════════════════════
+   DIAG → WORKOUT BRIDGES
+   진단 결과 화면에서 단일 타이머 또는 자동 진행 루틴으로 연결
+══════════════════════════════════════ */
+
+/* 진단 종목 ID → 루틴 유형 매핑 */
+function _diagExToRoutineType(exId){
+  // 유산소 지속형 → Zone 2
+  if(['walk','run','cycle','swim','climb','rope'].includes(exId)) return 'zone2';
+  // 저항성 위주 → 전신 저항성
+  if(['squat','plank','weight','burpee'].includes(exId)) return 'resist';
+  // 그 외(요가·필라테스·댄스·테니스·축구·자유) → 혼합
+  return 'mix';
+}
+
+/* 진단의 추천 시간(분) — recPlan에서 도출, 없으면 30분 기본 */
+function _diagRecMinForEx(exType, intensity){
+  const ex = EXERCISE_TYPES.find(e => e.id === exType);
+  if(!ex || !ex.recPlan || !ex.recPlan[intensity]) return 30;
+  const plan = ex.recPlan[intensity];
+  let total;
+  if(plan.rounds === 1 && plan.cycles === 1){
+    total = plan.workSec;
+  } else {
+    const perCycle = plan.workSec * plan.rounds + (plan.restSec || 0) * Math.max(0, plan.rounds - 1);
+    total = perCycle * plan.cycles;
+  }
+  return Math.max(15, Math.min(60, Math.round(total / 60)));
+}
+
+/* 단일 운동 타이머로 진단 처방 자동 적용 후 이동 */
+function diagGoToTimer(){
+  const p = loadProfile();
+  if(!p || !p.recExType){ showToast('진단에서 운동을 먼저 선택해 주세요'); return; }
+  showPage('workout');
+  wShowTab('timer');
+  wSelectExType(p.recExType);
+  if(p.recIntensity) wSetIntensity(p.recIntensity);
+  wRenderExTypeGrid(); // "더 보기" 안에 있는 종목이면 자동 펼침
+  showToast('진단 처방이 적용되었습니다');
+}
+
+/* 자동 진행 루틴 빌더로 이동 + 자동 생성 */
+function diagGoToRoutine(){
+  const p = loadProfile();
+  if(!p || !p.recExType){ showToast('진단에서 운동을 먼저 선택해 주세요'); return; }
+  showPage('workout');
+  wShowTab('routine');
+
+  const routineType = _diagExToRoutineType(p.recExType);
+  const intensity = p.recIntensity || 'mid';
+  const dur = _diagRecMinForEx(p.recExType, intensity);
+  const age = p.age || 40;
+
+  // 빌더 폼에 값 반영 (사용자가 "← 설정 변경"으로 돌아갔을 때 보이는 상태)
+  rtSpec = {type:routineType, intensity, dur, age};
+  document.querySelectorAll('#rt-seg-type button').forEach(b => b.classList.toggle('on', b.dataset.v === routineType));
+  document.querySelectorAll('#rt-seg-int button').forEach(b => b.classList.toggle('on', b.dataset.v === intensity));
+  const durEl = document.getElementById('rt-dur');
+  if(durEl){ durEl.value = dur; document.getElementById('rt-dur-out').textContent = dur; }
+  const ageEl = document.getElementById('rt-age');
+  if(ageEl){ ageEl.value = age; document.getElementById('rt-age-out').textContent = age; }
+
+  // 자유운동은 자동 생성하지 않고 빌더에서 멈춤 (사용자가 직접 설정)
+  if(p.recExType === 'free'){
+    rtRoutine = null;
+    rtShowSubview('builder');
+    showToast('자유운동 — 루틴 빌더에서 직접 설정하세요');
+  } else {
+    rtMakeRoutine();
+    showToast('진단 처방으로 루틴이 생성되었습니다');
+  }
+}
+
+/* ══════════════════════════════════════
+   CHANGELOG (대시보드 하단 펼침/접힘)
+══════════════════════════════════════ */
+function clToggle(){
+  const body = document.getElementById('cl-body');
+  const head = document.getElementById('cl-toggle');
+  if(!body || !head) return;
+  const open = body.classList.toggle('on');
+  head.classList.toggle('on', open);
+  head.setAttribute('aria-expanded', open ? 'true' : 'false');
+  try{ localStorage.setItem('cl_open', open ? '1' : '0'); }catch(e){}
+}
+
+function clRestore(){
+  try{
+    if(localStorage.getItem('cl_open') === '1'){
+      const body = document.getElementById('cl-body');
+      const head = document.getElementById('cl-toggle');
+      if(body && head){
+        body.classList.add('on');
+        head.classList.add('on');
+        head.setAttribute('aria-expanded','true');
+      }
+    }
+  }catch(e){}
 }
 
 /* ══════════════════════════════════════
@@ -4787,8 +4969,15 @@ function renderDiagDone(){
         <div>
           <div style="font-weight:500;font-size:15px;">${p.recExName}</div>
           ${p.recIntensity?`<span style="font-size:11px;padding:2px 8px;border-radius:8px;background:${intBgMap[p.recIntensity]};color:${intColMap[p.recIntensity]};">${intLblMap[p.recIntensity]}</span>`:''}
-          <div style="font-size:11px;color:#888;margin-top:3px;">운동타이머에서 바로 시작할 수 있어요</div>
         </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
+        <button onclick="diagGoToTimer()" style="padding:10px 8px;background:#fff;border:0.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:12px;color:#1a1a1a;cursor:pointer;text-align:center;line-height:1.4;">
+          📝 단일 운동 타이머<br><span style="font-size:10px;color:#888;font-weight:400;">선택한 종목으로 시작</span>
+        </button>
+        <button onclick="diagGoToRoutine()" style="padding:10px 8px;background:var(--theme-main);border:0.5px solid var(--theme-main);border-radius:8px;font-size:12px;color:#fff;font-weight:500;cursor:pointer;text-align:center;line-height:1.4;">
+          🎯 자동 진행 루틴<br><span style="font-size:10px;color:#fff;opacity:.85;font-weight:400;">워밍업~마무리 자동 연결</span>
+        </button>
       </div>
     </div>`:'';
 
@@ -4811,7 +5000,7 @@ function renderDiagDone(){
       <button class="hist-toggle" onclick="diagToggleHist()">▸ 내가 선택한 경로 보기</button>
       <div id="diag-hist-list" style="display:none;margin-top:10px;">${histRows}</div>
     </div>`:''}
-    ${p&&p.recExType?`<button class="primary-btn" style="margin-bottom:8px;" onclick="showPage('workout')">⏱ 운동 타이머 바로 가기 →</button>`:''}
+    ${p&&p.recExType?'':''}
     ${diagQuickBothMode?`<button class="primary-btn" style="margin-bottom:8px;background:#854F0B;" onclick="diagSwitchToDiet()">🥗 식이요법도 선택하기 →</button>`:''}
     <button class="primary-btn" style="margin-bottom:8px;${p&&p.recExType?'background:#3B6D11;':''}" onclick="showPage('dashboard')">대시보드에서 확인하기 →</button>
     <button class="secondary-btn-outline" onclick="diagGoBack()">← 이전으로</button>
@@ -4964,6 +5153,7 @@ fRenderDiary();
 wUpdateEst();
 wRenderExTypeGrid();
 rtInit();
+clRestore();
 applyTheme(THEME);
 applyLang();
 colFetch();
