@@ -270,75 +270,6 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
   </div>
 </div>
 
-<!-- ═══════════ COLUMN MODAL ═══════════ -->
-<div id="col-modal" style="display:none;position:fixed;inset:0;z-index:8000;
-  background:rgba(0,0,0,.5);overflow-y:auto;">
-  <div style="min-height:100%;display:flex;align-items:flex-start;justify-content:center;padding:20px 0 80px;">
-    <div style="width:100%;max-width:480px;background:#fff;border-radius:16px;overflow:hidden;">
-      <!-- 모달 헤더 -->
-      <div style="background:var(--theme-main);padding:16px 20px;display:flex;
-                  align-items:center;justify-content:space-between;">
-        <div>
-          <div style="font-size:11px;color:rgba(255,255,255,.75);margin-bottom:2px;" id="col-modal-cat"></div>
-          <div style="font-size:16px;font-weight:600;color:#fff;" id="col-modal-title"></div>
-          <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:4px;" id="col-modal-meta"></div>
-        </div>
-        <button onclick="colCloseModal()"
-          style="width:32px;height:32px;background:rgba(255,255,255,.2);border:none;
-                 border-radius:50%;color:#fff;font-size:20px;cursor:pointer;
-                 display:flex;align-items:center;justify-content:center;flex-shrink:0;">×</button>
-      </div>
-      <!-- 모달 본문 -->
-      <div id="col-modal-body" style="padding:20px;font-size:14px;color:#333;
-           line-height:1.9;white-space:pre-line;"></div>
-      <!-- 목록으로 -->
-      <div style="padding:0 20px 20px;">
-        <button onclick="colShowList()"
-          style="width:100%;padding:12px;background:var(--theme-bg);border:0.5px solid rgba(0,0,0,.1);
-                 border-radius:8px;font-size:14px;cursor:pointer;color:#555;">
-          ← 전체 목록 보기
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════ COLUMN LIST MODAL ═══════════ -->
-<div id="col-list-modal" style="display:none;position:fixed;inset:0;z-index:8000;
-  background:rgba(0,0,0,.5);overflow-y:auto;">
-  <div style="min-height:100%;display:flex;align-items:flex-start;justify-content:center;padding:20px 0 80px;">
-    <div style="width:100%;max-width:480px;background:#fff;border-radius:16px;overflow:hidden;">
-      <div style="background:var(--theme-main);padding:16px 20px;display:flex;
-                  align-items:center;justify-content:space-between;">
-        <div>
-          <div style="font-size:16px;font-weight:600;color:#fff;">📰 건강 컬럼</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:2px;">다보스병원 심장내과</div>
-        </div>
-        <button onclick="colCloseAll()"
-          style="width:32px;height:32px;background:rgba(255,255,255,.2);border:none;
-                 border-radius:50%;color:#fff;font-size:20px;cursor:pointer;
-                 display:flex;align-items:center;justify-content:center;">×</button>
-      </div>
-      <!-- 카테고리 필터 -->
-      <div style="display:flex;gap:6px;padding:12px 16px;overflow-x:auto;border-bottom:0.5px solid rgba(0,0,0,.07);">
-        <button onclick="colFilter('전체')" class="col-filter-btn col-filter-active">전체</button>
-        <button onclick="colFilter('고혈압')" class="col-filter-btn">고혈압</button>
-        <button onclick="colFilter('고지혈증')" class="col-filter-btn">고지혈증</button>
-        <button onclick="colFilter('운동')" class="col-filter-btn">운동</button>
-        <button onclick="colFilter('식단')" class="col-filter-btn">식단</button>
-      </div>
-      <div id="col-list-body" style="padding:12px 16px;"></div>
-    </div>
-  </div>
-</div>
-
-<style>
-@keyframes slideDown{from{transform:translateY(-100%);}to{transform:translateY(0);}}
-.col-filter-btn{padding:5px 12px;border:0.5px solid rgba(0,0,0,.15);border-radius:16px;
-  background:#fff;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0;}
-.col-filter-active{background:var(--theme-main)!important;color:#fff!important;border-color:var(--theme-main)!important;}
-</style>
-
 <!-- ═══════════ SPLASH SCREEN ═══════════ -->
 <div id="splash-screen" style="
   position:fixed;inset:0;z-index:9999;
@@ -977,26 +908,52 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 
 <!-- ═══════════ COLUMN PAGE ═══════════ -->
 <div id="pg-col" class="page">
-  <div class="page-hd">
-    <h2>📰 건강 컬럼</h2>
-    <span style="font-size:10px;color:#aaa;">건강 관리 앱 v1.1 · 2026.5.3</span>
+  <!-- 목록 뷰 -->
+  <div id="col-list-view">
+    <div class="page-hd">
+      <h2>📰 건강 컬럼</h2>
+      <span style="font-size:10px;color:#aaa;">건강 관리 앱 v1.1 · 2026.5.3</span>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;">
+      <button onclick="colPageFilter('전체')" id="cpf-전체" class="col-filter-btn col-filter-active">전체</button>
+      <button onclick="colPageFilter('고혈압')" id="cpf-고혈압" class="col-filter-btn">고혈압</button>
+      <button onclick="colPageFilter('고지혈증')" id="cpf-고지혈증" class="col-filter-btn">고지혈증</button>
+      <button onclick="colPageFilter('운동')" id="cpf-운동" class="col-filter-btn">운동</button>
+      <button onclick="colPageFilter('식단')" id="cpf-식단" class="col-filter-btn">식단</button>
+    </div>
+    <div id="col-page-list"></div>
+    <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:#aaa;">
+      🏥 다보스병원 심장내과 건강 컬럼
+    </div>
   </div>
 
-  <!-- 카테고리 필터 -->
-  <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;">
-    <button onclick="colPageFilter('전체')" id="cpf-전체" class="col-filter-btn col-filter-active">전체</button>
-    <button onclick="colPageFilter('고혈압')" id="cpf-고혈압" class="col-filter-btn">고혈압</button>
-    <button onclick="colPageFilter('고지혈증')" id="cpf-고지혈증" class="col-filter-btn">고지혈증</button>
-    <button onclick="colPageFilter('운동')" id="cpf-운동" class="col-filter-btn">운동</button>
-    <button onclick="colPageFilter('식단')" id="cpf-식단" class="col-filter-btn">식단</button>
-  </div>
-
-  <!-- 컬럼 목록 -->
-  <div id="col-page-list"></div>
-
-  <!-- 다보스병원 -->
-  <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:#aaa;">
-    🏥 다보스병원 심장내과 건강 컬럼
+  <!-- 상세보기 뷰 (탭 내에서 전환) -->
+  <div id="col-detail-view" style="display:none;">
+    <div class="page-hd" style="margin-bottom:0;">
+      <button onclick="colBackToList()"
+        style="display:flex;align-items:center;gap:4px;background:none;border:none;
+               cursor:pointer;font-size:14px;color:var(--theme-main);padding:0;">
+        ← 목록
+      </button>
+    </div>
+    <div class="card">
+      <div style="margin-bottom:12px;">
+        <span id="col-detail-cat"
+          style="font-size:11px;padding:2px 10px;border-radius:10px;font-weight:500;"></span>
+        <span id="col-detail-date" style="font-size:11px;color:#aaa;margin-left:8px;"></span>
+      </div>
+      <div id="col-detail-title"
+        style="font-size:18px;font-weight:600;color:#1a1a1a;line-height:1.4;margin-bottom:8px;"></div>
+      <div id="col-detail-author" style="font-size:12px;color:#aaa;margin-bottom:16px;"></div>
+      <div style="height:1px;background:rgba(0,0,0,.07);margin-bottom:16px;"></div>
+      <div id="col-detail-body"
+        style="font-size:14px;color:#333;line-height:1.9;white-space:pre-line;"></div>
+    </div>
+    <button onclick="colBackToList()" class="primary-btn"
+      style="margin-top:0;background:var(--theme-bg);color:#555;
+             border:0.5px solid rgba(0,0,0,.12);">
+      ← 목록으로 돌아가기
+    </button>
   </div>
 </div>
 
@@ -1705,7 +1662,7 @@ function bpParseOCR(text,statusEl){
     if(dia)document.getElementById('bp-dia').value=dia;
   }
 }
-/* ── 컬럼 페이지 (탭 전용) ── */
+/* ── 컬럼 페이지 (탭 전용, 모달 없음) ── */
 let colPageFilterCurrent='전체';
 
 function colPageFilter(cat){
@@ -1730,14 +1687,54 @@ function colPageFilter(cat){
       +'</div>'
       +'<div style="font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:6px;line-height:1.4;">'+c.title+'</div>'
       +'<div style="font-size:12px;color:#888;line-height:1.6;">'+c.summary+'</div>'
-      +'<div style="font-size:11px;color:#aaa;margin-top:8px;">'+c.author+' ›</div>'
+      +'<div style="font-size:11px;color:var(--theme-main);margin-top:8px;">자세히 보기 ›</div>'
       +'</div>';
   }).join('');
 }
+
 function colPageOpen(id){
   const item=colData.find(function(c){return c.id===id;});
-  if(item)colOpenItem(item);
+  if(!item)return;
+  // 읽음 처리
+  const ts=new Date(item.date).getTime();
+  const lastSeen=parseInt(localStorage.getItem(COL_SEEN_KEY)||'0');
+  if(ts>lastSeen)localStorage.setItem(COL_SEEN_KEY,ts.toString());
+
+  // 상세보기 내용 채우기
+  const cc=CAT_COLORS[item.category]||'#888';
+  const cb=CAT_BGNEW[item.category]||'#f5f5f3';
+  const catEl=document.getElementById('col-detail-cat');
+  if(catEl){catEl.textContent=item.category;catEl.style.background=cb;catEl.style.color=cc;}
+  const dateEl=document.getElementById('col-detail-date');
+  if(dateEl)dateEl.textContent=item.date;
+  const titleEl=document.getElementById('col-detail-title');
+  if(titleEl)titleEl.textContent=item.title;
+  const authorEl=document.getElementById('col-detail-author');
+  if(authorEl)authorEl.textContent=item.author;
+  const bodyEl=document.getElementById('col-detail-body');
+  if(bodyEl)bodyEl.textContent=item.content;
+
+  // 뷰 전환 (목록 숨기고 상세 표시)
+  document.getElementById('col-list-view').style.display='none';
+  document.getElementById('col-detail-view').style.display='block';
+  document.getElementById('pg-col').scrollTop=0;
+  window.scrollTo(0,0);
 }
+
+function colBackToList(){
+  document.getElementById('col-detail-view').style.display='none';
+  document.getElementById('col-list-view').style.display='block';
+}
+
+/* 기존 모달 함수 호환용 (배너에서 호출) */
+function colOpenItem(item){
+  showPage('col');
+  setTimeout(function(){colPageOpen(item.id);},50);
+}
+function colShowList(){showPage('col');}
+function colCloseAll(){document.body.style.overflow='';}
+function colCloseModal(){colBackToList();}
+function colFilter(cat){colPageFilter(cat);}
 
 /* ── BP 접기/펼치기 ── */
 function bpToggleGrade(){
@@ -4303,7 +4300,10 @@ function showPage(p){
   }
   if(p==='dashboard'){renderDashboard();bpUpdateTimeDisplay();bpRenderGradeTable();bpRenderList();bpShowChart('7');}
   if(p==='diag')renderDiag();
-  if(p==='col'){colPageFilter(colPageFilterCurrent||'전체');}
+  if(p==='col'){
+    colBackToList();
+    colPageFilter(colPageFilterCurrent||'전체');
+  }
 }
 
 /* ══════════════════════════════════════
