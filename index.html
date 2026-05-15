@@ -214,9 +214,49 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
 
 /* ── Exercise type & intensity ── */
 .ex-type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
-.ex-type-btn{padding:8px 4px;font-size:11px;border:0.5px solid rgba(0,0,0,.12);border-radius:8px;background:var(--theme-bg);cursor:pointer;text-align:center;color:#555;transition:background .12s,border-color .12s;}
+.ex-type-btn{padding:8px 4px;font-size:11px;border:0.5px solid rgba(0,0,0,.12);border-radius:8px;background:var(--theme-bg);cursor:pointer;text-align:center;color:#555;transition:background .12s,border-color .12s;position:relative;}
 .ex-type-btn.sel{background:var(--theme-main);color:#fff;border-color:var(--theme-main);}
 .ex-type-icon{font-size:18px;display:block;margin-bottom:2px;}
+.ex-section{margin-bottom:12px;}
+.ex-section .ex-type-grid{margin-bottom:0;}
+.ex-caution{position:absolute;top:2px;right:3px;font-size:9px;line-height:1;color:#d97706;pointer-events:none;}
+.ex-type-btn.sel .ex-caution{color:#FDE68A;}
+.ex-more-btn{width:100%;padding:7px 10px;margin-top:6px;background:transparent;border:0.5px dashed rgba(0,0,0,.18);border-radius:8px;cursor:pointer;font-size:11px;color:#888;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .12s;}
+.ex-more-btn:hover{background:rgba(0,0,0,.03);}
+.ex-more-content{display:none;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:6px;}
+.ex-more-content.open{display:grid;}
+
+/* ── Routine builder + player ── */
+.rt-fld{margin-bottom:12px;}
+.rt-fld>label{display:block;font-size:12px;color:#888;letter-spacing:.04em;margin-bottom:6px;}
+.rt-seg{display:flex;gap:6px;}
+.rt-seg button{flex:1;padding:9px 6px;font-size:12px;background:var(--theme-bg);border:0.5px solid rgba(0,0,0,.12);border-radius:8px;color:#555;cursor:pointer;text-align:center;}
+.rt-seg button.on{background:var(--theme-main);color:#fff;border-color:var(--theme-main);font-weight:500;}
+.rt-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.rt-row2 input[type=range]{width:100%;}
+.rt-make-btn{width:100%;padding:11px;background:var(--theme-main);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;margin-top:4px;}
+.rt-meta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.rt-meta .ttl{font-size:15px;font-weight:500;}
+.rt-meta .ttls{font-size:12px;color:#888;font-variant-numeric:tabular-nums;}
+.rt-hrband{background:#E6F1FB;color:#0C447C;padding:6px 10px;border-radius:8px;font-size:12px;margin-bottom:10px;}
+.rt-prow{display:grid;grid-template-columns:46px 1fr auto;gap:8px;padding:5px 0;align-items:center;font-size:13px;}
+.rt-prow .t{font-family:monospace;font-size:11px;color:#aaa;font-variant-numeric:tabular-nums;}
+.rt-prow .lbl{font-weight:500;}
+.rt-prow .sub{font-size:11px;color:#888;}
+.rt-exlist{margin:6px 0 8px;padding:8px 12px 8px 14px;border-left:2px solid #CECBF6;background:rgba(206,203,246,0.08);border-radius:0 6px 6px 0;}
+.rt-erow{display:grid;grid-template-columns:18px 1fr auto auto;gap:8px;padding:4px 0;align-items:center;font-size:12.5px;}
+.rt-erow .num{color:#aaa;font-variant-numeric:tabular-nums;}
+.rt-erow .spec{font-size:11px;color:#888;font-variant-numeric:tabular-nums;}
+.rt-yt{font-size:11px;color:var(--theme-main);text-decoration:none;padding:2px 8px;border-radius:6px;background:#f5f5f3;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;}
+.rt-yt:hover{background:#E6F1FB;}
+.rt-nowname{font-size:20px;font-weight:500;margin:6px 0 3px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;}
+.rt-nowspec{font-size:12px;color:#888;margin-bottom:8px;text-align:center;}
+.rt-next{background:#f5f5f3;padding:7px 12px;border-radius:8px;font-size:11px;margin:10px 0 8px;color:#666;line-height:1.5;}
+.rt-next .lab{color:#aaa;font-size:10px;letter-spacing:.08em;margin-right:6px;}
+.rt-totalsbar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:8px;background:#f5f5f3;border-radius:8px;margin-bottom:10px;}
+.rt-totalsbar .col{text-align:center;}
+.rt-totalsbar .lab{font-size:10px;color:#888;letter-spacing:.04em;margin-bottom:2px;}
+.rt-totalsbar .v{font-size:14px;font-weight:500;font-variant-numeric:tabular-nums;}
 .intensity-row{display:flex;gap:6px;margin-bottom:10px;}
 .int-btn{flex:1;padding:8px;font-size:12px;border:0.5px solid rgba(0,0,0,.12);border-radius:8px;background:var(--theme-bg);cursor:pointer;text-align:center;color:#555;transition:background .12s;}
 .int-btn.sel-low{background:#EAF3DE;color:#27500A;border-color:#639922;}
@@ -416,6 +456,7 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
   <div class="page-hd"><h2>운동 타이머</h2><span style="font-size:10px;color:#aaa;font-weight:400;letter-spacing:0;">건강 관리 앱 v1.1 · 2026.5.3</span></div>
   <div class="itabs">
     <button class="itab active" onclick="wShowTab('timer')">타이머</button>
+    <button class="itab" onclick="wShowTab('routine')">루틴</button>
     <button class="itab" onclick="wShowTab('history')">기록</button>
   </div>
   <div id="wtab-timer">
@@ -478,7 +519,7 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
     <div id="w-settings">
       <div class="card">
         <div style="font-size:12px;font-weight:500;color:#888;letter-spacing:.06em;margin-bottom:8px;">운동 종목</div>
-        <div class="ex-type-grid" id="ex-type-grid"></div>
+        <div class="ex-section" id="ex-type-grid"></div>
         <div style="font-size:12px;font-weight:500;color:#888;letter-spacing:.06em;margin-bottom:8px;">강도</div>
         <div class="intensity-row">
           <button class="int-btn" id="int-low"  onclick="wSetIntensity('low')">🟢 저강도<br><span style="font-size:10px;color:inherit;opacity:.8;">대화 가능</span></button>
@@ -532,6 +573,69 @@ body{font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',s
     <div class="card">
       <div class="card-title">최근 7일 기록</div>
       <div id="w-hist-list"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════ ROUTINE TAB (자동 진행형 루틴 빌더 + 플레이어) ═══════════ -->
+  <div id="wtab-routine" style="display:none;">
+    <div id="rt-builder">
+      <div class="card">
+        <div class="card-title">루틴 생성기</div>
+        <div style="font-size:11px;color:#888;line-height:1.6;margin-bottom:12px;">
+          운동 유형 · 강도 · 시간만 정하면 워밍업부터 종목·세트·휴식·마무리까지 자동으로 짜고, 시작 후엔 다음 단계로 알아서 넘어갑니다.
+        </div>
+        <div class="rt-fld">
+          <label>운동 유형</label>
+          <div class="rt-seg" id="rt-seg-type">
+            <button data-v="zone2">Zone 2 유산소</button>
+            <button data-v="resist">전신 저항성</button>
+            <button data-v="mix" class="on">혼합</button>
+          </div>
+        </div>
+        <div class="rt-fld">
+          <label>강도</label>
+          <div class="rt-seg" id="rt-seg-int">
+            <button data-v="low">저강도</button>
+            <button data-v="mid" class="on">중강도</button>
+            <button data-v="high">고강도</button>
+          </div>
+        </div>
+        <div class="rt-row2">
+          <div class="rt-fld">
+            <label>운동 시간 · <span id="rt-dur-out">30</span>분</label>
+            <input type="range" min="15" max="60" step="5" value="30" id="rt-dur">
+          </div>
+          <div class="rt-fld">
+            <label>나이 · <span id="rt-age-out">40</span>세</label>
+            <input type="range" min="20" max="80" step="1" value="40" id="rt-age">
+          </div>
+        </div>
+        <button class="rt-make-btn" onclick="rtMakeRoutine()">루틴 만들기</button>
+      </div>
+    </div>
+
+    <div id="rt-preview" style="display:none;">
+      <div class="card" id="rt-preview-content"></div>
+    </div>
+
+    <div id="rt-player" style="display:none;">
+      <div class="card timer-card">
+        <div id="rt-pbadge" class="pbadge">WARMUP</div>
+        <div id="rt-nowname" class="rt-nowname">워밍업</div>
+        <div id="rt-nowspec" class="rt-nowspec"></div>
+        <div id="rt-tbig" class="tbig">00:00</div>
+        <div class="pgbar"><div id="rt-pgfill" class="pgfill" style="width:0%"></div></div>
+        <div id="rt-next" class="rt-next"></div>
+        <div class="rt-totalsbar">
+          <div class="col"><div class="lab">경과</div><div class="v" id="rt-tot-elapsed">00:00</div></div>
+          <div class="col"><div class="lab">남음</div><div class="v" id="rt-tot-remain">30:00</div></div>
+          <div class="col"><div class="lab">누적</div><div class="v" id="rt-tot-kcal">0 kcal</div></div>
+        </div>
+        <div class="ctrlrow">
+          <button class="cbtn pri" id="rt-pbtn" onclick="rtTogglePause()">일시정지</button>
+          <button class="cbtn" onclick="rtResetToBuilder()">처음으로</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1960,7 +2064,7 @@ const I18N={
     nav_food:'음식일기', nav_workout:'운동', nav_dashboard:'대시보드', nav_diag:'진단',
     pg_food:'음식 일기', pg_workout:'운동 타이머', pg_dashboard:'대시보드', pg_diag:'체중 관리 진단',
     tab_diary:'오늘 식사', tab_calendar:'달력',
-    tab_timer:'타이머', tab_history:'기록',
+    tab_timer:'타이머', tab_routine:'루틴', tab_history:'기록',
     meal_b:'아침', meal_l:'점심', meal_d:'저녁', meal_s:'간식',
     today_btn:'오늘',
     add_btn:'추가',
@@ -1994,7 +2098,7 @@ const I18N={
     nav_food:'Food', nav_workout:'Workout', nav_dashboard:'Dashboard', nav_diag:'Assess',
     pg_food:'Food Diary', pg_workout:'Workout Timer', pg_dashboard:'Dashboard', pg_diag:'Weight Assessment',
     tab_diary:"Today's Meals", tab_calendar:'Calendar',
-    tab_timer:'Timer', tab_history:'History',
+    tab_timer:'Timer', tab_routine:'Routine', tab_history:'History',
     meal_b:'Breakfast', meal_l:'Lunch', meal_d:'Dinner', meal_s:'Snack',
     today_btn:'Today',
     add_btn:'Add',
@@ -2051,7 +2155,8 @@ function applyLang(){
   if(foodTabs[1])foodTabs[1].textContent=t('tab_calendar');
   const wTabs=document.querySelectorAll('#pg-workout .itab');
   if(wTabs[0])wTabs[0].textContent=t('tab_timer');
-  if(wTabs[1])wTabs[1].textContent=t('tab_history');
+  if(wTabs[1])wTabs[1].textContent=t('tab_routine');
+  if(wTabs[2])wTabs[2].textContent=t('tab_history');
   // diag restart btn
   const rb=document.getElementById('diag-restart-btn');
   if(rb)rb.textContent=t('diag_restart');
@@ -2490,86 +2595,92 @@ const WTXT={get prepare(){return thD();},work:'#27500A',rest:'#633806',restCyc:'
 
 /* MET 기반 운동 종목 (ACSM / Compendium of Physical Activities 기준) */
 const EXERCISE_TYPES=[
-  /* recPlan: workSec=세트당 운동초, restSec=휴식초, rounds=라운드, cycles=세트수 */
-  {id:'walk',   name:'걷기',     icon:'🚶', met:{low:2.5, mid:3.8, high:5.0},
+  /* recPlan: workSec=세트당 운동초, restSec=휴식초, rounds=라운드, cycles=세트수
+     tier='main' 8개는 첫 화면에, 'more' 8개는 [더 보기] 토글 안에 표시
+     caution=true 종목은 ⚠ 배지 (고강도 — 의사 상담 후 권장) */
+
+  /* ─── 메인 8 (심장 친화적 + 자주 쓰는 종목) ─── */
+  {id:'walk',   name:'걷기',     icon:'🚶', tier:'main', met:{low:2.5, mid:3.8, high:5.0},
    recPlan:{
      low: {workSec:2400,restSec:0, rounds:1,cycles:1,desc:'40분 연속 가볍게 걷기'},
      mid: {workSec:1800,restSec:0, rounds:1,cycles:1,desc:'30분 빠른 걷기'},
      high:{workSec:1200,restSec:0, rounds:1,cycles:1,desc:'20분 최대속도 파워워킹'}}},
-  {id:'run',    name:'달리기',   icon:'🏃', met:{low:7.0, mid:9.0, high:12.5},
-   recPlan:{
-     low: {workSec:600, restSec:60,rounds:3,cycles:1,desc:'10분×3 조깅 (1분 휴식)'},
-     mid: {workSec:1200,restSec:0, rounds:1,cycles:1,desc:'20분 중간 페이스 런닝'},
-     high:{workSec:900, restSec:0, rounds:1,cycles:1,desc:'15분 고강도 인터벌 런닝'}}},
-  {id:'cycle',  name:'자전거',   icon:'🚴', met:{low:4.0, mid:6.8, high:10.0},
+  {id:'cycle',  name:'자전거',   icon:'🚴', tier:'main', met:{low:4.0, mid:6.8, high:10.0},
    recPlan:{
      low: {workSec:2700,restSec:0, rounds:1,cycles:1,desc:'45분 평지 라이딩'},
      mid: {workSec:1800,restSec:0, rounds:1,cycles:1,desc:'30분 중강도 사이클링'},
      high:{workSec:60,  restSec:30,rounds:8,cycles:3,desc:'60초 스프린트 30초 휴식×8'}}},
-  {id:'swim',   name:'수영',     icon:'🏊', met:{low:5.0, mid:7.0, high:9.5},
+  {id:'swim',   name:'수영',     icon:'🏊', tier:'main', met:{low:5.0, mid:7.0, high:9.5},
    recPlan:{
      low: {workSec:120, restSec:30,rounds:6,cycles:1,desc:'2분 수영 30초 휴식×6'},
      mid: {workSec:90,  restSec:20,rounds:8,cycles:2,desc:'90초 수영 20초 휴식×8'},
      high:{workSec:60,  restSec:15,rounds:8,cycles:3,desc:'60초 수영 15초 휴식×8'}}},
-  {id:'weight', name:'웨이트',   icon:'🏋️', met:{low:3.0, mid:5.0, high:6.0},
-   recPlan:{
-     low: {workSec:60,  restSec:90,rounds:8, cycles:2,desc:'60초 세트 90초 휴식×8'},
-     mid: {workSec:60,  restSec:60,rounds:10,cycles:3,desc:'60초 세트 60초 휴식×10'},
-     high:{workSec:60,  restSec:45,rounds:10,cycles:4,desc:'60초 세트 45초 휴식×10'}}},
-  {id:'squat',  name:'스쾃',     icon:'🦵', met:{low:3.5, mid:5.0, high:6.5},
-   recPlan:{
-     low: {workSec:60,  restSec:60,rounds:8, cycles:2,desc:'60초 스쾃 60초 휴식×8'},
-     mid: {workSec:60,  restSec:45,rounds:10,cycles:3,desc:'60초 스쾃 45초 휴식×10'},
-     high:{workSec:45,  restSec:20,rounds:10,cycles:4,desc:'점프스쾃 45초 20초 휴식×10'}}},
-  {id:'burpee', name:'버피',     icon:'🤼', met:{low:7.0, mid:9.0, high:11.0},
-   recPlan:{
-     low: {workSec:30,  restSec:30,rounds:6, cycles:2,desc:'30초 버피 30초 휴식×6'},
-     mid: {workSec:40,  restSec:20,rounds:8, cycles:3,desc:'40초 버피 20초 휴식×8'},
-     high:{workSec:45,  restSec:15,rounds:8, cycles:4,desc:'45초 버피 15초 휴식×8'}}},
-  {id:'plank',  name:'플랭크',   icon:'🧱', met:{low:3.0, mid:4.0, high:5.0},
-   recPlan:{
-     low: {workSec:30,  restSec:30,rounds:5, cycles:2,desc:'30초 플랭크 30초 휴식×5'},
-     mid: {workSec:60,  restSec:30,rounds:5, cycles:3,desc:'60초 플랭크 30초 휴식×5'},
-     high:{workSec:60,  restSec:20,rounds:6, cycles:3,desc:'60초 플랭크 20초 휴식×6'}}},
-  {id:'yoga',   name:'요가',     icon:'🧘', met:{low:2.0, mid:3.0, high:4.0},
-   recPlan:{
-     low: {workSec:2700,restSec:0, rounds:1,cycles:1,desc:'45분 하타 요가'},
-     mid: {workSec:1800,restSec:0, rounds:1,cycles:1,desc:'30분 빈야사 요가'},
-     high:{workSec:1200,restSec:0, rounds:1,cycles:1,desc:'20분 아쉬탕가 요가'}}},
-  {id:'pilates',name:'필라테스', icon:'🤸', met:{low:3.0, mid:4.0, high:5.0},
-   recPlan:{
-     low: {workSec:2400,restSec:0, rounds:1,cycles:1,desc:'40분 기초 필라테스'},
-     mid: {workSec:1800,restSec:0, rounds:1,cycles:1,desc:'30분 중급 필라테스'},
-     high:{workSec:1200,restSec:0, rounds:1,cycles:1,desc:'20분 고급 필라테스'}}},
-  {id:'tennis', name:'테니스',   icon:'🎾', met:{low:5.0, mid:7.3, high:8.0},
-   recPlan:{
-     low: {workSec:2400,restSec:0, rounds:1,cycles:1,desc:'40분 랠리 위주'},
-     mid: {workSec:1800,restSec:0, rounds:1,cycles:1,desc:'30분 단식 경기'},
-     high:{workSec:1200,restSec:0, rounds:1,cycles:1,desc:'20분 고강도 경기'}}},
-  {id:'soccer', name:'축구',     icon:'⚽', met:{low:7.0, mid:8.0, high:10.0},
-   recPlan:{
-     low: {workSec:1800,restSec:0, rounds:1,cycles:1,desc:'30분 가볍게 드리블·패스'},
-     mid: {workSec:1500,restSec:0, rounds:1,cycles:2,desc:'25분×2 풋살 경기'},
-     high:{workSec:1200,restSec:0, rounds:1,cycles:2,desc:'20분×2 고강도 경기'}}},
-  {id:'rope',   name:'줄넘기',   icon:'🪢', met:{low:8.0, mid:10.0,high:12.0},
-   recPlan:{
-     low: {workSec:60,  restSec:30,rounds:6, cycles:2,desc:'60초 점프 30초 휴식×6'},
-     mid: {workSec:60,  restSec:20,rounds:8, cycles:2,desc:'60초 점프 20초 휴식×8'},
-     high:{workSec:60,  restSec:15,rounds:8, cycles:3,desc:'60초 점프 15초 휴식×8'}}},
-  {id:'climb',  name:'등산',     icon:'🧗', met:{low:5.3, mid:7.0, high:8.5},
+  {id:'climb',  name:'등산',     icon:'🧗', tier:'main', met:{low:5.3, mid:7.0, high:8.5},
    recPlan:{
      low: {workSec:3600,restSec:0, rounds:1,cycles:1,desc:'완만한 코스 60분'},
      mid: {workSec:2700,restSec:0, rounds:1,cycles:1,desc:'중간 경사 45분'},
      high:{workSec:1800,restSec:0, rounds:1,cycles:1,desc:'급경사 30분 등반'}}},
-  {id:'dance',  name:'댄스',     icon:'💃', met:{low:4.0, mid:6.0, high:8.5},
+  {id:'squat',  name:'스쾃',     icon:'🦵', tier:'main', met:{low:3.5, mid:5.0, high:6.5},
+   recPlan:{
+     low: {workSec:60,  restSec:60,rounds:8, cycles:2,desc:'60초 스쾃 60초 휴식×8'},
+     mid: {workSec:60,  restSec:45,rounds:10,cycles:3,desc:'60초 스쾃 45초 휴식×10'},
+     high:{workSec:45,  restSec:20,rounds:10,cycles:4,desc:'점프스쾃 45초 20초 휴식×10'}}},
+  {id:'plank',  name:'플랭크',   icon:'🧱', tier:'main', met:{low:3.0, mid:4.0, high:5.0},
+   recPlan:{
+     low: {workSec:30,  restSec:30,rounds:5, cycles:2,desc:'30초 플랭크 30초 휴식×5'},
+     mid: {workSec:60,  restSec:30,rounds:5, cycles:3,desc:'60초 플랭크 30초 휴식×5'},
+     high:{workSec:60,  restSec:20,rounds:6, cycles:3,desc:'60초 플랭크 20초 휴식×6'}}},
+  {id:'yoga',   name:'요가',     icon:'🧘', tier:'main', met:{low:2.0, mid:3.0, high:4.0},
+   recPlan:{
+     low: {workSec:2700,restSec:0, rounds:1,cycles:1,desc:'45분 하타 요가'},
+     mid: {workSec:1800,restSec:0, rounds:1,cycles:1,desc:'30분 빈야사 요가'},
+     high:{workSec:1200,restSec:0, rounds:1,cycles:1,desc:'20분 아쉬탕가 요가'}}},
+  {id:'free',   name:'자유운동', icon:'🎯', tier:'main', met:{low:3.0, mid:5.0, high:7.0}, free:true},
+
+  /* ─── 더 보기 8 (고강도/스포츠 종목 — ⚠ 표시는 의사 상담 권장) ─── */
+  {id:'run',    name:'달리기',   icon:'🏃', tier:'more', met:{low:7.0, mid:9.0, high:12.5},
+   recPlan:{
+     low: {workSec:600, restSec:60,rounds:3,cycles:1,desc:'10분×3 조깅 (1분 휴식)'},
+     mid: {workSec:1200,restSec:0, rounds:1,cycles:1,desc:'20분 중간 페이스 런닝'},
+     high:{workSec:900, restSec:0, rounds:1,cycles:1,desc:'15분 고강도 인터벌 런닝'}}},
+  {id:'weight', name:'웨이트',   icon:'🏋️', tier:'more', met:{low:3.0, mid:5.0, high:6.0},
+   recPlan:{
+     low: {workSec:60,  restSec:90,rounds:8, cycles:2,desc:'60초 세트 90초 휴식×8'},
+     mid: {workSec:60,  restSec:60,rounds:10,cycles:3,desc:'60초 세트 60초 휴식×10'},
+     high:{workSec:60,  restSec:45,rounds:10,cycles:4,desc:'60초 세트 45초 휴식×10'}}},
+  {id:'pilates',name:'필라테스', icon:'🤸', tier:'more', met:{low:3.0, mid:4.0, high:5.0},
+   recPlan:{
+     low: {workSec:2400,restSec:0, rounds:1,cycles:1,desc:'40분 기초 필라테스'},
+     mid: {workSec:1800,restSec:0, rounds:1,cycles:1,desc:'30분 중급 필라테스'},
+     high:{workSec:1200,restSec:0, rounds:1,cycles:1,desc:'20분 고급 필라테스'}}},
+  {id:'dance',  name:'댄스',     icon:'💃', tier:'more', met:{low:4.0, mid:6.0, high:8.5},
    recPlan:{
      low: {workSec:2400,restSec:0, rounds:1,cycles:1,desc:'40분 사교댄스·스트레칭'},
      mid: {workSec:1800,restSec:0, rounds:1,cycles:1,desc:'30분 줌바·라인댄스'},
      high:{workSec:1200,restSec:0, rounds:1,cycles:1,desc:'20분 고강도 댄스 에어로빅'}}},
-  {id:'free',   name:'자유운동', icon:'🎯', met:{low:3.0, mid:5.0, high:7.0}, free:true},
+  {id:'rope',   name:'줄넘기',   icon:'🪢', tier:'more', caution:true, met:{low:8.0, mid:10.0,high:12.0},
+   recPlan:{
+     low: {workSec:60,  restSec:30,rounds:6, cycles:2,desc:'60초 점프 30초 휴식×6'},
+     mid: {workSec:60,  restSec:20,rounds:8, cycles:2,desc:'60초 점프 20초 휴식×8'},
+     high:{workSec:60,  restSec:15,rounds:8, cycles:3,desc:'60초 점프 15초 휴식×8'}}},
+  {id:'burpee', name:'버피',     icon:'🤼', tier:'more', caution:true, met:{low:7.0, mid:9.0, high:11.0},
+   recPlan:{
+     low: {workSec:30,  restSec:30,rounds:6, cycles:2,desc:'30초 버피 30초 휴식×6'},
+     mid: {workSec:40,  restSec:20,rounds:8, cycles:3,desc:'40초 버피 20초 휴식×8'},
+     high:{workSec:45,  restSec:15,rounds:8, cycles:4,desc:'45초 버피 15초 휴식×8'}}},
+  {id:'tennis', name:'테니스',   icon:'🎾', tier:'more', caution:true, met:{low:5.0, mid:7.3, high:8.0},
+   recPlan:{
+     low: {workSec:2400,restSec:0, rounds:1,cycles:1,desc:'40분 랠리 위주'},
+     mid: {workSec:1800,restSec:0, rounds:1,cycles:1,desc:'30분 단식 경기'},
+     high:{workSec:1200,restSec:0, rounds:1,cycles:1,desc:'20분 고강도 경기'}}},
+  {id:'soccer', name:'축구',     icon:'⚽', tier:'more', caution:true, met:{low:7.0, mid:8.0, high:10.0},
+   recPlan:{
+     low: {workSec:1800,restSec:0, rounds:1,cycles:1,desc:'30분 가볍게 드리블·패스'},
+     mid: {workSec:1500,restSec:0, rounds:1,cycles:2,desc:'25분×2 풋살 경기'},
+     high:{workSec:1200,restSec:0, rounds:1,cycles:2,desc:'20분×2 고강도 경기'}}},
 ];
 
-let wSelectedExType='run'; // default
+let wSelectedExType='walk'; // default — 심장 친화적, 메인 그리드 첫 번째
 let wSelectedIntensity='mid'; // low|mid|high
 let wPostHR=null;
 
@@ -2630,18 +2741,53 @@ function wAutoFillByExAndIntensity(){
   if(plan)wApplyPlanToTimer(plan);
 }
 
+/* ─── 운동 종목 그리드 헬퍼 (메인 8 + 더 보기 8) ─── */
+function _buildExBtn(e, picked, onclickName){
+  const isFree = e.free;
+  const isSel = e.id === picked;
+  const caution = e.caution ? '<span class="ex-caution" aria-label="고강도 운동">⚠</span>' : '';
+  const tipText = isFree ? '시간을 직접 설정하세요'
+                : (e.caution ? '고강도 운동 — 의사와 상담 후 권장' : '');
+  const styleAttr = isFree ? 'style="border-style:dashed;"' : '';
+  const titleAttr = tipText ? 'title="' + tipText + '"' : '';
+  const subText = isFree ? '<br><span style="font-size:9px;color:inherit;opacity:.7;">직접설정</span>' : '';
+  return '<button class="ex-type-btn' + (isSel ? ' sel' : '') + '" onclick="' + onclickName + '(\'' + e.id + '\')" '
+       + styleAttr + ' ' + titleAttr + '>'
+       + caution
+       + '<span class="ex-type-icon">' + e.icon + '</span>' + e.name + subText
+       + '</button>';
+}
+
+function _buildExPicker(pickedId, onclickName, opts){
+  opts = opts || {};
+  const includeFree = opts.includeFree !== false;
+  const main = EXERCISE_TYPES.filter(e => e.tier === 'main' && (includeFree || !e.free));
+  const more = EXERCISE_TYPES.filter(e => e.tier === 'more');
+  const mainHTML = main.map(e => _buildExBtn(e, pickedId, onclickName)).join('');
+  const moreHTML = more.map(e => _buildExBtn(e, pickedId, onclickName)).join('');
+  // 현재 선택이 'more'에 있으면 자동으로 펼친 상태
+  const isOpen = more.some(e => e.id === pickedId);
+  const openClass = isOpen ? ' open' : '';
+  const arrow = isOpen ? '▴' : '▾';
+  return '<div class="ex-type-grid">' + mainHTML + '</div>'
+       + '<button type="button" class="ex-more-btn" onclick="exToggleMore(this)">'
+       + '<span>더 보기 (' + more.length + '개 · 고강도 포함)</span>'
+       + '<span class="ex-more-arrow">' + arrow + '</span>'
+       + '</button>'
+       + '<div class="ex-more-content' + openClass + '">' + moreHTML + '</div>';
+}
+
+function exToggleMore(btn){
+  const content = btn.nextElementSibling;
+  const arrow = btn.querySelector('.ex-more-arrow');
+  const isOpen = content.classList.toggle('open');
+  if (arrow) arrow.textContent = isOpen ? '▴' : '▾';
+}
+
 function wRenderExTypeGrid(){
   const grid=document.getElementById('ex-type-grid');
   if(!grid)return;
-  grid.innerHTML=EXERCISE_TYPES.map(e=>{
-    const isFree=e.free;
-    const isSel=e.id===wSelectedExType;
-    return`<button class="ex-type-btn${isSel?' sel':''}" onclick="wSelectExType('${e.id}')"
-      style="${isFree?'border-style:dashed;':''}"
-      title="${isFree?'시간을 직접 설정하세요':''}">
-      <span class="ex-type-icon">${e.icon}</span>${e.name}${isFree?'<br><span style="font-size:9px;color:inherit;opacity:.7;">직접설정</span>':''}
-    </button>`;
-  }).join('');
+  grid.innerHTML = _buildExPicker(wSelectedExType, 'wSelectExType');
 }
 
 function wSelectExType(id){
@@ -2795,6 +2941,498 @@ function wResetTimer(){
   document.getElementById('w-timerpanel').style.display='none';
   document.getElementById('w-settings').style.display='';
 }
+
+/* ══════════════════════════════════════
+   ROUTINE BUILDER + AUTO-CHAINED PLAYER
+   (Zone 2 + 전신 저항성 + 혼합 루틴)
+══════════════════════════════════════ */
+const ROUTINE_EX_POOL = [
+  {id:'squat',  name:'스쿼트',         grp:'하체',     met:5.0, ytQ:'스쿼트 정확한 자세',   base:{low:10,mid:15,high:20}, unit:'회'},
+  {id:'lunge',  name:'런지(좌/우)',    grp:'하체',     met:5.0, ytQ:'런지 자세 홈트',        base:{low:8, mid:12,high:15}, unit:'회'},
+  {id:'glute',  name:'글루트 브릿지',  grp:'둔근',     met:4.0, ytQ:'글루트 브릿지 운동',    base:{low:12,mid:15,high:20}, unit:'회'},
+  {id:'pushup', name:'푸시업',         grp:'가슴/팔', met:5.0, ytQ:'푸시업 정확한 자세',    base:{low:5, mid:10,high:15}, unit:'회'},
+  {id:'incpu',  name:'인클라인 푸시업',grp:'가슴/팔', met:4.5, ytQ:'인클라인 푸시업 자세',  base:{low:8, mid:12,high:15}, unit:'회'},
+  {id:'bandrow',name:'밴드 로우',      grp:'등',       met:4.0, ytQ:'밴드 로우 홈트',        base:{low:10,mid:12,high:15}, unit:'회'},
+  {id:'super',  name:'슈퍼맨',         grp:'등',       met:3.5, ytQ:'슈퍼맨 운동 자세',      base:{low:8, mid:12,high:15}, unit:'회'},
+  {id:'plank',  name:'플랭크',         grp:'코어',     met:3.5, ytQ:'플랭크 정확한 자세',    base:{low:20,mid:40,high:60}, unit:'초'},
+  {id:'deadbg', name:'데드 버그',      grp:'코어',     met:3.0, ytQ:'데드버그 운동 자세',    base:{low:6, mid:8, high:10}, unit:'회'},
+];
+const RT_GROUPS = ['하체','가슴/팔','등','코어','둔근'];
+
+let rtSpec = {type:'mix', intensity:'mid', dur:30, age:40};
+let rtRoutine = null;
+let rtPi = 0, rtTimeLeft = 0;
+let rtRunning = false, rtTmr = null, rtLastTick = 0;
+let rtKcalAccum = 0;
+let rtWeightKg = 65;
+let _rtLastCountSec = -1;
+
+function _rtSets(i){return {low:2,mid:3,high:3}[i];}
+function _rtSetRest(i){return {low:45,mid:30,high:20}[i];}
+function _rtWorkSec(i){return {low:25,mid:35,high:40}[i];}
+
+/* 연령대별 안전 보정
+   - 60세+: 반복 ×0.8, 휴식 +15초, 워밍업/마무리 +60초씩, "🛡 시니어 안심 모드" 배지
+   - 50–59: 반복 ×0.9, 휴식 +10초, 워밍업/마무리 +30초씩 (배지 없음, 노트만)
+   - ~49:  보정 없음 */
+function rtAgeAdj(age){
+  if(age >= 60) return {rep:0.8, restPlus:15, warmCoolPlus:60, mode:'senior',
+                        note:'시니어 안심 모드 — 반복 ↓ · 휴식 ↑ · 워밍업/마무리 확장 (KSSO 권고 기반)'};
+  if(age >= 50) return {rep:0.9, restPlus:10, warmCoolPlus:30, mode:'mid',
+                        note:'50대 보정 적용 — 반복 약간 ↓ · 휴식 약간 ↑'};
+  return {rep:1.0, restPlus:0, warmCoolPlus:0, mode:'std', note:null};
+}
+
+/* 연령 보정 적용된 반복 수 (최저값 보장: 회=5, 초=15) */
+function _rtAdjReps(ex, intensity, adj){
+  const base = ex.base[intensity];
+  const min = (ex.unit === '초') ? 15 : 5;
+  return Math.max(min, Math.round(base * adj.rep));
+}
+
+function rtFmtTime(sec){
+  sec = Math.max(0, Math.ceil(sec));
+  const m = Math.floor(sec/60), s = Math.round(sec) % 60;
+  return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+function rtPickFullBody(seed, count){
+  const out=[], used=new Set();
+  let s = ((seed||1) * 17 + 31) % 233280;
+  for(let i=0; i<count && i<RT_GROUPS.length; i++){
+    const cands = ROUTINE_EX_POOL.filter(e => e.grp===RT_GROUPS[i] && !used.has(e.id));
+    if(!cands.length) continue;
+    s = (s * 9301 + 49297) % 233280;
+    const ex = cands[s % cands.length];
+    out.push(ex); used.add(ex.id);
+  }
+  return out;
+}
+
+function rtBuild(spec){
+  const {type, intensity, dur, age} = spec;
+  const totalSecTarget = dur * 60;
+  const phases = [];
+  const exList = [];
+  const maxHR = 220 - age;
+  const hrLo = Math.round(maxHR * 0.6);
+  const hrHi = Math.round(maxHR * 0.7);
+  const adj = rtAgeAdj(age);
+  const add = (p) => phases.push(p);
+
+  if(type === 'zone2'){
+    const warm = 180 + adj.warmCoolPlus;
+    const cool = 120 + adj.warmCoolPlus;
+    const main = totalSecTarget - warm - cool;
+    add({type:'warm', t:warm, label:'워밍업', cue:'가볍게 걷기 + 동적 스트레칭', met:3});
+    add({type:'z2',   t:main, label:'Zone 2 유산소', cue:'빠른 걷기 · 가벼운 조깅 · 사이클 중 택1', hr:[hrLo,hrHi], met:5.5});
+    add({type:'cool', t:cool, label:'마무리', cue:'정적 스트레칭', met:2.5});
+  } else if(type === 'resist'){
+    const warm = 180 + adj.warmCoolPlus;
+    const cool = 120 + adj.warmCoolPlus;
+    const mainBudget = totalSecTarget - warm - cool;
+    const exCount = mainBudget >= 1200 ? 5 : (mainBudget >= 720 ? 4 : 3);
+    const list = rtPickFullBody(dur + intensity.length, exCount);
+    const sets = _rtSets(intensity);
+    const setRest = _rtSetRest(intensity) + adj.restPlus;
+    const exRest = 60;
+    add({type:'warm', t:warm, label:'워밍업', cue:'가볍게 걷기 + 동적 스트레칭', met:3});
+    list.forEach((ex, i) => {
+      add({type:'cue', t:3, label:'다음 운동', exName:ex.name});
+      const reps = _rtAdjReps(ex, intensity, adj);
+      const workSec = (ex.unit === '초') ? reps : _rtWorkSec(intensity);
+      const specStr = reps + ex.unit;
+      for(let s=1; s<=sets; s++){
+        add({type:'work', t:workSec, exId:ex.id, exName:ex.name, ytQ:ex.ytQ, grp:ex.grp, spec:specStr, setNum:s, setTotal:sets, met:ex.met});
+        if(s < sets) add({type:'rest', t:setRest, exName:ex.name, restType:'세트 간', met:2.5});
+      }
+      if(i < list.length - 1) add({type:'rest', t:exRest, exName:'다음 종목 준비', restType:'종목 간', met:2.5});
+      exList.push({id:ex.id, name:ex.name, grp:ex.grp, sets, reps, unit:ex.unit, ytQ:ex.ytQ, spec:specStr});
+    });
+    add({type:'cool', t:cool, label:'마무리', cue:'정적 스트레칭', met:2.5});
+  } else { // mix
+    const warm = 180 + adj.warmCoolPlus;
+    const cool = 180 + adj.warmCoolPlus;
+    const mainBudget = totalSecTarget - warm - cool;
+    const sets = Math.max(2, _rtSets(intensity) - 1);
+    const setRest = _rtSetRest(intensity) + adj.restPlus;
+    const exRest = 45;
+    let exCount = 4;
+    let list = rtPickFullBody(dur, exCount);
+    const estResFor = (lst) => {
+      let t = 0;
+      lst.forEach((ex, i) => {
+        const reps = _rtAdjReps(ex, intensity, adj);
+        const workSec = (ex.unit === '초') ? reps : _rtWorkSec(intensity);
+        t += 3;
+        for(let s=1; s<=sets; s++){ t += workSec; if(s < sets) t += setRest; }
+        if(i < lst.length - 1) t += exRest;
+      });
+      return t;
+    };
+    let estResTime = estResFor(list);
+    let z2Share = mainBudget - estResTime;
+    if(z2Share < 180){
+      exCount = 3;
+      list = rtPickFullBody(dur, exCount);
+      estResTime = estResFor(list);
+      z2Share = Math.max(180, mainBudget - estResTime);
+    }
+    add({type:'warm', t:warm, label:'워밍업', cue:'가볍게 걷기 + 동적 스트레칭', met:3});
+    add({type:'z2',   t:z2Share, label:'Zone 2 유산소', cue:'빠른 걷기 또는 가벼운 조깅', hr:[hrLo,hrHi], met:5.5});
+    list.forEach((ex, i) => {
+      add({type:'cue', t:3, label:'다음 운동', exName:ex.name});
+      const reps = _rtAdjReps(ex, intensity, adj);
+      const workSec = (ex.unit === '초') ? reps : _rtWorkSec(intensity);
+      const specStr = reps + ex.unit;
+      for(let s=1; s<=sets; s++){
+        add({type:'work', t:workSec, exId:ex.id, exName:ex.name, ytQ:ex.ytQ, grp:ex.grp, spec:specStr, setNum:s, setTotal:sets, met:ex.met});
+        if(s < sets) add({type:'rest', t:setRest, exName:ex.name, restType:'세트 간', met:2.5});
+      }
+      if(i < list.length - 1) add({type:'rest', t:exRest, exName:'다음 종목 준비', restType:'종목 간', met:2.5});
+      exList.push({id:ex.id, name:ex.name, grp:ex.grp, sets, reps, unit:ex.unit, ytQ:ex.ytQ, spec:specStr});
+    });
+    add({type:'cool', t:cool, label:'마무리', cue:'정적 스트레칭', met:2.5});
+  }
+
+  let totalT = 0, totalKcal = 0;
+  phases.forEach(p => { totalT += p.t; if(p.met) totalKcal += p.met * rtWeightKg * (p.t/3600); });
+  return {phases, exList, totalSec:totalT, kcalEst:Math.round(totalKcal), hr:[hrLo,hrHi], type, intensity,
+          ageMode:adj.mode, ageNote:adj.note, age};
+}
+
+function rtSyncProfile(){
+  const p = loadProfile();
+  if(p){
+    if(p.weight) rtWeightKg = p.weight;
+    if(p.age){
+      rtSpec.age = p.age;
+      const el = document.getElementById('rt-age');
+      if(el){ el.value = p.age; document.getElementById('rt-age-out').textContent = p.age; }
+    }
+  }
+}
+
+function rtBindControls(){
+  document.querySelectorAll('#rt-seg-type button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#rt-seg-type button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      rtSpec.type = b.dataset.v;
+    });
+  });
+  document.querySelectorAll('#rt-seg-int button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#rt-seg-int button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      rtSpec.intensity = b.dataset.v;
+    });
+  });
+  const durEl = document.getElementById('rt-dur');
+  if(durEl) durEl.addEventListener('input', e => {
+    rtSpec.dur = parseInt(e.target.value, 10);
+    document.getElementById('rt-dur-out').textContent = rtSpec.dur;
+  });
+  const ageEl = document.getElementById('rt-age');
+  if(ageEl) ageEl.addEventListener('input', e => {
+    rtSpec.age = parseInt(e.target.value, 10);
+    document.getElementById('rt-age-out').textContent = rtSpec.age;
+  });
+}
+
+function rtShowSubview(view){
+  const b = document.getElementById('rt-builder');
+  const p = document.getElementById('rt-preview');
+  const pl = document.getElementById('rt-player');
+  if(b) b.style.display = (view==='builder') ? '' : 'none';
+  if(p) p.style.display = (view==='preview') ? '' : 'none';
+  if(pl) pl.style.display = (view==='player') ? '' : 'none';
+}
+
+function rtMakeRoutine(){
+  rtSyncProfile();
+  rtRoutine = rtBuild(rtSpec);
+  rtRenderPreview();
+  rtShowSubview('preview');
+}
+
+function rtRegenerate(){
+  // bump seed by tweaking dur briefly
+  const real = rtSpec.dur;
+  rtSpec.dur = real + 1;
+  rtRoutine = rtBuild(rtSpec);
+  rtSpec.dur = real;
+  rtRenderPreview();
+}
+
+function rtRenderPreview(){
+  if(!rtRoutine) return;
+  const r = rtRoutine;
+  const typeLbl = {zone2:'Zone 2', resist:'전신 저항성', mix:'혼합'}[r.type];
+  const intLbl = {low:'저강도', mid:'중강도', high:'고강도'}[r.intensity];
+  const totalMin = Math.round(r.totalSec/60);
+
+  let html = '<div class="rt-meta"><div class="ttl">' + typeLbl + ' ' + totalMin + '분 · ' + intLbl
+           + '</div><div class="ttls">예상 ' + r.kcalEst + ' kcal</div></div>';
+
+  // 연령 보정 안내 — senior 모드는 강조, 50대는 잔잔하게
+  if(r.ageMode === 'senior'){
+    html += '<div style="background:#FFF8E0;padding:8px 11px;border-radius:8px;border-left:3px solid #F4B731;font-size:11px;color:#7A5C00;margin-bottom:10px;line-height:1.55;">'
+          + '<div style="font-weight:600;letter-spacing:.02em;margin-bottom:1px;">시니어 안심 모드</div>'
+          + r.age + '세 기준 자동 조정 — 반복 ↓ · 휴식 ↑ · 워밍업/마무리 확장 <span style="color:#A88B33;">(KSSO 권고)</span>'
+          + '</div>';
+  } else if(r.ageMode === 'mid'){
+    html += '<div style="font-size:11px;color:#888;margin-bottom:10px;font-style:italic;">' + r.age + '세 기준 보정 — 반복 약간 ↓ · 휴식 약간 ↑</div>';
+  }
+
+  if(r.type !== 'resist'){
+    html += '<div class="rt-hrband">❤ Zone 2 구간 목표 심박 ' + r.hr[0] + '–' + r.hr[1] + ' bpm</div>';
+  }
+  let cum = 0, i = 0;
+  const ph = r.phases;
+  while(i < ph.length){
+    const p = ph[i];
+    if(p.type === 'warm' || p.type === 'z2' || p.type === 'cool'){
+      const m = Math.round(p.t/60);
+      const lblMap = {warm:'워밍업', z2:'Zone 2 유산소', cool:'마무리'};
+      html += '<div class="rt-prow"><span class="t">' + rtFmtTime(cum) + '</span><div><span class="lbl">'
+            + lblMap[p.type] + '</span> <span class="sub">· ' + (p.cue||'') + '</span></div><span class="sub">'
+            + (m>=60 ? Math.floor(m/60)+'시간 '+(m%60)+'분' : m+'분') + '</span></div>';
+      cum += p.t; i++;
+    } else {
+      // collect entire resistance block
+      const startBlock = cum;
+      let blockT = 0;
+      while(i < ph.length && (ph[i].type === 'cue' || ph[i].type === 'work' || ph[i].type === 'rest')){
+        blockT += ph[i].t; cum += ph[i].t; i++;
+      }
+      const m = Math.floor(blockT/60), s = Math.round(blockT)%60;
+      const setsTxt = r.exList[0] ? (r.exList[0].sets + '세트') : '';
+      html += '<div class="rt-prow"><span class="t">' + rtFmtTime(startBlock) + '</span><div><span class="lbl">전신 저항성</span> <span class="sub">· '
+            + r.exList.length + '종목 × ' + setsTxt + '</span></div><span class="sub">' + m + ':' + String(s).padStart(2,'0') + '</span></div>';
+      html += '<div class="rt-exlist">';
+      r.exList.forEach((ex, n) => {
+        const ytURL = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.ytQ);
+        html += '<div class="rt-erow"><span class="num">' + (n+1) + '.</span>'
+              + '<span>' + ex.name + ' <span class="sub">(' + ex.grp + ')</span></span>'
+              + '<span class="spec">' + ex.sets + '세트 × ' + ex.spec + '</span>'
+              + '<a class="rt-yt" href="' + ytURL + '" target="_blank" rel="noopener">▶ 영상</a></div>';
+      });
+      html += '</div>';
+    }
+  }
+  html += '<div style="display:flex;gap:8px;margin-top:14px;">'
+        + '<button class="cbtn pri" style="flex:2;" onclick="rtStartRoutine()">▶ 운동 시작</button>'
+        + '<button class="cbtn" style="flex:1;" onclick="rtRegenerate()">↻ 다시 추천</button>'
+        + '</div>'
+        + '<button class="cbtn" style="width:100%;margin-top:6px;background:transparent;border:0.5px dashed rgba(0,0,0,.15);font-size:11px;color:#888;" onclick="rtShowSubview(\'builder\')">← 설정 변경</button>';
+  document.getElementById('rt-preview-content').innerHTML = html;
+}
+
+const RT_BADGE = {
+  warm: {t:'WARMUP',    bg:'#FAEEDA', tx:'#854F0B', pgBg:'#BA7517'},
+  z2:   {t:'ZONE 2',    bg:'#E6F1FB', tx:'#0C447C', pgBg:'#185FA5'},
+  cue:  {t:'NEXT UP',   bg:'#EEEDFE', tx:'#3C3489', pgBg:'#534AB7'},
+  work: {t:'WORK',      bg:'#EAF3DE', tx:'#27500A', pgBg:'#3B6D11'},
+  rest: {t:'REST',      bg:'#FAEEDA', tx:'#633806', pgBg:'#BA7517'},
+  cool: {t:'COOL DOWN', bg:'#E1F5EE', tx:'#085041', pgBg:'#0F6E56'}
+};
+
+function rtStartRoutine(){
+  if(!rtRoutine || !rtRoutine.phases.length) return;
+  rtPi = 0;
+  rtTimeLeft = rtRoutine.phases[0].t;
+  rtKcalAccum = 0;
+  rtRunning = true;
+  rtLastTick = Date.now();
+  _rtLastCountSec = -1;
+  rtShowSubview('player');
+  const pbtn = document.getElementById('rt-pbtn');
+  pbtn.textContent = '일시정지';
+  pbtn.disabled = false;
+  pbtn.onclick = rtTogglePause;
+  rtUpdatePlayerDisplay();
+  rtTmr = setInterval(rtTick, 80);
+  wAcquireWakeLock();
+  wPlayPhaseSound('prepare');
+}
+
+function rtTick(){
+  if(!rtRunning) return;
+  const now = Date.now();
+  const dt = (now - rtLastTick) / 1000;
+  rtLastTick = now;
+  rtTimeLeft -= dt;
+  const ph = rtRoutine.phases[rtPi];
+  if(ph && ph.met){
+    rtKcalAccum += ph.met * rtWeightKg * (dt / 3600);
+  }
+  if(rtTimeLeft <= 0){
+    rtNextPhase();
+  } else {
+    rtUpdatePlayerDisplay();
+    const t = Math.ceil(rtTimeLeft);
+    if(t<=3 && t>=1 && t!==_rtLastCountSec){
+      _rtLastCountSec = t;
+      wTickSound();
+    }
+    if(t>3) _rtLastCountSec = -1;
+  }
+}
+
+function rtNextPhase(){
+  rtPi++;
+  if(rtPi >= rtRoutine.phases.length){
+    rtFinishRoutine();
+    return;
+  }
+  const ph = rtRoutine.phases[rtPi];
+  rtTimeLeft = ph.t;
+  _rtLastCountSec = -1;
+  const soundMap = {warm:'prepare', z2:'work', cue:'prepare', work:'work', rest:'rest', cool:'cooldown'};
+  wPlayPhaseSound(soundMap[ph.type] || 'work');
+  rtUpdatePlayerDisplay();
+}
+
+function rtBuildNextPreview(){
+  if(!rtRoutine) return '곧 완료!';
+  const out = [];
+  for(let i = rtPi + 1; i < rtRoutine.phases.length && out.length < 3; i++){
+    const p = rtRoutine.phases[i];
+    if(p.type === 'cue') continue;
+    let txt;
+    if(p.type === 'work') txt = p.exName + ' ' + p.setNum + '세트';
+    else if(p.type === 'rest') txt = '휴식 ' + Math.round(p.t) + '초';
+    else if(p.type === 'warm') txt = '워밍업';
+    else if(p.type === 'z2') txt = 'Zone 2';
+    else if(p.type === 'cool') txt = '마무리';
+    else txt = p.label || p.type;
+    out.push(txt);
+  }
+  return out.length ? out.join(' → ') : '곧 완료!';
+}
+
+function rtUpdatePlayerDisplay(){
+  if(!rtRoutine || rtPi >= rtRoutine.phases.length) return;
+  const ph = rtRoutine.phases[rtPi];
+  const lbl = RT_BADGE[ph.type] || RT_BADGE.work;
+  const badge = document.getElementById('rt-pbadge');
+  badge.textContent = lbl.t;
+  badge.style.cssText = 'background:' + lbl.bg + ';color:' + lbl.tx + ';';
+
+  const nameEl = document.getElementById('rt-nowname');
+  let nameHTML = ph.exName || ph.label || '';
+  if(ph.type === 'work' && ph.ytQ){
+    const ytURL = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(ph.ytQ);
+    nameHTML += ' <a class="rt-yt" href="' + ytURL + '" target="_blank" rel="noopener">▶ 영상</a>';
+  }
+  nameEl.innerHTML = nameHTML;
+
+  const specEl = document.getElementById('rt-nowspec');
+  if(ph.type === 'work'){
+    specEl.textContent = '목표 ' + ph.spec + ' · ' + (ph.grp||'') + ' · ' + ph.setNum + '/' + ph.setTotal + '세트';
+  } else if(ph.type === 'rest'){
+    specEl.textContent = (ph.restType ? ph.restType + ' ' : '') + '휴식';
+  } else if(ph.type === 'z2' && ph.hr){
+    specEl.textContent = '목표 심박 ' + ph.hr[0] + '–' + ph.hr[1] + ' bpm · ' + (ph.cue||'');
+  } else if(ph.type === 'cue'){
+    specEl.textContent = '준비!';
+  } else {
+    specEl.textContent = ph.cue || '';
+  }
+
+  const tbig = document.getElementById('rt-tbig');
+  tbig.textContent = rtFmtTime(rtTimeLeft);
+  tbig.style.color = lbl.pgBg;
+
+  const pct = Math.max(0, Math.min(100, 100 - (rtTimeLeft / ph.t * 100)));
+  const pgfill = document.getElementById('rt-pgfill');
+  pgfill.style.width = pct + '%';
+  pgfill.style.background = lbl.pgBg;
+
+  document.getElementById('rt-next').innerHTML = '<span class="lab">다음</span>' + rtBuildNextPreview();
+
+  let elapsedSec = 0;
+  for(let i = 0; i < rtPi; i++) elapsedSec += rtRoutine.phases[i].t;
+  elapsedSec += Math.max(0, ph.t - rtTimeLeft);
+  document.getElementById('rt-tot-elapsed').textContent = rtFmtTime(elapsedSec);
+  document.getElementById('rt-tot-remain').textContent = rtFmtTime(Math.max(0, rtRoutine.totalSec - elapsedSec));
+  document.getElementById('rt-tot-kcal').textContent = Math.round(rtKcalAccum) + ' kcal';
+}
+
+function rtTogglePause(){
+  rtRunning = !rtRunning;
+  if(rtRunning) rtLastTick = Date.now();
+  document.getElementById('rt-pbtn').textContent = rtRunning ? '일시정지' : '계속하기';
+}
+
+function rtResetToBuilder(){
+  if(rtRunning && rtRoutine && rtPi < rtRoutine.phases.length - 1){
+    if(!confirm('운동을 중단하고 처음으로 돌아가시겠어요?\n진행 기록은 저장되지 않습니다.')) return;
+  }
+  if(rtTmr){ clearInterval(rtTmr); rtTmr = null; }
+  rtRunning = false;
+  wReleaseWakeLock();
+  rtShowSubview('builder');
+}
+
+function rtFinishRoutine(){
+  if(rtTmr){ clearInterval(rtTmr); rtTmr = null; }
+  rtRunning = false;
+  wReleaseWakeLock();
+  wPlayDoneSound();
+
+  const r = rtRoutine;
+  const elapsedSec = Math.round(r.totalSec);
+  const typeLbl = {zone2:'Zone 2 루틴', resist:'저항성 루틴', mix:'혼합 루틴'}[r.type];
+  const exCount = r.exList.length;
+  const kcal = Math.round(rtKcalAccum);
+
+  // 기록 저장 — 기존 wHist 구조에 맞춤 (kind:'routine' 플래그 추가)
+  const today = dateKey(new Date());
+  if(!wHist[today]) wHist[today] = [];
+  const avgMet = elapsedSec > 0 ? (kcal / (rtWeightKg * (elapsedSec/3600))) : 0;
+  wHist[today].push({
+    kind: 'routine',
+    workSec: elapsedSec,
+    rounds: 1, cycles: 1,
+    ts: Date.now(),
+    exType: 'routine',
+    exName: typeLbl + (exCount ? (' (' + exCount + '종목)') : ''),
+    exIcon: '🎯',
+    intensity: r.intensity,
+    met: Math.round(avgMet * 10) / 10,
+    metCal: kcal,
+    routineExercises: r.exList.map(e => ({id:e.id, name:e.name, sets:e.sets, reps:e.reps, unit:e.unit}))
+  });
+  wSaveHist();
+
+  // 완료 UI
+  const badge = document.getElementById('rt-pbadge');
+  badge.textContent = '🎉 완료!';
+  badge.style.cssText = 'background:#EAF3DE;color:#27500A;';
+  document.getElementById('rt-nowname').textContent = typeLbl + ' 완료';
+  document.getElementById('rt-nowspec').textContent = '잘 하셨습니다!';
+  const tbig = document.getElementById('rt-tbig');
+  tbig.textContent = '완료'; tbig.style.color = '#3B6D11';
+  const pg = document.getElementById('rt-pgfill');
+  pg.style.width = '100%'; pg.style.background = '#3B6D11';
+  document.getElementById('rt-next').innerHTML = '<span class="lab">결과</span>' + kcal + ' kcal · ' + exCount + '종목 · ' + rtFmtTime(elapsedSec) + ' · 기록에 저장됨';
+  const pbtn = document.getElementById('rt-pbtn');
+  pbtn.textContent = '새 루틴 시작';
+  pbtn.onclick = function(){
+    rtRoutine = null;
+    rtShowSubview('builder');
+    pbtn.onclick = rtTogglePause;
+    pbtn.textContent = '일시정지';
+  };
+}
+
+function rtInit(){
+  rtBindControls();
+  rtSyncProfile();
+}
+
 /* ══════════════════════════════════════
    WORKOUT SOUND SYSTEM
 ══════════════════════════════════════ */
@@ -2985,10 +3623,19 @@ function wTodayWorkMin(){return Math.round((wHist[dateKey(TODAY)]||[]).reduce((s
 function wTodayMetCal(){return(wHist[dateKey(TODAY)]||[]).reduce((s,r)=>s+(r.metCal||Math.round(r.workSec/60*BURN_RATE)),0);}
 
 function wShowTab(t){
-  document.getElementById('wtab-timer').style.display=t==='timer'?'':'none';
-  document.getElementById('wtab-history').style.display=t==='history'?'':'none';
-  document.querySelectorAll('#pg-workout .itab').forEach((el,i)=>el.classList.toggle('active',(i===0&&t==='timer')||(i===1&&t==='history')));
-  if(t==='history')wRenderHist();
+  const map={timer:'wtab-timer', routine:'wtab-routine', history:'wtab-history'};
+  Object.entries(map).forEach(([k,id])=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display = (t===k) ? '' : 'none';
+  });
+  const tabs=['timer','routine','history'];
+  document.querySelectorAll('#pg-workout .itab').forEach((el,i)=>el.classList.toggle('active', tabs[i]===t));
+  if(t==='history') wRenderHist();
+  if(t==='routine'){
+    if(rtRunning) rtShowSubview('player');
+    else if(rtRoutine) rtShowSubview('preview');
+    else rtShowSubview('builder');
+  }
 }
 function wRenderHist(){
   const days=get7Days();
@@ -3805,16 +4452,13 @@ function diagGoToDietDirect(){
 
 /* ── Step 1: 운동 선택 ── */
 function renderDiagExPicker(){
-  const grid=EXERCISE_TYPES.filter(e=>!e.free).map(e=>`
-    <button class="ex-type-btn${diagPickedExType===e.id?' sel':''}" onclick="diagSelectExType('${e.id}')">
-      <span class="ex-type-icon">${e.icon}</span>${e.name}
-    </button>`).join('');
+  const picker = _buildExPicker(diagPickedExType, 'diagSelectExType', {includeFree:false});
 
   diagContent().innerHTML=`
     <div class="card">
       <div class="q-step">질문 ${diagHistory.length+1}번째</div>
       <div class="q-msg" style="margin-bottom:14px;">어떤 운동을 하시겠어요?</div>
-      <div class="ex-type-grid" style="margin-bottom:14px;">${grid}</div>
+      <div class="ex-section" style="margin-bottom:14px;">${picker}</div>
       <button id="diag-ex-next" class="primary-btn" onclick="diagConfirmExType()" ${diagPickedExType?'':'disabled'}>다음 → 강도 선택</button>
     </div>
     <button class="back-link" onclick="diagGoBack()">← 이전으로</button>`;
@@ -4319,6 +4963,7 @@ fUpdateDateDisp();
 fRenderDiary();
 wUpdateEst();
 wRenderExTypeGrid();
+rtInit();
 applyTheme(THEME);
 applyLang();
 colFetch();
